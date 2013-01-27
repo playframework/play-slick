@@ -59,15 +59,18 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
     if (ddls.nonEmpty) {
+      val ddl = ddls.reduceLeft(_ ++ _)
+
       Some(CreatedBy + "Slick DDL\n" +
       "# To stop Slick DDL generation, remove this comment and start using Evolutions\n" +
       "\n" +
-      ddls.map{ ddl =>
-        ddl.createStatements.mkString("", s"$delimiter\n", s"$delimiter\n")
-      }.mkString("# --- !Ups\n\n", "\n", "\n") + ddls.map{ ddl =>
-        ddl.dropStatements.mkString("", s"$delimiter\n", s"$delimiter\n")
-      }.mkString("# --- !Downs\n\n", "\n", ""))
-    } else None 
+      "# --- !Ups\n\n" +
+      ddl.createStatements.mkString("", s"$delimiter\n", s"$delimiter\n") +
+      "\n" +
+      "# --- !Downs\n\n" +
+      ddl.dropStatements.mkString("", s"$delimiter\n", s"$delimiter\n") +
+      "\n")
+    } else None
   }
 
   def reflectAllDDLMethods(classNames: Set[String], classloader: ClassLoader) = {
