@@ -9,5 +9,6 @@ scalaVersion := "2.10.0"
 libraryDependencies ++= Seq(
   "play" %% "play" % "2.1-RC2",
   "play" %% "play-jdbc" % "2.1-RC2",
-  "com.typesafe.slick" % "slick_2.10" % "1.0.0-RC2")
+  "com.typesafe.slick" % "slick_2.10" % "1.0.0-RC2",
+  "play" %% "play-test" % "2.1-RC2" % "test")
 
