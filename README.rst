@@ -38,7 +38,6 @@ DAOs with mulitple drivers
 It is also possible to specify and search for inner object. This is useful if you need multiple drivers. 
 
 Imagine a DAO is defined like this: 
-
 .. code-block::
   class DAO(val driver: ExtendedProfile) {
     // Import the query language features from the driver
