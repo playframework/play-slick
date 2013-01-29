@@ -10,9 +10,17 @@ The *intent* is to get this plugin into Play 2.2 if possible.
 
 Usage
 -----
-Currently you must clone this project and publish it locally using sbt 0.12: ``sbt publish-local``
+Currently you must the  
 
-Then in the ``project/Build.scala`` file add: ``"com.typesafe" %% "play-slick" % "0.2.7-SNAPSHOT"`` to the list of ``appDependencies``
+Then in the ``project/Build.scala`` file add:
+    .dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+to your play.Project
+
+Example:
+  val main = play.Project(appName, appVersion, appDependencies).settings(
+    // Add your own project settings here      
+  ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+  
 
 DDL Plugin
 `````````````
@@ -22,9 +30,11 @@ It follows the same format as the Ebean plugin: ``slick.default="models.*"`` mea
 
 It is possible to specify individual objects like: ``slick.default="models.Users,models.Settings"``
 
+It is also possible to do this on runtime objects.
+
 DB wrapper
 `````````````
-The DB wrapper is just a thin wrapper Slicks Database classes. 
+The DB wrapper is just a thin wrapper that uses Slicks Database classes with databases in the Play Application . 
 
 This is an example usage:
   play.api.db.slick.DB.withSession{ implicit session =>
