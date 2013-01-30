@@ -18,7 +18,7 @@ object DB extends DB {
 
 trait DB {
   import play.api.db.{ DB => PlayDB }
- 
+
   def database(name: String)(implicit app: Application): Database = {
     if (app.configuration.getConfig(s"db.$name").isEmpty) throw app.configuration.reportError(s"db.$name", s"While loading datasource: could not find db.$name in configuration", None) 
     val db = Database.forDataSource(PlayDB.getDataSource(name)(app))
@@ -31,25 +31,25 @@ trait DB {
       block(session)
     }
   }
-  
+
   def withTransaction[A](name: String)(block: Session => A)(implicit app: Application): A = {
     database(name).withTransaction { session: Session =>
       block(session)
     }
   }
-  
+
   protected lazy val CurrentDB = "default"
-  
+
   def database(implicit app: Application): Database = {
     database(CurrentDB)(app)
   }
-  
+
   def withSession[A](block: Session => A)(implicit app: Application): A = {
     database.withSession { session: Session =>
       block(session)
     }
   }
-  
+
   def withTransaction[A](block: Session => A)(implicit app: Application): A = {
     database.withTransaction { session: Session =>
       block(session)
