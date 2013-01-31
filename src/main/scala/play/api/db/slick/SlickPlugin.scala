@@ -121,14 +121,13 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
     if (ddls.nonEmpty) {
+      val foldedDDLs = ddls.reduce(_ ++ _) //append all ddls together using ++ puts alter tables in the correct places
       Some(CreatedBy + "Slick DDL\n" +
         "# To stop Slick DDL generation, remove this comment and start using Evolutions\n" +
-        "\n" +
-        ddls.map { ddl =>
-          ddl.createStatements.mkString("", s"$delimiter\n", s"$delimiter\n")
-        }.mkString("# --- !Ups\n\n", "\n", "\n") + ddls.map { ddl =>
-          ddl.dropStatements.mkString("", s"$delimiter\n", s"$delimiter\n")
-        }.mkString("# --- !Downs\n\n", "\n", ""))
+        "\n# --- !Ups\n\n" +
+        foldedDDLs.createStatements.mkString("", s"$delimiter\n", s"$delimiter\n") +
+        "\n# --- !Downs\n\n" +
+        foldedDDLs.dropStatements.mkString("", s"$delimiter\n", s"$delimiter\n"))
     } else None
   }
 
