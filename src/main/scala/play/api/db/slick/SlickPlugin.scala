@@ -77,7 +77,8 @@ object ReflectionUtils {
 class SlickDDLPlugin(app: Application) extends Plugin {
   private val configKey = "slick"
 
-  private def isDisabled = app.configuration.getBoolean("evolutionplugin").getOrElse(false)
+  //private def isDisabled = app.configuration.getString("evolutionplugin").getOrElse(false)
+  private def isDisabled = !app.configuration.getString("evolutionplugin").filter(_ == "disabled").isDefined
 
   override def enabled = !isDisabled
 
