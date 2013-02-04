@@ -13,16 +13,17 @@ Usage
 -----
 Currently you must the  
 
-Then in the ``project/Build.scala`` file add:
-.. code-block::
-  .dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+Then in the ``project/Build.scala`` file add::
+
+    .dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+
 to your ``play.Project``
 
-Example:
-.. code-block::
-  val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
-   ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+Example::
+
+    val main = play.Project(appName, appVersion, appDependencies).settings(
+      // Add your own project settings here      
+     ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
   
 
 DDL Plugin
@@ -37,32 +38,35 @@ DAOs with mulitple drivers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 It is also possible to specify and search for inner object. This is useful if you need multiple drivers. 
 
-Imagine a DAO is defined like this: 
-.. code-block::
+Imagine a DAO is defined like this::
+
   class DAO(val driver: ExtendedProfile) {
-    // Import the query language features from the driver
-    import driver.simple._
+      // Import the query language features from the driver
+      import driver.simple._
   
-    object Props extends Table[(String, String)]("propferties") {
-      def key = column[String]("key", O.PrimaryKey)
-      def value = column[String]("value")
-      def * = key ~ value
+      object Props extends Table[(String, String)]("propferties") {
+        def key = column[String]("key", O.PrimaryKey)
+        def value = column[String]("value")
+        def * = key ~ value
+      }
     }
-  }
 
-For the production code you could then have an instance of the DAO you would pass to the methods using said DAO:
-.. code-block::
-  package db
-  object default {
-    implicit val dao = new DAO(H2Driver)
-  }
 
-And one for test:
-.. code-block::
-  package db
-  object test {
-    implicit val dao = new DAO(SQLiteDriver)
-  }
+For the production code you could then have an instance of the DAO you would pass to the methods using said DAO::
+
+    package db
+    object default {
+      implicit val dao = new DAO(H2Driver)
+    }
+
+
+And one for test::
+
+    package db
+    object test {
+      implicit val dao = new DAO(SQLiteDriver)
+    }
+
 
 To be able to use DDL creation on this you simply use the complete path of the DAO object. You can then either use a wildcard or specify the object by using it is complete path.
 
@@ -74,12 +78,19 @@ DB wrapper
 `````````````
 The DB wrapper is just a thin wrapper that uses Slicks Database classes with databases in the Play Application . 
 
-This is an example usage:
-.. code-block::
-  play.api.db.slick.DB.withSession{ implicit session =>
-    Users.insert(User("fredrik","ekholdt"))
-  }
+This is an example usage::
 
+    play.api.db.slick.DB.withSession{ implicit session =>
+      Users.insert(User("fredrik","ekholdt"))
+    }
+
+
+Issues
+``````
+Currently there is a bug that might make a test fail (usually after running mulitple tests)::
+
+    [error] c.j.b.h.AbstractConnectionHook - Failed to acquire connection Sleeping for 1000ms and trying again. Attempts left: 1. Exception: null
+    [error] c.j.b.ConnectionHandle - Database access problem. Killing off all remaining connections in the connection pool. SQL State = 08001
 
 Copyright
 ---------
