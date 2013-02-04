@@ -11,9 +11,7 @@ The *intent* is to get this plugin into Play 2.2 if possible.
 
 Usage
 -----
-Currently you must the  
-
-Then in the ``project/Build.scala`` file add::
+In the ``project/Build.scala`` file add::
 
     .dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
 
@@ -35,7 +33,7 @@ It follows the same format as the Ebean plugin: ``slick.default="models.*"`` mea
 It is possible to specify individual objects like: ``slick.default="models.Users,models.Settings"``
 
 DAOs with mulitple drivers
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+`````````````
 It is also possible to specify and search for inner object. This is useful if you need multiple drivers. 
 
 Imagine a DAO is defined like this::
@@ -44,7 +42,7 @@ Imagine a DAO is defined like this::
       // Import the query language features from the driver
       import driver.simple._
   
-      object Props extends Table[(String, String)]("propferties") {
+      object Props extends Table[(String, String)]("properties") {
         def key = column[String]("key", O.PrimaryKey)
         def value = column[String]("value")
         def * = key ~ value
