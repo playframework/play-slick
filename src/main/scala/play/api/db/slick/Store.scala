@@ -4,7 +4,7 @@ import play.api._
 import play.api.Play.current
 import scala.slick.driver._
 
-object Store {
+object Config {
   lazy val driver: ExtendedDriver = Play.application.configuration.getString(driverConfiguration).get match {
     case "org.apache.derby.jdbc.EmbeddedDriver" => DerbyDriver
     case "org.h2.Driver" => H2Driver    
@@ -13,8 +13,7 @@ object Store {
     case "org.postgresql.Driver" => PostgresDriver
     case "org.sqlite.JDBC" => SQLiteDriver
     case "com.microsoft.sqlserver.jdbc.SQLServerDriver" => SQLServerDriver
-    //more common driver?
-    case _ => MySQLDriver
+    case _ => throw new RuntimeException("Unkown driver")
   }
 
   def driverConfiguration = {

@@ -44,7 +44,7 @@ The DB wrapper is just a thin wrapper that uses Slicks Database classes with dat
 
 This is an example usage::
 
-    import play.api.db.slick.Store.driver.simple._
+    import play.api.db.slick.Config.driver.simple._
 
     play.api.db.slick.DB.withSession{ implicit session =>
       Users.insert(User("fredrik","ekholdt"))
