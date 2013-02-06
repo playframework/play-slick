@@ -32,51 +32,19 @@ It follows the same format as the Ebean plugin: ``slick.default="models.*"`` mea
 
 It is possible to specify individual objects like: ``slick.default="models.Users,models.Settings"``
 
-DAOs with mulitple drivers
+Mulitple drivers
 `````````````
-It is also possible to specify and search for inner object. This is useful if you need multiple drivers. 
-
-Imagine a DAO is defined like this::
-
-  class DAO(val driver: ExtendedProfile) {
-      // Import the query language features from the driver
-      import driver.simple._
-  
-      object Props extends Table[(String, String)]("properties") {
-        def key = column[String]("key", O.PrimaryKey)
-        def value = column[String]("value")
-        def * = key ~ value
-      }
-    }
-
-
-For the production code you could then have an instance of the DAO you would pass to the methods using said DAO::
-
-    package db
-    object default {
-      implicit val dao = new DAO(H2Driver)
-    }
-
-
-And one for test::
-
-    package db
-    object test {
-      implicit val dao = new DAO(SQLiteDriver)
-    }
-
-
-To be able to use DDL creation on this you simply use the complete path of the DAO object. You can then either use a wildcard or specify the object by using it is complete path.
-
-Example using a wildcard: ``slick.default="db.default.*"``
-
-Example specifying the exact Table: ``slick.default="db.default.dao.Props"`` 
+You can specify multiple drivers (dev, prod, test)
+Default driver is set in the application.conf file with the ``db.default.driver`` property.
+You can use``prod.db.default.driver`` for production and ``test.db.default.driver`` for tests too.
 
 DB wrapper
 `````````````
 The DB wrapper is just a thin wrapper that uses Slicks Database classes with databases in the Play Application . 
 
 This is an example usage::
+
+    import play.api.db.slick.Config.driver.simple._
 
     play.api.db.slick.DB.withSession{ implicit session =>
       Users.insert(User("fredrik","ekholdt"))
