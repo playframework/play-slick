@@ -32,7 +32,7 @@ It follows the same format as the Ebean plugin: ``slick.default="models.*"`` mea
 
 It is possible to specify individual objects like: ``slick.default="models.Users,models.Settings"``
 
-Mulitple drivers
+Multiple drivers
 `````````````
 You can specify multiple drivers (dev, prod, test)
 Default driver is set in the application.conf file with the ``db.default.driver`` property.
