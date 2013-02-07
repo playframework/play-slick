@@ -34,9 +34,10 @@ It is possible to specify individual objects like: ``slick.default="models.Users
 
 Multiple drivers
 `````````````
-You can specify multiple drivers (dev, prod, test)
+You can specify multiple drivers (dev, prod, test).
+
 Default driver is set in the application.conf file with the ``db.default.driver`` property.
-You can use``prod.db.default.driver`` for production and ``test.db.default.driver`` for tests too.
+You can use ``prod.db.default.driver`` for production and ``test.db.default.driver`` for tests too.
 
 DB wrapper
 `````````````
@@ -49,14 +50,6 @@ This is an example usage::
     play.api.db.slick.DB.withSession{ implicit session =>
       Users.insert(User("fredrik","ekholdt"))
     }
-
-
-Issues
-``````
-Currently there is a bug that might make a test fail (usually after running mulitple tests)::
-
-    [error] c.j.b.h.AbstractConnectionHook - Failed to acquire connection Sleeping for 1000ms and trying again. Attempts left: 1. Exception: null
-    [error] c.j.b.ConnectionHandle - Database access problem. Killing off all remaining connections in the connection pool. SQL State = 08001
 
 Copyright
 ---------
