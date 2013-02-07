@@ -77,7 +77,8 @@ object ReflectionUtils {
 class SlickDDLPlugin(app: Application) extends Plugin {
   private val configKey = "slick"
 
-  private def isDisabled: Boolean = app.configuration.getString("evolutionplugin").map(_ == "disabled").headOption.getOrElse(false)
+  //private def isDisabled = app.configuration.getString("evolutionplugin").getOrElse(false)
+  private def isDisabled = !app.configuration.getString("evolutionplugin").filter(_ == "disabled").isDefined
 
   override def enabled = !isDisabled
 
@@ -121,6 +122,15 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
     if (ddls.nonEmpty) {
+<<<<<<< HEAD
+      val foldedDDLs = ddls.reduce(_ ++ _) //append all ddls together using ++ puts alter tables in the correct places
+      Some(CreatedBy + "Slick DDL\n" +
+        "# To stop Slick DDL generation, remove this comment and start using Evolutions\n" +
+        "\n# --- !Ups\n\n" +
+        foldedDDLs.createStatements.mkString("", s"$delimiter\n", s"$delimiter\n") +
+        "\n# --- !Downs\n\n" +
+        foldedDDLs.dropStatements.mkString("", s"$delimiter\n", s"$delimiter\n"))
+=======
       val ddl = ddls.reduceLeft(_ ++ _)
 
       Some(CreatedBy + "Slick DDL\n" +
@@ -132,6 +142,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
       "# --- !Downs\n\n" +
       ddl.dropStatements.mkString("", s"$delimiter\n", s"$delimiter\n") +
       "\n")
+>>>>>>> baneck/ddl-fix
     } else None
   }
 
