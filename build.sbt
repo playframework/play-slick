@@ -13,7 +13,7 @@ libraryDependencies ++= {
   Seq(
   "play" %% "play" % playVersion,
   "play" %% "play-jdbc" % playVersion,
-  "com.typesafe.slick" %% "slick" % "1.0.0-RC2",
+  "com.typesafe.slick" % "slick_2.10" % "1.0.0",
   "play" %% "play-test" % playVersion % "test")
 }
 
