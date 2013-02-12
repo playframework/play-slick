@@ -9,11 +9,11 @@ object Config {
     case "org.apache.derby.jdbc.EmbeddedDriver" => DerbyDriver
     case "org.h2.Driver" => H2Driver    
     case "org.hsqldb.jdbcDriver" => HsqldbDriver
-    case "com.mysql.Driver" => MySQLDriver
+    case "com.mysql.jdbc.Driver" => MySQLDriver
     case "org.postgresql.Driver" => PostgresDriver
     case "org.sqlite.JDBC" => SQLiteDriver
     case "com.microsoft.sqlserver.jdbc.SQLServerDriver" => SQLServerDriver
-    case _ => throw new RuntimeException("Unknown driver")
+    case _ => throw new RuntimeException("Slick error : Unknown jdbc driver found in application.conf")
   }
 
   def driverConfiguration = {
