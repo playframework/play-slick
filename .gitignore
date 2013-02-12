@@ -11,3 +11,20 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+
+# samples
+samples/*/logs
+samples/*/project/project
+samples/*/project/target
+samples/*/target
+samples/*/tmp
+samples/*/.history
+samples/*/dist
+samples/*/.idea
+samples/*/*.iml
+samples/*/out
+samples/*/.idea_modules
+samples/*/.classpath
+samples/*/.project
+samples/*/RUNNING_PID
+samples/*/.settings
