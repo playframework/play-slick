@@ -32,24 +32,32 @@ It follows the same format as the Ebean plugin: ``slick.default="models.*"`` mea
 
 It is possible to specify individual objects like: ``slick.default="models.Users,models.Settings"``
 
-Multiple drivers
-`````````````
-You can specify multiple drivers (dev, prod, test).
-
-Default driver is set in the application.conf file with the ``db.default.driver`` property.
-You can use ``prod.db.default.driver`` for production and ``test.db.default.driver`` for tests too.
-
 DB wrapper
 `````````````
 The DB wrapper is just a thin wrapper that uses Slicks Database classes with databases in the Play Application . 
 
-This is an example usage::
+This is an example usage:
 
     import play.api.db.slick.Config.driver.simple._
 
     play.api.db.slick.DB.withSession{ implicit session =>
       Users.insert(User("fredrik","ekholdt"))
     }
+
+
+Multiple datasources and drivers
+`````````````
+You can specify multiple drivers.
+
+Default driver is set in the application.conf file with the ``db.default.driver`` property.
+You can change `default` by another datasource name, for example``db.test.driver`` for tests.
+
+Then you can use this configuration like this :
+
+	 play.api.db.slick.DB("test").withSession { implicit session =>
+	 	 Users.insert(User("fredrik","ekholdt"))
+	 }
+
 
 Copyright
 ---------
