@@ -6,7 +6,10 @@ organization := "com.typesafe"
 
 scalaVersion := "2.10.0"
 
-resolvers += Classpaths.sbtPluginReleases
+resolvers ++= Seq(
+  "Typesafe Releases Repository" at "http://repo.typesafe.com/typesafe/releases/",
+  "Typesafe Snapshots Repository" at "http://repo.typesafe.com/typesafe/snapshots/"
+)
 
 libraryDependencies ++= {
   val playVersion = "2.1.0"
