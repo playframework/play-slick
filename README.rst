@@ -50,7 +50,7 @@ Multiple datasources and drivers
 You can specify multiple drivers.
 
 Default driver is set in the application.conf file with the ``db.default.driver`` property.
-You can change `default` by another datasource name, for example``db.test.driver`` for tests.
+You can change ``default`` by another datasource name, for example ``db.test.driver`` for tests.
 
 Then you can use this configuration like this :
 
