@@ -19,9 +19,8 @@ object Config {
 
   def driverConfiguration(conf: Configuration) = {
     val driverConfKey = Play.application.mode match {     
-      case Mode.Test if(conf.getString("test.db.default.driver").isDefined) => "test.db.default.driver"
-      case Mode.Prod if(conf.getString("prod.db.default.driver").isDefined) => "prod.db.default.driver"
-      //default mode
+      case Mode.Test if(conf.getString("db.test.driver").isDefined) => "db.test.driver"
+      //default mode (for dev and prod)
       case _ => "db.default.driver"
     }
     val driverConfValue = conf.getString(driverConfKey)
