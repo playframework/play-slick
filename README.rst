@@ -37,26 +37,60 @@ DB wrapper
 The DB wrapper is just a thin wrapper that uses Slicks Database classes with databases in the Play Application . 
 
 This is an example usage:
-
-    import play.api.db.slick.Config.driver.simple._
+    import slick.driver.H2Driver.simple._
 
     play.api.db.slick.DB.withSession{ implicit session =>
       Users.insert(User("fredrik","ekholdt"))
     }
 
 
+Or transactionally:
+    import slick.driver.H2Driver.simple._
+
+    play.api.db.slick.DB.withTransaction{ implicit session =>
+      val list = Query(Users).filter(name === "fredrik")
+      val updatedUsers = update(list)
+      Users.insertAll(updatedUsers)
+    }
+
 Multiple datasources and drivers
 `````````````
-You can specify multiple drivers.
+When having multiple datasources and drivers it is recommended to use the cake pattern.
+Do not worry about the scary name it is quite easy.
 
-Default driver is set in the application.conf file with the ``db.default.driver`` property.
-You can change `default` by another datasource name, for example``db.test.driver`` for tests.
+Hava look in the `samples` for an example of this or keep reading.
 
-Then you can use this configuration like this :
+For each table you have, create a self-type of `play.api.db.slick.Profile` and import everything from the `profile` on your table:
+    trait UserComponent extends Profile { this: Profile =>
+       import profile.simple._
 
-	 play.api.db.slick.DB("test").withSession { implicit session =>
-	 	 Users.insert(User("fredrik","ekholdt"))
-	 }
+       object Users extends Table[User]("USERS") { ... }
+    }
+
+Then you just have to put all your tables together into a DAO (data access object) like this:
+    class DAO(override val profile: ExtendedProfile) extends UserComponent with FooComponent with BarComponent with Profile
+
+Whenever you need to use you database you just new up your DAO and import everything in it and in its profile:
+    package models
+
+    import play.api.slick.DB
+    object current {
+      val DB = DB("mydb")
+      val dao = new DAO(db.profile("mydb")) //or just DB.profile if you want "default"
+    } 
+
+In your `application.conf` you can now do:
+    slick.default="models.current.*"
+
+You can then use it like this:
+    import current._
+    import current.simple._
+    
+    DB.withSession{ implicit session => 
+       Query(Users).list
+    }
+
+Pweeh, there are a certain amount of lines of code there, but works great and scales along with the life cycle of your app: from the start, when you need tests, when you change the DB, ... 
 
 
 Copyright
