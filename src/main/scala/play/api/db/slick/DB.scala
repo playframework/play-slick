@@ -1,11 +1,12 @@
 package play.api.db.slick
 
-import play.api.Plugin
+import play.api._
 import play.api.Application
 import scala.slick.session.Session
 import scala.slick.session.Database
 import play.api.db.{ DB => PlayDB }
 import java.util.concurrent.ConcurrentHashMap
+
 
 /**
  * Helper object to access Databases using Slick
@@ -19,6 +20,9 @@ object DB extends DB {
 }
 
 trait DB {
+
+  import play.api.Play.current
+
   import play.api.db.{ DB => PlayDB }
 
   private lazy val dbMap = new ConcurrentHashMap[String, Database]()
@@ -54,32 +58,36 @@ java.sql.SQLException: No suitable driver found for jdbc:h2:mem:play-test--20585
     }
   }
 
-  def withSession[A](name: String)(block: Session => A)(implicit app: Application): A = {
-
+  def withSession[A](name: String)(block: Session => A): A = {
     database(name).withSession { session: Session =>
       block(session)
     }
   }
 
-  def withTransaction[A](name: String)(block: Session => A)(implicit app: Application): A = {
+  def withTransaction[A](name: String)(block: Session => A): A = {
     database(name).withTransaction { session: Session =>
       block(session)
     }
   }
 
-  protected lazy val CurrentDB = "default"
-
-  def database(implicit app: Application): Database = {
-    database(CurrentDB)(app)
+  protected lazy val CurrentDB = {
+    Play.application.mode match {
+      case Mode.Test if(Play.application.configuration.getString("db.test.url").isDefined) => "test"
+      case _ => "default"
+    }
   }
 
-  def withSession[A](block: Session => A)(implicit app: Application): A = {
+  def database: Database = {
+    database(CurrentDB)
+  }
+
+  def withSession[A](block: Session => A): A = {
     database.withSession { session: Session =>
       block(session)
     }
   }
 
-  def withTransaction[A](block: Session => A)(implicit app: Application): A = {
+  def withTransaction[A](block: Session => A): A = {
     database.withTransaction { session: Session =>
       block(session)
     }
