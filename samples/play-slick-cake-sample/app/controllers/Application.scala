@@ -1,15 +1,17 @@
 package controllers
 
-import models._
 import play.api._
-import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
+import play.api.db.slick.DB
+import models._
+
+//stable imports to use play.api.Play.current outside of objects:
+import models.current.dao._
+import models.current.dao.profile.simple._
 
 object Application extends Controller {
-  
   import play.api.Play.current
 
   def index = Action {
