@@ -28,3 +28,4 @@ samples/*/.classpath
 samples/*/.project
 samples/*/RUNNING_PID
 samples/*/.settings
+samples/*/conf/evolutions
