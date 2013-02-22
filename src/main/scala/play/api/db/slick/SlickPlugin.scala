@@ -39,10 +39,12 @@ object ReflectionUtils {
     val baseIM = mirror.reflect(base)
     val baseMember = baseSymbol.typeSignature.member(newTermName(name))
     val instance = if (baseMember.isModule) {
-      if (baseMember.isStatic)
+      if (baseMember.isStatic) {
         mirror.reflectModule(baseMember.asModule).instance
-      else
+      }
+      else {
         baseIM.reflectModule(baseMember.asModule).instance
+      }
     } else {
       assert(baseMember.isTerm, "Expected " + baseMember + " to be something that can be reflected on " + base + " as a field")
       baseIM.reflectField(baseMember.asTerm).get
@@ -57,9 +59,11 @@ object ReflectionUtils {
 
       val extractMembers: PartialFunction[(Any, Symbol), Iterable[(Any, Symbol)]] = {
         case (baseInstance, baseSym) =>
-          baseSym.typeSignature.members.filter(s => s.isModule || (s.isTerm && s.asTerm.isVal)).map { mSym =>
-            reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym)
-          }
+          if (baseInstance != null) {
+            baseSym.typeSignature.members.filter(s => s.isModule || (s.isTerm && s.asTerm.isVal)).map { mSym =>
+              reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym)
+            }
+          } else List.empty
       }
       val matching = instancesNsyms.flatMap(extractMembers).filter { case (_, s) => checkSymbol(s) }
       val candidates = instancesNsyms.flatMap(extractMembers).filter { case (_, s) => !checkSymbol(s) && !checked.contains(s) }
@@ -146,13 +150,13 @@ class SlickDDLPlugin(app: Application) extends Plugin {
       sym.typeSignature.baseClasses.find(_.typeSignature == tableType.typeSymbol.typeSignature).isDefined
     }
     def tableToDDL(instance: Any) = {
-      import scala.language.reflectiveCalls //this is the simplest way to do achieve this, we are using reflection either way... 
+      import scala.language.reflectiveCalls //this is the simplest way to do achieve this, we are using reflection either way...
       instance.asInstanceOf[{ def ddl: DDL }].ddl
     }
 
     names.flatMap { name =>
       ReflectionUtils.findFirstModule(name) match {
-        case Some(baseSym) => { //located a module that matches, reflect each module/field in the name then scan for Tables 
+        case Some(baseSym) => { //located a module that matches, reflect each module/field in the name then scan for Tables
           val baseInstance = mirror.reflectModule(baseSym).instance
 
           val allIds = ReflectionUtils.splitIdentifiers(name.replace(baseSym.fullName, ""))
