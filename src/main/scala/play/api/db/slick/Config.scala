@@ -3,7 +3,7 @@ package play.api.db.slick
 import play.api._
 import scala.slick.driver._
 
-object Config { //I think we should make this private[slick] because I moved the driver to DB.profile and since driver can be misused
+object Config {
   lazy val driver: ExtendedDriver = driver(play.api.Play.current)
 
   def driver(app: Application): ExtendedDriver = {
