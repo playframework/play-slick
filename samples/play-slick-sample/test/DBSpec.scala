@@ -14,7 +14,7 @@ class DBSpec extends Specification {
 
   "DB" should {
     "work as expected" in new WithApplication {
-      val dao = new DAO(DB.profile)
+      val dao = new DAO(DB.driver)
 
       import dao._ //import all our database Tables
       import dao.profile.simple._ //import specific database methods
