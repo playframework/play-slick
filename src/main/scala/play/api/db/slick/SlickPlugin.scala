@@ -122,6 +122,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     import scala.collection.JavaConverters._
 
     val ddls = reflectAllDDLMethods(names, classloader)
+
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
     if (ddls.nonEmpty) {
@@ -139,7 +140,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     } else None
   }
 
-  def reflectAllDDLMethods(names: Set[String], classloader: ClassLoader): Set[DDL] = {
+  def reflectAllDDLMethods(names: Set[String], classloader: ClassLoader): Seq[DDL] = {
     import scala.reflect.runtime.universe
     import scala.reflect.runtime.universe._
 
@@ -151,10 +152,10 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     }
     def tableToDDL(instance: Any) = {
       import scala.language.reflectiveCalls //this is the simplest way to do achieve this, we are using reflection either way...
-      instance.asInstanceOf[{ def ddl: DDL }].ddl
+      instance.getClass -> instance.asInstanceOf[{ def ddl: DDL }].ddl
     }
 
-    names.flatMap { name =>
+    val classesAndNames = names.flatMap { name =>
       ReflectionUtils.findFirstModule(name) match {
         case Some(baseSym) => { //located a module that matches, reflect each module/field in the name then scan for Tables
           val baseInstance = mirror.reflectModule(baseSym).instance
@@ -203,5 +204,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
         }
       }
     }
+
+    classesAndNames.toSeq.sortBy(_._1.toString).map(_._2).distinct
   }
 }
