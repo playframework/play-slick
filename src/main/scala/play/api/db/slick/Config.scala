@@ -8,7 +8,7 @@ object Config {
 
   def driver(app: Application): ExtendedDriver = {
     val conf = app.configuration
-    val driverKey = getDriverKey(app, conf)
+    val driverKey = "db.default.driver"
     conf.getString(driverKey) match {
       case Some(driver) => driver  match {
         case "org.apache.derby.jdbc.EmbeddedDriver" => DerbyDriver
@@ -22,13 +22,8 @@ object Config {
           "Slick error : Unknown jdbc driver found in application.conf: [" + driver + "]", None)
       }
       case None => throw conf.reportError(driverKey,
-        "Slick error : jdbc driver not defined in application.conf for " + app.mode + " mode", None)
+        "Slick error : jdbc driver not defined in application.conf for db.default.driver key", None)
     }
   }
-
-  def getDriverKey(app: Application, conf: Configuration) = app.mode match {
-    case Mode.Test if(conf.getString("db.test.driver").isDefined) => "db.test.driver"
-    //default mode (for dev and prod)
-    case _ => "db.default.driver"
-  }
+  
 }

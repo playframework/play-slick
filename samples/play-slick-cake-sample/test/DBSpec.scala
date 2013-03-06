@@ -10,13 +10,14 @@ import models._
 /**
   * test the kitty cat database
   */
-class DBSpec extends Specification { 
+class DBSpec extends Specification {
 
   "DB" should {
     "work as expected" in new WithApplication {
+      val dao = new DAO(DB.driver)
 
-      import play.api.db.slick.Config.driver.simple._
-
+      import dao._ //import all our database Tables
+      import dao.profile.simple._ //import specific database methods
       DB.withSession{ implicit session =>
         val testKitties = Seq(
           Cat("kit", "black"),
