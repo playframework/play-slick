@@ -16,20 +16,20 @@ The *intent* is to get this plugin into Play 2.2 if possible.
 In your application, add this configuration to the `project/Build.scala` file :
 
 ```scala
-    val appDependencies = Seq(
-      //your dependencies
-      "com.typesafe" % "play-slick_2.10" % "0.3.0" 
-    )
+val appDependencies = Seq(
+  //your dependencies
+  "com.typesafe" % "play-slick_2.10" % "0.3.0" 
+)
 
-     val main = play.Project(appName, appVersion, appDependencies).settings(
-      //your settings
-      resolvers += Resolver.url("github repo for play-slick", url("http://loicdescotte.github.com/releases/"))(Resolver.ivyStylePatterns)
-    ) 
+ val main = play.Project(appName, appVersion, appDependencies).settings(
+  //your settings
+  resolvers += Resolver.url("github repo for play-slick", url("http://loicdescotte.github.com/releases/"))(Resolver.ivyStylePatterns)
+) 
 ```
   
 ### How to always use the master
 
-If you want to use the master snapshots instead of a fixed release, you can do this instead. In the `project/Build.scala` file add :
+Alternatively, you can use the master snapshots instead of a fixed release. In the `project/Build.scala` file, add :
 
 ```scala
 .dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
@@ -41,10 +41,9 @@ Example :
 
 ```scala
 val main = play.Project(appName, appVersion, appDependencies).settings(
-  // Add your own project settings here      
+  //your settings      
  ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
 ```
-  
 
 ##DDL plugin
 
