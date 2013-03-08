@@ -1,6 +1,6 @@
 name := "play-slick"
 
-version := "0.2.7-SNAPSHOT"
+version := "0.3.1-SNAPSHOT"
 
 organization := "com.typesafe"
 
