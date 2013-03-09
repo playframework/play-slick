@@ -54,7 +54,7 @@ object Computers extends Table[Computer]("COMPUTER") {
 
   def * = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer.apply _, Computer.unapply _)
 
-  def autoInc = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer, Computer.unapply _) returning id
+  def autoInc = * returning id
 
   val byId = createFinderBy(_.id)
 

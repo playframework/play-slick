@@ -13,9 +13,10 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 libraryDependencies ++= {
   val playVersion = "2.1.0"
   Seq(
-  "play" %% "play" % playVersion,
-  "play" %% "play-jdbc" % playVersion,
-  "com.typesafe.slick" % "slick_2.10" % "1.0.0",
-  "play" %% "play-test" % playVersion % "test")
+    "play"                %% "play"       % playVersion,
+    "play"                %% "play-jdbc"  % playVersion,
+    "com.typesafe.slick"  %  "slick_2.10" % "1.0.0",
+    "play"                %% "play-test"  %  playVersion  % "test"
+  )
 }
 
