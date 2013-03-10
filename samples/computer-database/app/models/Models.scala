@@ -50,9 +50,9 @@ object Computers extends Table[Computer]("COMPUTER") {
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
-  def introduced = column[Date]("introduced")
-  def discontinued = column[Date]("discontinued")
-  def companyId = column[Long]("companyId")
+  def introduced = column[Date]("introduced", O.Nullable)
+  def discontinued = column[Date]("discontinued", O.Nullable)
+  def companyId = column[Long]("companyId", O.Nullable)
 
   def * = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer.apply _, Computer.unapply _)
 
