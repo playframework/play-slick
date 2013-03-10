@@ -24,8 +24,10 @@ object Companies extends Table[Company]("COMPANY") {
   def * = id.? ~ name <>(Company.apply _, Company.unapply _)
   def autoInc = * returning id
 
-  def options: Seq[(String, String)] = DB.withSession {
-    implicit session =>
+  /**
+   * Construct the Map[String,String] needed to fill a select options set
+   */
+  def options: Seq[(String, String)] = DB.withSession { implicit session =>
       val query = (for {
         company <- Companies
       } yield (company.id, company.name)
@@ -33,9 +35,13 @@ object Companies extends Table[Company]("COMPANY") {
       query.list.map(row => (row._1.toString, row._2))
   }
 
+  
+  /**
+   * Insert a new company
+   * @param company
+   */
   def insert(company: Company) {
-    DB.withSession {
-      implicit session =>
+    DB.withSession { implicit session =>
         Companies.autoInc.insert(company)
     }
   }
@@ -50,9 +56,9 @@ object Computers extends Table[Computer]("COMPUTER") {
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
-  def introduced = column[Date]("introduced")
-  def discontinued = column[Date]("discontinued")
-  def companyId = column[Long]("companyId")
+  def introduced = column[Date]("introduced", O.Nullable)
+  def discontinued = column[Date]("discontinued", O.Nullable)
+  def companyId = column[Long]("companyId", O.Nullable)
 
   def * = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer.apply _, Computer.unapply _)
 
@@ -60,27 +66,41 @@ object Computers extends Table[Computer]("COMPUTER") {
 
   val byId = createFinderBy(_.id)
 
-  def findById(id: Long): Option[Computer] = DB.withSession {
-    implicit session =>
+  /**
+   * Retrieve a computer from the id
+   * @param id
+   */
+  def findById(id: Long): Option[Computer] = DB.withSession { implicit session =>
       Computers.byId(id).firstOption
   }
 
-  def count: Int = DB.withSession {
-    implicit session =>
+  /**
+   * Count all computers
+   */
+  def count: Int = DB.withSession { implicit session =>
       Query(Computers.length).first
   }
 
-  def count(filter: String) : Int = DB.withSession {
-    implicit session =>
+  /**
+   * Count computers with a filter
+   * @param filter
+   */
+  def count(filter: String) : Int = DB.withSession { implicit session =>
       Query(Computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
   }
 
+  /**
+   * Return a page of (Computer,Company)
+   * @param page
+   * @param pageSize
+   * @param orderBy
+   * @param filter
+   */
   def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Page[(Computer, Option[Company])] = {
 
     val offset = pageSize * page
 
-    DB.withSession {
-      implicit session =>
+    DB.withSession { implicit session =>
         val query =
           (for {
             (computer, company) <- Computers leftJoin Companies on (_.companyId === _.id)
@@ -97,24 +117,34 @@ object Computers extends Table[Computer]("COMPUTER") {
     }
   }
 
+  /**
+   * Insert a new computer
+   * @param computer
+   */
   def insert(computer: Computer) {
-   DB.withSession {
-    implicit session =>
+   DB.withSession { implicit session =>
       Computers.autoInc.insert(computer)
     }
   }
 
+  /**
+   * Update a computer
+   * @param id
+   * @param computer
+   */
   def update(id: Long, computer: Computer) {
-    DB.withSession {
-      implicit session =>
+    DB.withSession { implicit session =>
         val computerToUpdate: Computer = computer.copy(Some(id))
         Query(Computers).where(_.id === id).update(computerToUpdate)
     }
   }
 
+  /**
+   * Delete a computer
+   * @param id
+   */
   def delete(id: Long) {
-    DB.withSession {
-      implicit session =>
+    DB.withSession { implicit session =>
         Computers.where(_.id === id).mutate(_.delete)
     }
   }
