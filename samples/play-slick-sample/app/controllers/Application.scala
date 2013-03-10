@@ -9,7 +9,7 @@ import play.api.data.Forms._
 import play.api.mvc._
 
 object Application extends Controller {
-  
+
   import play.api.Play.current
 
   def index = Action {
@@ -24,7 +24,7 @@ object Application extends Controller {
       "color" -> text()
     )(Cat.apply)(Cat.unapply)
   )
-  
+
   def insert = Action { implicit request =>
     val cat = catForm.bindFromRequest.get
     DB.withSession{ implicit session =>

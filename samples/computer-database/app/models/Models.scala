@@ -20,10 +20,9 @@ case class Computer(id: Option[Long] = None, name: String, introduced: Option[Da
 object Companies extends Table[Company]("COMPANY") {
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-
   def name = column[String]("name", O.NotNull)
-
   def * = id.? ~ name <>(Company.apply _, Company.unapply _)
+  def autoInc = * returning id
 
   def options: Seq[(String, String)] = DB.withSession {
     implicit session =>
@@ -32,6 +31,13 @@ object Companies extends Table[Company]("COMPANY") {
       } yield (company.id, company.name)
         ).sortBy(_._2)
       query.list.map(row => (row._1.toString, row._2))
+  }
+
+  def insert(company: Company) {
+    DB.withSession {
+      implicit session =>
+        Companies.autoInc.insert(company)
+    }
   }
 }
 
@@ -43,18 +49,14 @@ object Computers extends Table[Computer]("COMPUTER") {
   )
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-
   def name = column[String]("name", O.NotNull)
-
   def introduced = column[Date]("introduced")
-
   def discontinued = column[Date]("discontinued")
-
   def companyId = column[Long]("companyId")
 
   def * = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer.apply _, Computer.unapply _)
 
-  def autoInc = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer, Computer.unapply _) returning id
+  def autoInc = * returning id
 
   val byId = createFinderBy(_.id)
 
@@ -63,9 +65,14 @@ object Computers extends Table[Computer]("COMPUTER") {
       Computers.byId(id).firstOption
   }
 
+  def count: Int = DB.withSession {
+    implicit session =>
+      Query(Computers.length).first
+  }
+
   def count(filter: String) : Int = DB.withSession {
     implicit session =>
-      Computers.where(_.name.toLowerCase like filter.toLowerCase).list.size
+      Query(Computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
   }
 
   def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Page[(Computer, Option[Company])] = {
