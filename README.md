@@ -18,7 +18,7 @@ In your application, add this configuration to the `project/Build.scala` file :
 ```scala
 val appDependencies = Seq(
   //your dependencies
-  "com.typesafe" % "play-slick_2.10" % "0.3.0" 
+  "com.typesafe" % "play-slick_2.10" % "0.3.1" 
 )
 
  val main = play.Project(appName, appVersion, appDependencies).settings(
