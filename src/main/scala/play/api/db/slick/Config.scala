@@ -6,9 +6,9 @@ import scala.slick.driver._
 object Config {
   lazy val driver: ExtendedDriver = driver(play.api.Play.current)
 
-  def driver(app: Application): ExtendedDriver = {
+  def driver(app: Application, dbName: String = "default"): ExtendedDriver = {
     val conf = app.configuration
-    val driverKey = "db.default.driver"
+    val driverKey = s"db.$dbName.driver"
     conf.getString(driverKey) match {
       case Some(driver) => driver  match {
         case "org.apache.derby.jdbc.EmbeddedDriver" => DerbyDriver
@@ -25,5 +25,5 @@ object Config {
         "Slick error : jdbc driver not defined in application.conf for db.default.driver key", None)
     }
   }
-  
+
 }
