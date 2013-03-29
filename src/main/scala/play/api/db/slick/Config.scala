@@ -22,7 +22,7 @@ object Config {
           "Slick error : Unknown jdbc driver found in application.conf: [" + driver + "]", None)
       }
       case None => throw conf.reportError(driverKey,
-        "Slick error : jdbc driver not defined in application.conf for db.default.driver key", None)
+        s"Slick error : jdbc driver not defined in application.conf for db.$dbName.driver key", None)
     }
   }
 
