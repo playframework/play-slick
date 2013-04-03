@@ -11,7 +11,7 @@ resolvers += Classpaths.sbtPluginReleases
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= {
-  val playVersion = "2.1.0"
+  val playVersion = "2.1.1"
   Seq(
   "play" %% "play" % playVersion,
   "play" %% "play-jdbc" % playVersion,
