@@ -2,7 +2,7 @@ name := "play-slick"
 
 version := "0.3.2-SNAPSHOT"
 
-organization := "com.typesafe"
+organization := "com.typesafe.play"
 
 scalaVersion := "2.10.0"
 
