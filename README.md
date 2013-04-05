@@ -2,7 +2,6 @@
 
 This plugin makes Slick a first-class citizen of Play 2.1.
 
-
 The play-slick plugins consists of 2 parts:
  - DDL schema generation Plugin that works like the Ebean DDL Plugin. Based on config it generates create schema and drop schema SQL commands and writes them to evolutions.
  - A wrapper DB object that uses the datasources defined in the Play config files. It is there so it is possible to use Slick sessions in the same fashion as you would Anorm JDBC connections.
@@ -67,7 +66,6 @@ play.api.db.slick.DB.withSession{ implicit session =>
 }
 ```
 
-
 Or transactionally:
 
 ```scala
@@ -80,7 +78,24 @@ play.api.db.slick.DB.withTransaction{ implicit session =>
 }
 ```
 
-You can load a different datasource than the default (defined by `db.default.* in application.conf`), using the DB name parameter :
+
+Using `import play.api.db.slick.Config.driver.simple.`_ will import the driver defing with the key `db.default.driver` in application.conf, or the one set by the test helpers in test mode (see test section for more information).
+
+Here is a configuration example for the default database : 
+
+```
+db.default.driver=org.h2.Driver
+db.default.url="jdbc:h2:mem:play"
+db.default.user=sa
+db.default.password=""
+```
+
+If you need to use more than one database driver per mode (dev/run or test), please read the next section!
+
+
+##Multiple datasources and drivers
+
+You can load a different datasource than the default, using the DB name parameter :
 
 ```scala
 play.api.db.slick.DB("myOtherDb").withSession{ implicit session =>
@@ -88,13 +103,7 @@ play.api.db.slick.DB("myOtherDb").withSession{ implicit session =>
 }
 ```
 
-Using `import play.api.db.slick.Config.driver.simple.`_ will import the driver defing with the key `db.default.driver` in application.conf, or the one set by the test helpers in test mode (see test section for more information).
-
-If you need to use more than one driver per mode, you can read the next section!
-
-
-##Multiple datasources and drivers
-
+But what about the driver configuration if "myOtherDb" needs another database driver that the default one?
 When having multiple datasources and drivers it is recommended to use the cake pattern.
 Do not worry about the scary name it is quite easy.
 
@@ -116,7 +125,7 @@ Then you just have to put all your tables together into a DAO (data access objec
 class DAO(override val profile: ExtendedProfile) extends UserComponent with FooComponent with BarComponent with Profile
 ```
 
-Whenever you need to use you database you just new up your DAO and import everything in it and in its profile:
+Whenever you need to use your database you just new up your DAO and import everything in it and in its profile:
     
 ```scala
 package models
@@ -127,8 +136,16 @@ object current {
   val dao = new DAO(db.driver(play.api.Play.current))      
 } 
 ```
+This will load the "mydb" database configuration (datasource and driver) from application.conf
 
-or if you just want the default database : 
+Here is a configuration example for "mydb" : 
+
+```
+db.mydb.driver=com.mysql.jdbc.Driver
+db.mydb.url="mysql://root:secret@localhost/myDatabase"
+```
+
+If you just want the default database settings : 
 
 ```scala
 val dao = new DAO(DB.driver(play.api.Play.current))
@@ -147,16 +164,7 @@ DB.withSession{ implicit session =>
 }
 ```
 
-If needed, you can also use another driver like this : 
-
-```scala
-object specificDb {
- val dao = new DAO(scala.slick.driver.MySQLDriver)     
-}
-```
-
 Pweeh, there are a certain amount of lines of code there, but works great and scales along with the life cycle of your app: from the start, when you need tests, when you change the DB, ...
-
 
 ##Writing tests
 
@@ -182,7 +190,6 @@ class DBSpec extends Specification {
 
 This will use a H2 datasource with this url : "jdbc:h2:mem:play-test"
 
-
 Off course, you can also use the default datasource :
 
 ```scala
@@ -191,7 +198,6 @@ Off course, you can also use the default datasource :
       //
 }
 ```
-   
 
 Or a specific one : 
 
@@ -201,7 +207,6 @@ Or a specific one :
     //
 }
 ```
-
 
 Copyright
 ---------

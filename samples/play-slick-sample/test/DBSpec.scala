@@ -34,12 +34,6 @@ class DBSpec extends Specification {
       }
     }
 
-    "use the correct db settings when specified" in new WithApplication {
-      play.api.db.slick.DB("specific").withSession{ implicit session =>
-        session.conn.getMetaData.getURL must equalTo("jdbc:h2:mem:veryspecialindeed")
-      }
-    }
-
     "use the default db settings when no other possible options are available" in new WithApplication {
       play.api.db.slick.DB.withSession{ implicit session =>
         session.conn.getMetaData.getURL must equalTo("jdbc:h2:mem:play")
