@@ -1,4 +1,4 @@
-#About
+# About
 
 This plugin makes Slick a first-class citizen of Play 2.1.
 
@@ -8,8 +8,25 @@ The play-slick plugins consists of 2 parts:
 
 The *intent* is to get this plugin into Play 2.2 if possible.
 
-For [installation](https://github.com/freekh/play-slick/wiki/Installation) and [usage](https://github.com/freekh/play-slick/wiki/Usage), see the [wiki](https://github.com/freekh/play-slick/wiki)
 
+
+# Setup
+In your application, add this configuration to the `project/Build.scala` file :
+
+```scala
+val appDependencies = Seq(
+  //your dependencies
+  "com.typesafe" %% "play-slick" % "0.3.2-SNAPSHOT" 
+)
+
+ val main = play.Project(appName, appVersion, appDependencies).settings(
+  //your settings
+    resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositories/snapshots") 
+```
+
+Note that only Play 2.1.1 is supported.
+
+Please read more on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
 
 Copyright
 ---------
