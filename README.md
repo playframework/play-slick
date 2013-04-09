@@ -8,7 +8,7 @@ The play-slick plugins consists of 2 parts:
 
 The *intent* is to get this plugin into Play 2.2 if possible.
 
-For installation and usage, see the [wiki](https://github.com/freekh/play-slick/wiki)
+For [installation](https://github.com/freekh/play-slick/wiki/Installation) and [usage](https://github.com/freekh/play-slick/wiki/Usage), see the [wiki](https://github.com/freekh/play-slick/wiki)
 
 
 Copyright
