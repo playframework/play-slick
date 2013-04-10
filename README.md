@@ -16,7 +16,7 @@ In your application, add `"com.typesafe" %% "play-slick" % "0.3.2"` to the appDe
 ```scala
 val appDependencies = Seq(
   //other deps
-  "com.typesafe" %% "play-slick" % "0.3.2-SNAPSHOT" 
+  "com.typesafe" %% "play-slick" % "0.3.2" 
 )
 ```
 
