@@ -135,7 +135,7 @@ object Computers extends Table[Computer]("COMPUTER") {
   def update(id: Long, computer: Computer) {
     DB.withSession { implicit session =>
         val computerToUpdate: Computer = computer.copy(Some(id))
-        Query(Computers).where(_.id === id).update(computerToUpdate)
+        Computers.where(_.id === id).update(computerToUpdate)
     }
   }
 
@@ -145,7 +145,7 @@ object Computers extends Table[Computer]("COMPUTER") {
    */
   def delete(id: Long) {
     DB.withSession { implicit session =>
-        Computers.where(_.id === id).mutate(_.delete)
+        Computers.where(_.id === id).delete
     }
   }
 }
