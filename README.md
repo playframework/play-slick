@@ -11,22 +11,18 @@ The *intent* is to get this plugin into Play 2.2 if possible.
 
 
 # Setup
-In your application, add this configuration to the `project/Build.scala` file :
+In your application, add `"com.typesafe" %% "play-slick" % "0.3.2"` to the appDependencies in your `project/Build.scala` file:
 
 ```scala
 val appDependencies = Seq(
-  //your dependencies
+  //other deps
   "com.typesafe" %% "play-slick" % "0.3.2-SNAPSHOT" 
 )
-
- val main = play.Project(appName, appVersion, appDependencies).settings(
-  //your settings
-    resolvers += "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositories/snapshots") 
 ```
 
 Note that only Play 2.1.1 is supported.
 
-Please read more on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
+Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
 
 Copyright
 ---------
