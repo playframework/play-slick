@@ -1,6 +1,6 @@
 # About
 
-This plugin makes Slick a first-class citizen of Play 2.1.
+This plugin makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play 2.1.
 
 The play-slick plugins consists of 2 parts:
  - DDL schema generation Plugin that works like the Ebean DDL Plugin. Based on config it generates create schema and drop schema SQL commands and writes them to evolutions.
