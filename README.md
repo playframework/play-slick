@@ -11,12 +11,12 @@ The *intent* is to get this plugin into Play 2.2 if possible.
 
 
 # Setup
-In your application, add `"com.typesafe.play" %% "play-slick" % "0.3.2"` to the appDependencies in your `project/Build.scala` file:
+In your application, add `"com.typesafe.play" %% "play-slick" % "0.3.3"` to the appDependencies in your `project/Build.scala` file:
 
 ```scala
 val appDependencies = Seq(
   //other deps
-  "com.typesafe.play" %% "play-slick" % "0.3.2" 
+  "com.typesafe.play" %% "play-slick" % "0.3.3" 
 )
 ```
 
