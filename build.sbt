@@ -8,7 +8,7 @@ version := "0.3.3-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.2"
 
 resolvers += Classpaths.sbtPluginReleases
 
