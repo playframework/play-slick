@@ -4,11 +4,11 @@ import play.api.mvc._
 import play.api._
 import scala.concurrent._
 import play.api.Play.current
-import akka.actor.ActorSystem
+import play.api.db.slick._
 
 trait SlickController { self: Controller =>
 
-  val slickExecutionContext: ExecutionContext = ActorSystem("slick-plugin-system").dispatchers.lookup("slick.execution-context")
+  val slickExecutionContext = SlickExecutionContext.executionContext
 
   def SlickAction(r: => Result) = {
     Action {
