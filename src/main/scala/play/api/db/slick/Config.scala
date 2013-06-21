@@ -4,9 +4,9 @@ import play.api._
 import scala.slick.driver._
 
 object Config {
-  lazy val driver: ExtendedDriver = driver(play.api.Play.current)
+  lazy val driver: ExtendedDriver = getDriver(play.api.Play.current)
 
-  def driver(app: Application, dbName: String = "default"): ExtendedDriver = {
+  def getDriver(app: Application = play.api.Play.current, dbName: String = "default"): ExtendedDriver = {
     val conf = app.configuration
     val driverKey = s"db.$dbName.driver"
     conf.getString(driverKey) match {

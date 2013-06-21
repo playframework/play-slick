@@ -21,7 +21,7 @@ object DB extends DB {
 trait DB {
   import play.api.db.{ DB => PlayDB }
 
-  def driver(implicit app: Application) = Config.driver(app, CurrentDB)
+  def driver(implicit app: Application) = Config.getDriver(app, CurrentDB)
 
   def database(name: String)(implicit app: Application): Database = {
     if (app.configuration.getConfig(s"db.$name").isEmpty) app.configuration.reportError(s"db.$name", s"While loading datasource: could not find db.$name in configuration", None)
