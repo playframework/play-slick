@@ -150,7 +150,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     def isTable(sym: Symbol) = {
       sym.typeSignature.baseClasses.find(_.typeSignature == tableType.typeSymbol.typeSignature).isDefined
     }
-    def tableToDDL(instance: Any) = {
+    def tableToDDL(instance: Any) : (java.lang.Class[_],DDL) = {
       import scala.language.reflectiveCalls //this is the simplest way to do achieve this, we are using reflection either way...
       instance.getClass -> instance.asInstanceOf[{ def ddl: DDL }].ddl
     }

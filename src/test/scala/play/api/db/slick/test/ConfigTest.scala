@@ -25,14 +25,14 @@ class ConfigSpec extends Specification {
   "Config.driver" should {
     "return the driver for the given database" in {
       running(fakeApplication) {
-        val driver = Config.driver(play.api.Play.current, "somedb")
+        val driver = Config.getDriver(play.api.Play.current, "somedb")
         driver must equalTo(scala.slick.driver.H2Driver)
       }
     }
 
     "return the driver for the default database when db name is not specified" in {
       running(fakeApplication) {
-        val driver = Config.driver(play.api.Play.current)
+        val driver = Config.getDriver(play.api.Play.current)
         driver must equalTo(scala.slick.driver.MySQLDriver)
       }
     }
