@@ -30,13 +30,22 @@ package models {
 class ReflectionUtilsTest extends Specification {
 
   "ReflectionUtils.splitIdentifier" should {
-
     "return splitted identifier" in {
       ReflectionUtils.splitIdentifiers("play.api.db") must_== List("play", "api", "db")
     }
   }
 
-  "findFirstModule" should {
+  "ReflectionUtils.toStaticModuleSymbol" should {
+    "convert class name to Option[ModuleSymbol]" in {
+      running(FakeApplication()) {
+        implicit val mirror = universe.runtimeMirror(current.classloader)
+        ReflectionUtils.toStaticModuleSymbol("play.api.db.slick.test.models.A").map(_.toString) must beSome("object A")
+      }
+    }
+
+  }
+
+  "ReflectionUtils.findFirstModule" should {
     "return first module" in {
       running(FakeApplication()) {
         implicit val mirror = universe.runtimeMirror(current.classloader)

@@ -18,11 +18,11 @@ object ReflectionUtils {
 
   def splitIdentifiers(names: String) = names.split("""\.""").filter(!_.trim.isEmpty).toList
 
+  def toStaticModuleSymbol(signatureString: String)(implicit mirror: JavaMirror): Option[ModuleSymbol] =
+    Exception.catching(classOf[MissingRequirementError]).opt { mirror.staticModule(signatureString) }
+
   def findFirstModule(names: String)(implicit mirror: JavaMirror): Option[ModuleSymbol] = {
     //FIXME: must be another way to check if a static modules exists than exceptions!?!
-    def toStaticModuleSymbol(signatureString: String): Option[ModuleSymbol] =
-      Exception.catching(classOf[MissingRequirementError]).opt { mirror.staticModule(signatureString) }
-
     splitIdentifiers(names) match {
       case e if e.isEmpty => None
       case e => {
@@ -187,12 +187,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
             case p => Set(p)
           }
           classNames.flatMap { className =>
-
-            val moduleSymbol = try { //FIXME: ideally we should be able to test for existence not use exceptions
-              Some(mirror.staticModule(className))
-            } catch {
-              case e: scala.reflect.internal.MissingRequirementError => None
-            }
+            val moduleSymbol = ReflectionUtils.toStaticModuleSymbol(className)
 
             moduleSymbol.filter(isTable).map { moduleSymbol =>
               tableToDDL(mirror.reflectModule(moduleSymbol).instance)
