@@ -7,31 +7,29 @@ import org.reflections.scanners.TypesScanner
 import play.api.libs.Files
 import play.api.Mode
 import scala.slick.lifted.DDL
-import play.api.PlayException
+
 
 object ReflectionUtils {
   import annotation.tailrec
   import scala.reflect.runtime.universe
   import scala.reflect.runtime.universe._
+  import scala.util.control.Exception
+  import scala.reflect.internal.MissingRequirementError
 
   def splitIdentifiers(names: String) = names.split("""\.""").filter(!_.trim.isEmpty).toList
-  def assembleIdentifiers(ids: List[String]) = ids.mkString(".")
 
   def findFirstModule(names: String)(implicit mirror: JavaMirror): Option[ModuleSymbol] = {
-    val elems = splitIdentifiers(names)
-    var i = 1 //FIXME: vars...
-    var res: Option[ModuleSymbol] = None
-    while (i < (elems.size + 1) && !res.isDefined) {
-      try {
-        res = Some(mirror.staticModule(assembleIdentifiers(elems.slice(0, i))))
-      } catch {
-        case e: reflect.internal.MissingRequirementError =>
-        //FIXME: must be another way to check if a static modules exists than exceptions!?!
-      } finally {
-        i += 1
+    //FIXME: must be another way to check if a static modules exists than exceptions!?!
+    def toStaticModuleSymbol(signatureString: String): Option[ModuleSymbol] =
+      Exception.catching(classOf[MissingRequirementError]).opt { mirror.staticModule(signatureString) }
+
+    splitIdentifiers(names) match {
+      case e if e.isEmpty => None
+      case e => {
+        val candidates = e.tail.scanLeft(e.head){ _ + "." + _ }
+        candidates.map(toStaticModuleSymbol).flatten.headOption
       }
     }
-    res
   }
 
   def reflectModuleOrField(name: String, base: Any, baseSymbol: Symbol)(implicit mirror: JavaMirror) = {
