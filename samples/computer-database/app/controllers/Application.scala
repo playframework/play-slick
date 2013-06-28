@@ -5,6 +5,8 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.db.slick.mvc._
+import play.api.Play.current
+import play.api.db.slick.session._
 
 import views._
 import models._
@@ -12,8 +14,7 @@ import models._
 /**
  * Manage a database of computers
  */
-object Application extends Controller with SlickController { 
-  
+object Application extends Controller with DBController { 
   /**
    * This result directly redirect to the application home.
    */
@@ -46,7 +47,7 @@ object Application extends Controller with SlickController {
    * @param orderBy Column to be sorted
    * @param filter Filter applied on computer names
    */
-  def list(page: Int, orderBy: Int, filter: String) = SlickAction { implicit request =>
+  def list(page: Int, orderBy: Int, filter: String) = DBAction { implicit rs =>
     Ok(html.list(
       Computers.list(page = page, orderBy = orderBy, filter = ("%"+filter+"%")),
       orderBy, filter
@@ -58,7 +59,7 @@ object Application extends Controller with SlickController {
    *
    * @param id Id of the computer to edit
    */
-  def edit(id: Long) = SlickAction {
+  def edit(id: Long) = DBAction { implicit rs =>
     Computers.findById(id).map { computer =>
       Ok(html.editForm(id, computerForm.fill(computer), Companies.options))
     }.getOrElse(NotFound)
@@ -69,7 +70,7 @@ object Application extends Controller with SlickController {
    *
    * @param id Id of the computer to edit
    */
-  def update(id: Long) = SlickAction { implicit request =>
+  def update(id: Long) = DBAction { implicit rs =>
     computerForm.bindFromRequest.fold(
       formWithErrors => BadRequest(html.editForm(id, formWithErrors, Companies.options)),
       computer => {
@@ -82,14 +83,14 @@ object Application extends Controller with SlickController {
   /**
    * Display the 'new computer form'.
    */
-  def create = SlickAction {
+  def create = DBAction { implicit rs =>
     Ok(html.createForm(computerForm, Companies.options))
   }
   
   /**
    * Handle the 'new computer form' submission.
    */
-  def save = SlickAction { implicit request =>
+  def save = DBAction { implicit rs =>
     computerForm.bindFromRequest.fold(
       formWithErrors => BadRequest(html.createForm(formWithErrors, Companies.options)),
       computer => {
@@ -102,7 +103,7 @@ object Application extends Controller with SlickController {
   /**
    * Handle computer deletion.
    */
-  def delete(id: Long) = SlickAction {
+  def delete(id: Long) = DBAction { implicit rs =>
     Computers.delete(id)
     Home.flashing("success" -> "Computer has been deleted")
   }

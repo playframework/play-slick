@@ -1,7 +1,8 @@
 import java.text.SimpleDateFormat
 import play.api._
-
 import models._
+import play.api.db.slick.DB
+import play.api.Play.current
 
 object Global extends GlobalSettings {
 
@@ -19,7 +20,8 @@ object InitialData {
 
   val sdf = new SimpleDateFormat("yyyy-MM-dd")
 
-  def insert() {
+  def insert(){
+   DB.withSession{ implicit s =>
     if (Computers.count == 0) {
       Seq(
         Company(Option(1L), "Apple Inc."),
@@ -643,5 +645,6 @@ object InitialData {
         Computer(Option(574L), "iPhone 4S", Option(sdf.parse("2011-10-14")), None, Option(1L))
       ).foreach(Computers.insert)
     }
+   }
   }
 }
