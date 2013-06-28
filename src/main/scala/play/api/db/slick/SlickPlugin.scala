@@ -19,7 +19,7 @@ trait AutoDDLInterface{
 class SlickDDLPlugin(app: Application) extends Plugin {
   private val CreatedBy = "# --- Created by Slick DDL"
   private val configKey = "slick.autoddl_dbs"
-  def confError(msg:String) = app.configuration.reportError(configKey, msg)
+  def confError(msg:String,e:Option[Throwable]=None) = app.configuration.reportError(configKey, msg, e)
 
   override def onStart(): Unit = {
     app.configuration
@@ -76,14 +76,28 @@ class SlickDDLPlugin(app: Application) extends Plugin {
 
   /** generates DDL for given datasource */
   def evolutionScript(db:String): Option[String] = {
-    val ddls = 
-          fetchAutoDDLobject
-          .tables
-          .get(db)
-          .map(_.map(_.ddl))
-          .getOrElse{
-            throw confError(s"play.api.db.slick.AutoDDL.tables did not contain datasource '$db'")
-          }
+    val tables =
+      try{
+        fetchAutoDDLobject.tables
+      } catch {
+        case e:java.lang.LinkageError =>
+          throw confError(
+            s"LinkageError when trying to load play.api.db.slick.AutoDDL.tables via reflection: '$e'."
+            +" In the definition of play.api.db.slick.AutoDDL.tables you probably referred to a val,"
+            +" which was not yet initialized. Please refer to defs, singleton objects or alternatively"
+            +" instantiate the table objects right in the definiton, e.g. like "+"""
+               def tables = Map(
+                 "default" -> Seq(new MyTableA,new MyTableB)
+               )"""
+            , Some(e)
+          )
+      }
+    val ddls = tables
+               .get(db)
+               .map(_.map(_.ddl))
+               .getOrElse{
+                 throw confError(s"play.api.db.slick.AutoDDL.tables did not contain datasource '$db'")
+               }
 
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
