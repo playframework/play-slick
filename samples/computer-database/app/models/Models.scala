@@ -17,6 +17,16 @@ case class Company(id: Option[Long], name: String)
 
 case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date]= None, discontinued: Option[Date]= None, companyId: Option[Long]=None)
 
+/** Separate package object since "package object models" is broken in Play < 2.2
+  * In Play >= 2.2 this can be moved into package object models
+  * @see https://github.com/playframework/Play20/issues/867
+  */
+package object tables{
+  val Companies = new Companies
+  val Computers = new Computers
+}
+import tables._
+
 class Companies extends Table[Company]("COMPANY") {
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)

@@ -8,6 +8,7 @@ import play.api.db.slick.mvc._
 
 import views._
 import models._
+import models.tables._
 
 /**
  * Manage a database of computers

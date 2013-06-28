@@ -19,10 +19,12 @@ trait AutoDDLInterface{
 class SlickDDLPlugin(app: Application) extends Plugin {
   private val CreatedBy = "# --- Created by Slick DDL"
   private val configKey = "slick.autoddl_dbs"
-  def confError(msg:String,e:Option[Throwable]=None) = app.configuration.reportError(configKey, msg, e)
+  private val conf = app.configuration
+  val autoDDLModuleName = conf.getString("slick.autoddl_object").getOrElse("play.api.db.slick.AutoDDL")
+  def confError(msg:String,e:Option[Throwable]=None) = conf.reportError(configKey, msg, e)
 
   override def onStart(): Unit = {
-    app.configuration
+    conf
       .getString(configKey)
       .map( _.split(",").map(_.trim).filter(_ != "") ) // remove whitespace and empty db names
       .foreach{
@@ -53,7 +55,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     val instance =
           try{
             mirror.reflectModule(
-                    mirror.staticModule("play.api.db.slick.AutoDDL")
+                    mirror.staticModule(autoDDLModuleName)
                   ).instance
           } catch { case e: reflect.internal.MissingRequirementError =>
               throw confError(

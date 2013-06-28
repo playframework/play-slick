@@ -6,6 +6,7 @@ import play.api.db.slick.DB
 import play.api.test._
 import play.api.test.Helpers._
 import models._
+import models.tables._
 
 /**
   * test the kitty cat database

@@ -2,6 +2,7 @@ import java.text.SimpleDateFormat
 import play.api._
 
 import models._
+import models.tables._
 
 object Global extends GlobalSettings {
 
