@@ -5,12 +5,12 @@ import play.api._
 import scala.concurrent._
 import play.api.Play.current
 import play.api.db.slick._
+import play.api.db.slick.session._
 
-trait SlickController { self: Controller =>
-
+trait DBController { self: Controller =>
   val slickExecutionContext = SlickExecutionContext.executionContext
 
-  def SlickAction(r: => Result) = {
+  def DBAction(r: => Result) = {
     Action {
       Async {
         Future(r)(slickExecutionContext)
@@ -18,10 +18,12 @@ trait SlickController { self: Controller =>
 	  }
 	}
 
-  def SlickAction(r: (Request[play.api.mvc.AnyContent]) => Result) = {
+  def DBAction(r: (RequestWithDbSession) => Result) = {
     Action { implicit request => 
       Async {
-        Future(r(request))(slickExecutionContext)
+        DB.database.withSession{ s:slick.session.Session =>
+          Future(r( RequestWithDbSession(request,s) ))(slickExecutionContext)
+        }
       }
     }
   }
