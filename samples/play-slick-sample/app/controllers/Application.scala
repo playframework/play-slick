@@ -1,6 +1,7 @@
 package controllers
 
 import models._
+import models.tables._
 import play.api._
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB

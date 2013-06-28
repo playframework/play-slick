@@ -9,6 +9,13 @@ import play.api.db._
 import play.api.Play.current
 import play.api.db.slick.DB
 
+object AutoDDL extends play.api.db.slick.AutoDDLInterface{
+  import models._
+  def tables = Map(
+    "default" -> Seq(Q,T,U)
+  )
+}
+
 object Q extends Table[(Int, String, Int)]("a") {
   def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
   def a = column[String]("a", O.NotNull)
@@ -34,7 +41,10 @@ object U extends Table[(Int, String)]("c") {
 class SlickDDLPluginSpec extends Specification {
 
   def testConfiguration = {
-    inMemoryDatabase() ++ Map("slick.default" -> "play.api.db.slick.test.*")
+    inMemoryDatabase() ++ Map(
+      "slick.autoddl_dbs" -> "default",
+      "slick.autoddl_object" -> "play.api.db.slick.test.AutoDDL"
+    )
   }
 
   "SlickDDLPlugin" should {

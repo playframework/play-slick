@@ -17,5 +17,4 @@ object ApplicationBuild extends Build {
     scalaVersion := "2.10.2"
     // Add your own project settings here      
   ).dependsOn(RootProject(file("../../")))
-
 }

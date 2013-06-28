@@ -8,6 +8,7 @@ import play.api.test.Helpers._
 class ModelSpec extends Specification {
   
   import models._
+  import models.tables._
 
   // -- Date helpers
   

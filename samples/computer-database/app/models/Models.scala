@@ -17,7 +17,17 @@ case class Company(id: Option[Long], name: String)
 
 case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date]= None, discontinued: Option[Date]= None, companyId: Option[Long]=None)
 
-object Companies extends Table[Company]("COMPANY") {
+/** Separate package object since "package object models" is broken in Play < 2.2
+  * In Play >= 2.2 this can be moved into package object models
+  * @see https://github.com/playframework/Play20/issues/867
+  */
+package object tables{
+  val Companies = new Companies
+  val Computers = new Computers
+}
+import tables._
+
+class Companies extends Table[Company]("COMPANY") {
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
@@ -47,7 +57,7 @@ object Companies extends Table[Company]("COMPANY") {
   }
 }
 
-object Computers extends Table[Computer]("COMPUTER") {
+class Computers extends Table[Computer]("COMPUTER") {
 
   implicit val javaUtilDateTypeMapper = MappedTypeMapper.base[java.util.Date, java.sql.Date](
     x => new java.sql.Date(x.getTime),
