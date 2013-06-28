@@ -4,7 +4,6 @@ import play.api.Application
 import play.api.Plugin
 import play.libs.ReflectionsCache
 import org.reflections.scanners.TypesScanner
-import scala.slick.session.Database
 import play.api.libs.Files
 import play.api.Mode
 import scala.slick.lifted.DDL

@@ -1,6 +1,6 @@
 package models
 
-import play.api.db.slick.Config.driver._
+import play.api.db.slick.driver.simple._
 
 case class Cat(name: String, color: String)
 
