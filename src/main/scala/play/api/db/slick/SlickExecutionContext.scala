@@ -1,7 +1,8 @@
 package play.api.db.slick
 
-import akka.actor.ActorSystem
+import play.api.libs.concurrent.Akka
+import play.api.Play.current
 
 object SlickExecutionContext {
-  val executionContext = ActorSystem("slick-plugin-system").dispatchers.lookup("slick.execution-context")
+  val executionContext = Akka.system.dispatchers.lookup("akka.actor.slick-context")
 }
