@@ -4,20 +4,17 @@ import play.api._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
-import play.api.db.slick.DB
+import play.api.db.slick.session._
+import play.api.db.slick.mvc._
 import models._
 
 //stable imports to use play.api.Play.current outside of objects:
 import models.current.dao._
 import models.current.dao.profile.simple._
 
-object Application extends Controller {
-  import play.api.Play.current
-
-  def index = Action {
-    DB.withSession{ implicit session =>
-      Ok(views.html.index(Query(Cats).list))
-    }
+object Application extends Controller with DBController{
+  def index = DBAction { implicit rs =>
+    Ok(views.html.index(Query(Cats).list))
   }
 
   val catForm = Form(
@@ -27,12 +24,9 @@ object Application extends Controller {
     )(Cat.apply)(Cat.unapply)
   )
   
-  def insert = Action { implicit request =>
+  def insert = DBAction { implicit rs =>
     val cat = catForm.bindFromRequest.get
-    DB.withSession{ implicit session =>
-      Cats.insert(cat)
-    }
-
+    Cats.insert(cat)
     Redirect(routes.Application.index)
   }
   
