@@ -11,6 +11,7 @@ The *intent* is to get this plugin into Play 2.2 if possible.
 
 
 # Setup
+
 In your application, add `"com.typesafe.play" %% "play-slick" % "0.3.3"` to the appDependencies in your `project/Build.scala` file:
 
 ```scala
@@ -19,6 +20,17 @@ val appDependencies = Seq(
   "com.typesafe.play" %% "play-slick" % "0.3.3" 
 )
 ```
+
+Add `slick.default="models.*"` and:
+```
+db.default.driver=org.h2.Driver
+db.default.url="jdbc:h2:mem:play"
+db.default.user=sa
+db.default.password=""
+```
+to **application.conf** and [create a model](http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables).
+
+
 
 Note that only Play 2.1.1 is supported.
 
