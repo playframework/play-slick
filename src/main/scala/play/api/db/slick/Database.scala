@@ -3,7 +3,10 @@ import scala.slick.session.PlayDatabase
 import play.api.Application
 import scala.slick.driver._
 
-case class Database(name:String = "default")(implicit app: Application) extends PlayDatabase{
+object Database{
+  def apply (name:String = "default")(implicit app: Application) = new Database(name,app)
+}
+class Database(name:String = "default", app: Application) extends PlayDatabase{
   def apply(name:String)     = Database(name)(app)
   def apply(app:Application) = Database(name)(app)
   val conf = app.configuration

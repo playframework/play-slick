@@ -3,7 +3,7 @@ package controllers
 import models._
 import play.api._
 import play.api.db.slick._
-import play.api.db.slick.driver.simple._
+import play.api.db.slick.Config.driver.simple._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
