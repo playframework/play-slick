@@ -7,5 +7,5 @@ import play.api.db.slick.DB
 class DAO(override val profile: ExtendedProfile) extends CatComponent with Profile
 
 object current {
-  val dao = new DAO(DB.driver(play.api.Play.current))
+  val dao = new DAO(DB(play.api.Play.current).driver)
 }
