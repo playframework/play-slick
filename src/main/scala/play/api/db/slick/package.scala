@@ -16,12 +16,12 @@ package object slick{
   case class RequestWithDbSession( request:Request[AnyContent], session: Session )
 
   // async and database enabled Actions    
+  import play.api.libs.concurrent.Akka
+  val executionContext = Akka.system(play.api.Play.current).dispatchers.lookup("akka.actor.slick-context")
+
   import scala.concurrent.Future
-  import akka.actor.ActorSystem
   import play.api.mvc.Action
-
-  val executionContext = ActorSystem("slick-plugin-system").dispatchers.lookup("slick.execution-context")
-
+  
   object DBAction{
   	def apply(r: => Result) = {
       Action {
