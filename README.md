@@ -34,7 +34,7 @@ to **application.conf** and [create a model](http://slick.typesafe.com/doc/1.0.1
 
 Note that only Play 2.1.1 is supported.
 
-Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
+Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki)
 
 Copyright
 ---------

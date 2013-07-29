@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 import play.api._
 import models._
-import play.api.db.slick.DB
+import play.api.db.slick._
 import play.api.Play.current
 
 object Global extends GlobalSettings {
@@ -21,7 +21,7 @@ object InitialData {
   val sdf = new SimpleDateFormat("yyyy-MM-dd")
 
   def insert(){
-   DB.withSession{ implicit s =>
+   DB.withSession{ implicit s:Session =>
     if (Computers.count == 0) {
       Seq(
         Company(Option(1L), "Apple Inc."),
