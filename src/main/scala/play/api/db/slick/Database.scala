@@ -25,6 +25,7 @@ class Database(name:String = "default", app: Application) extends PlayDatabase{
      ,"org.postgresql.Driver" -> PostgresDriver
      ,"org.sqlite.JDBC" -> SQLiteDriver
      ,"com.microsoft.sqlserver.jdbc.SQLServerDriver" -> SQLServerDriver
+     ,"net.sourceforge.jtds.jdbc.Driver" -> SQLServerDriver
   ).get(_)
   def driver = {
     val key = s"db.$name.driver"
