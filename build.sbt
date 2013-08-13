@@ -4,7 +4,7 @@ licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.
 
 homepage := Some(url("https://github.com/freekh/play-slick"))
 
-version := "0.4.0-SNAPSHOT"
+version := "0.5.0-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
@@ -17,11 +17,12 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 scalacOptions += "-feature"
 
 libraryDependencies ++= {
-  val playVersion = "2.1.2"
+  val playVersion = "2.2-SNAPSHOT"
   Seq(
-  "play" %% "play" % playVersion,
-  "play" %% "play-jdbc" % playVersion,
-  "com.typesafe.slick" %% "slick" % "1.0.1",
-  "play" %% "play-test" % playVersion % "test")
+    "play" %% "play" % playVersion,
+    "play" %% "play-java" % playVersion,
+    "play" %% "play-jdbc" % playVersion,
+    "com.typesafe.slick" %% "slick" % "1.0.1",
+    "play" %% "play-test" % playVersion % "test")
 }
 
