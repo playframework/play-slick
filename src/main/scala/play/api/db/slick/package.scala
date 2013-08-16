@@ -1,11 +1,12 @@
 package play.api.db
+
 package object slick{
   // database connectivity
   import play.api.Application
   def DB(implicit app:Application) = new Database("default",app)
   def DB(name:String)(implicit app:Application) = new Database(name,app)
   object Config{
-    val driver = DB(play.api.Play.current).driver    
+    lazy val driver = DB(play.api.Play.current).driver    
   }
   type Session = scala.slick.session.Session // for export to user app
 
@@ -17,7 +18,14 @@ package object slick{
 
   // async and database enabled Actions    
   import play.api.libs.concurrent.Akka
-  val executionContext = Akka.system(play.api.Play.current).dispatchers.lookup("akka.actor.slick-context")
+  lazy val executionContext = {
+    val app = play.api.Play.current
+    val configSection = "akka.actor.slick-context"
+    app.configuration.getConfig(configSection) match { //TODO: create a better default execution context
+      case Some(_) => Akka.system(app).dispatchers.lookup(configSection)
+      case None => play.api.libs.concurrent.Execution.defaultContext
+    }
+  }
 
   import scala.concurrent.Future
   import play.api.mvc.{AsyncResult,Result,Action}
