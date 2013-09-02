@@ -1,8 +1,6 @@
 package play.api.db.slick.plugin
 
 import scala.slick.lifted.DDL
-import play.libs.ReflectionsCache
-import org.reflections.scanners.TypesScanner
 
 object TableScanner {
   import scala.reflect.runtime.universe
@@ -66,22 +64,25 @@ object TableScanner {
         Some(tableToDDL(instance))
       } catch {
         case e: java.lang.IllegalArgumentException =>
-          play.api.Logger.warn("Found a Slick table: " + className + ", but it has not a constructor with no arguments. Cannot create DDL for this class")
+          play.api.Logger.warn("Found a Slick table: " + className + ", but it does not have a constructor without arguments. Cannot create DDL for this class")
+          None
+        case e: java.lang.InstantiationException =>
+          play.api.Logger.warn("Could not initialize " + className + ". DDL Generation will be skipped.")
           None
       }
     } else {
       None
     }
   }
-  
+ 
   private def scanPackages(name: String)(implicit mirror: Mirror) = {
     import scala.collection.JavaConverters._
     
     val classloader = mirror.classLoader
     val classNames = name match {
-      case WildcardPattern(p) => ReflectionsCache.getReflections(classloader, p) //TODO: would be nicer if we did this using Scala reflection, alas staticPackage is non-deterministic:  https://issues.scala-lang.org/browse/SI-6573
+      case WildcardPattern(p) => ReflectionUtils.getReflections(classloader, p) //TODO: would be nicer if we did this using Scala reflection, alas staticPackage is non-deterministic:  https://issues.scala-lang.org/browse/SI-6573
         .getStore
-        .get(classOf[TypesScanner])
+        .get(classOf[org.reflections.scanners.TypesScanner])
         .keySet.asScala.toSet
       case p => Set(p)
     }

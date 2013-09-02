@@ -1,6 +1,6 @@
 package play.api.db.slick.test
 
-import play.api.db.slick._
+import play.api.db.slick.plugin._
 import org.specs2.mutable.Specification
 import play.api.test.Helpers._
 import play.api.test._
@@ -35,11 +35,11 @@ class ReflectionUtilsTest extends Specification {
     }
   }
 
-  "ReflectionUtils.toStaticModuleSymbol" should {
+  "ReflectionUtils.findFirstModule" should {
     "convert class name to Option[ModuleSymbol]" in {
       running(FakeApplication()) {
         implicit val mirror = universe.runtimeMirror(current.classloader)
-        ReflectionUtils.toStaticModuleSymbol("play.api.db.slick.test.models.A").map(_.toString) must beSome("object A")
+        ReflectionUtils.findFirstModule("play.api.db.slick.test.models.A").map(_.toString) must beSome("object A")
       }
     }
 
