@@ -16,31 +16,27 @@ Have a look in the [samples](https://github.com/freekh/play-slick/tree/master/sa
 
 For each table you have, create a self-type of `play.api.db.slick.Profile` and import everything from the `profile` on your table:
 
-```scala
-trait UserComponent extends Profile { this: Profile =>
-   import profile.simple._
-
-   object Users extends Table[User]("USERS") { ... }
-}
-```
+@[component](code/ScalaSlickDrivers.scala)
 
 Then you just have to put all your tables together into a DAO (data access object) like this:
 
-```scala
-class DAO(override val profile: ExtendedProfile) extends UserComponent with FooComponent with BarComponent with Profile
-```
+@[dao](code/ScalaSlickDrivers.scala)
 
 Whenever you need to use your database you just new up your DAO and import everything in it and in its profile:
     
-```scala
-package models
+@[current](code/ScalaSlickDrivers.scala)
 
+This wil load the default database settings. 
+If you want to use a custum datasource : 
+
+```scala
 import play.api.slick.DB
 object current {
   val db = DB("mydb")
   val dao = new DAO(db.driver)      
 } 
 ```
+
 This will load the "mydb" database configuration (datasource and driver) from application.conf
 
 Here is a configuration example for "mydb" : 
@@ -48,12 +44,6 @@ Here is a configuration example for "mydb" :
 ```conf
 db.mydb.driver=com.mysql.jdbc.Driver
 db.mydb.url="mysql://root:secret@localhost/myDatabase"
-```
-
-If you just want the default database settings : 
-
-```scala
-val dao = new DAO(play.api.slick.driver)
 ```
 
 In your `application.conf` you can now do: `slick.default="models.current.*"`
@@ -92,7 +82,6 @@ class DBSpec extends Specification {
 }
 
 ```
-
 This will use a H2 datasource with this url : "jdbc:h2:mem:play-test"
 
 Off course, you can also use the default datasource :
