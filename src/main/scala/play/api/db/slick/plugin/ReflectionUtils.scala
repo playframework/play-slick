@@ -1,10 +1,20 @@
 package play.api.db.slick.plugin
 
+import org.reflections.scanners
+import org.reflections.util
+import org.reflections.Reflections
 
 object ReflectionUtils {
   import annotation.tailrec
   import scala.reflect.runtime.universe
   import scala.reflect.runtime.universe._
+
+  def getReflections(classloader: ClassLoader, pkg: String) = {
+    new Reflections(new util.ConfigurationBuilder()
+      .addUrls(org.reflections.util.ClasspathHelper.forPackage(pkg, classloader))
+      .filterInputsBy(new util.FilterBuilder().include(util.FilterBuilder.prefix(pkg + ".")))
+      .setScanners(new scanners.TypeAnnotationsScanner, new scanners.TypesScanner))
+  }
 
   def splitIdentifiers(names: String) = names.split("""\.""").filter(!_.trim.isEmpty).toList
   def assembleIdentifiers(ids: List[String]) = ids.mkString(".")
