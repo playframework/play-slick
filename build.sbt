@@ -20,13 +20,19 @@ resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositor
 
 scalacOptions += "-feature"
 
+scalacOptions += "-deprecation"
+
 libraryDependencies ++= {
   val playVersion = "2.2.0-M2"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
-    "com.typesafe.play" %% "play-java" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
     "com.typesafe.slick" %% "slick" % "1.0.1",
+    "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
+    "com.google.code.findbugs" % "jsr305" % "2.0.1", //needed by org.reflections
+    ("org.reflections" % "reflections" % "0.9.8" notTransitive())
+      .exclude("com.google.guava", "guava") //provided by play
+      .exclude("javassist", "javassist"), //provided by play
     "com.typesafe.play" %% "play-test" % playVersion % "test")
 }
 

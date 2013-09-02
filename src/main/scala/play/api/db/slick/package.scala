@@ -1,5 +1,9 @@
 package play.api.db
 
+import play.api.mvc.{Request,AnyContent}
+
+case class RequestWithDbSession( request:Request[AnyContent], session: slick.Session )
+
 package object slick{
   // database connectivity
   import play.api.Application
@@ -11,10 +15,8 @@ package object slick{
   type Session = scala.slick.session.Session // for export to user app
 
   // session
-  import play.api.mvc.{Request,AnyContent}
   implicit def requestWithDbSession2request(implicit r:RequestWithDbSession): Request[AnyContent] = r.request
   implicit def requestWithDbSession2session(implicit r:RequestWithDbSession) : Session = r.session
-  case class RequestWithDbSession( request:Request[AnyContent], session: Session )
 
   // async and database enabled Actions    
   import play.api.libs.concurrent.Akka
