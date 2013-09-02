@@ -68,6 +68,9 @@ object TableScanner {
         case e: java.lang.IllegalArgumentException =>
           play.api.Logger.warn("Found a Slick table: " + className + ", but it has not a constructor with no arguments. Cannot create DDL for this class")
           None
+        case e: java.lang.InstantiationException =>
+          play.api.Logger.warn("Could not initialize " + className + ". DDL Generation will be skipped.")
+          None
       }
     } else {
       None
