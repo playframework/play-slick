@@ -42,9 +42,11 @@ package object slick{
     def apply(r: (RequestWithDbSession) => Result)(implicit app:Application) = {
       Action { implicit request => 
         AsyncResult {
-          DB.withSession{ s:scala.slick.session.Session =>
-            Future(r( RequestWithDbSession(request,s) ))(executionContext)
-          }
+          Future{
+            DB.withSession{ s:scala.slick.session.Session =>
+             r( RequestWithDbSession(request,s) )
+            }
+          }(executionContext)
         }
       }
     }
