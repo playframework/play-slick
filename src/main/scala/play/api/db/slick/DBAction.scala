@@ -1,8 +1,8 @@
 package play.api.db.slick
 
 import play.api.Application
-import play.api.mvc._
 import scala.concurrent.Future
+import play.api.mvc.{ Action, SimpleResult }
 
 object DBAction {
   import SlickExecutionContexts.executionContext
