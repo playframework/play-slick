@@ -1,3 +1,5 @@
+//uses nested package structure
+
 import org.specs2.mutable._
 import play.api.db.slick.plugin.TableScanner
 
@@ -27,7 +29,7 @@ package play.api.db.slick.packagereflection.classes {
 
 }
 
-package play.api.db.slick.test {
+package play.api.db.slick.plugin {
 
   class TableScannerTest extends Specification {
     "Scanning for tables" should {
