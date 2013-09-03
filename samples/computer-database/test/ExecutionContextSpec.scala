@@ -21,7 +21,7 @@ object Application extends Controller {
 
 class IntegrationSpec extends Specification {
  
- "use silck thread pool" in {
+ "use slick thread pool" in {
       running(FakeApplication()) {
         val result = Application.threadTest (FakeRequest())
         contentAsString(result) must startWith("application-akka.actor.slick-context")

@@ -7,7 +7,6 @@ import play.api.db._
 import play.api.Play.current
 import play.api.db.slick.DB
 
-
 class ConfigSpec extends Specification {
 
   def testConfiguration = {

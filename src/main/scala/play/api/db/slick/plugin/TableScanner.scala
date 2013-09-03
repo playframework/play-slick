@@ -5,7 +5,7 @@ import scala.slick.lifted.DDL
 object TableScanner {
   import scala.reflect.runtime.universe
   import scala.reflect.runtime.universe._
-  
+
   lazy val tableType = typeOf[slick.driver.BasicTableComponent#Table[_]]
 
   private def isTable(sym: Symbol) = {
@@ -42,7 +42,7 @@ object TableScanner {
   }
 
   private val WildcardPattern = """(.*)\.\*""".r
-  
+
   private def reflectModule(className: String)(implicit mirror: Mirror) = {
     val moduleSymbol = mirror.staticModule(className)
     if (isTable(moduleSymbol)) {
@@ -74,10 +74,10 @@ object TableScanner {
       None
     }
   }
- 
+
   private def scanPackages(name: String)(implicit mirror: Mirror) = {
     import scala.collection.JavaConverters._
-    
+
     val classloader = mirror.classLoader
     val classNames = name match {
       case WildcardPattern(p) => ReflectionUtils.getReflections(classloader, p) //TODO: would be nicer if we did this using Scala reflection, alas staticPackage is non-deterministic:  https://issues.scala-lang.org/browse/SI-6573
@@ -87,20 +87,20 @@ object TableScanner {
       case p => Set(p)
     }
     classNames.flatMap { className =>
-    	  try { //FIXME: ideally we should be able to test for existence not use exceptions
+      try { //FIXME: ideally we should be able to test for existence not use exceptions
         reflectModule(className) orElse reflectClass(className)
       } catch {
         case e: scala.reflect.internal.MissingRequirementError => None
       }
     }
   }
-  
+
   /**
-   * Reflect all DDL methods found for a set of names with wildcards used to scan for Slick Table classes, objects and packages 
+   * Reflect all DDL methods found for a set of names with wildcards used to scan for Slick Table classes, objects and packages
    */
   def reflectAllDDLMethods(names: Set[String], classloader: ClassLoader): Seq[DDL] = synchronized { //reflection API not thread-safe
     implicit val mirror = universe.runtimeMirror(classloader)
-    
+
     val classesAndNames = names.flatMap { name =>
       ReflectionUtils.findFirstModule(name) match {
         case Some(baseSym) => scanModulesAndFields(baseSym, name)

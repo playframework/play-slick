@@ -4,7 +4,7 @@
 // Slick team this is better than reproducing Slick's Database
 // API here (in a previously even incompatible way).
 package scala.slick.session
-abstract class PlayDatabase extends Database{
-  protected def datasource : javax.sql.DataSource
+abstract class PlayDatabase extends Database {
+  protected def datasource: javax.sql.DataSource
   protected[session] def createConnection(): java.sql.Connection = datasource.getConnection
 }

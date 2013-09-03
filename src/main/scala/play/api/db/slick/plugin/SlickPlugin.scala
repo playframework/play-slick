@@ -73,5 +73,4 @@ class SlickDDLPlugin(app: Application) extends Plugin {
     } else None
   }
 
-
 }

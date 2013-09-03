@@ -5,7 +5,7 @@ import play.api.db.slick.plugin.TableScanner
 
 package play.api.db.slick.objectreflection {
   object TestTables {
-    val bar = new play.api.db.slick.packagereflection.classes.Bar 
+    val bar = new play.api.db.slick.packagereflection.classes.Bar
   }
 }
 
@@ -38,13 +38,13 @@ package play.api.db.slick.plugin {
         val results = TableScanner.reflectAllDDLMethods(Set("play.api.db.slick.packagereflection.objects.*"), classloader).map(_.createStatements.mkString(";"))
         results.toList === List("""create table "FOO" ("A" VARCHAR NOT NULL)""")
       }
-      
+
       "detect classes in objects using wildcard" in {
         val classloader = Thread.currentThread().getContextClassLoader()
         val results = TableScanner.reflectAllDDLMethods(Set("play.api.db.slick.objectreflection.TestTables.*"), classloader).map(_.createStatements.mkString(";"))
         results.toList === List("""create table "BAR" ("A" VARCHAR NOT NULL)""")
       }
-      
+
       "detect classes using wildcard" in {
         val classloader = Thread.currentThread().getContextClassLoader()
         val results = TableScanner.reflectAllDDLMethods(Set("play.api.db.slick.packagereflection.classes.*"), classloader).map(_.createStatements.mkString(";"))

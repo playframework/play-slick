@@ -25,7 +25,6 @@ package models {
   }
 }
 
-
 class ReflectionUtilsTest extends Specification {
 
   "ReflectionUtils.splitIdentifier" should {
