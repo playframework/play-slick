@@ -14,9 +14,17 @@ object DBAction {
   }
 
   def apply(requestHandler: DBSessionRequest => SimpleResult)(implicit app: Application) = {
+    applyForDB(DB)(requestHandler)
+  }
+
+  def apply(dbName: String)(requestHandler: DBSessionRequest => SimpleResult)(implicit app: Application) = {
+    applyForDB(DB(dbName))(requestHandler)
+  }
+
+  private def applyForDB(db: Database)(requestHandler: DBSessionRequest => SimpleResult)(implicit app: Application) = {
     Action.async { implicit request =>
       Future {
-        DB.withSession { session: Session =>
+        db.withSession { session: Session =>
           requestHandler(DBSessionRequest(session, request))
         }
       }(executionContext)
