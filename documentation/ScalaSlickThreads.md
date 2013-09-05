@@ -11,6 +11,8 @@ object Application extends Controller{
 }
 ```
 
+N.B : you can use `DBAction("myDatabase")` if you need to use another datasource than "default".
+
 Then you can configure the slick thread pool in your application.conf file : 
 
 ```
