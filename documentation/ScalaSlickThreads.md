@@ -1,6 +1,7 @@
 ##Using a separated execution context (thread pool)
 
 You may want to use a separated execution context to avoid blocking threads in the default thread pool.
+Play-slick provides a `DBAction` to handle this. In your controller, you can use `DBAction` as following : 
 
 ```scala
 import play.api.db.slick._
