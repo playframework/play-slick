@@ -7,17 +7,22 @@ The play-slick plugins consists of 2 parts:
  - A wrapper DB object that uses the datasources defined in the Play config files. It is there so it is possible to use Slick sessions in the same fashion as you would Anorm JDBC connections.
 
 
-
-
 # Setup
 
-In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.3"` to the appDependencies in your `project/Build.scala` file:
+In the `project/Build.scala` file add::
 
 ```scala
-val appDependencies = Seq(
-  //other deps
-  "com.typesafe.play" %% "play-slick" % "0.5.0.3" 
-)
+.dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+```
+
+to your `play.Project`.
+
+Example :
+
+```scala
+val main = play.Project(appName, appVersion, appDependencies).settings(
+  // Add your own project settings here      
+ ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
 ```
 
 Add `slick.default="models.*"` and:
