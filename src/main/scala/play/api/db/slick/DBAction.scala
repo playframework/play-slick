@@ -40,7 +40,7 @@ object DBAction {
     applyForDB(db)(requestHandler)(bodyParser)(db.withTransaction)
   }
 
-  private def applyForDB[A,T](db: Database)(requestHandler: DBSessionRequest[A] => SimpleResult)(bodyParser:BodyParser[A])
+  private def applyForDB[A](db: Database)(requestHandler: DBSessionRequest[A] => SimpleResult)(bodyParser:BodyParser[A])
                              (f : (Session => SimpleResult) => SimpleResult)(implicit app: Application) = {
     Action.async(bodyParser) { implicit request =>
       Future {
