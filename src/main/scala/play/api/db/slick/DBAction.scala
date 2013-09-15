@@ -2,7 +2,8 @@ package play.api.db.slick
 
 import play.api.Application
 import scala.concurrent.Future
-import play.api.mvc.{ Action, SimpleResult }
+import play.api.mvc.{AnyContent, BodyParser, Action, SimpleResult}
+import play.api.mvc.BodyParsers.parse.anyContent
 
 object DBAction {
   import SlickExecutionContexts.executionContext
@@ -13,18 +14,37 @@ object DBAction {
     }
   }
 
-  def apply(requestHandler: DBSessionRequest => SimpleResult)(implicit app: Application) = {
-    applyForDB(DB)(requestHandler)
+  def transaction(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application) = {
+    applyForDB(DB)(requestHandler)(anyContent)(DB.withTransaction)
   }
 
-  def apply(dbName: String)(requestHandler: DBSessionRequest => SimpleResult)(implicit app: Application) = {
-    applyForDB(DB(dbName))(requestHandler)
+  def apply(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application) = {
+    applyForDB(DB)(requestHandler)(anyContent)(DB.withSession)
   }
 
-  private def applyForDB(db: Database)(requestHandler: DBSessionRequest => SimpleResult)(implicit app: Application) = {
-    Action.async { implicit request =>
+  def apply[A](bodyParser:BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
+    applyForDB(DB)(requestHandler)(bodyParser)(DB.withSession)
+  }
+
+  def transaction[A](bodyParser:BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
+    applyForDB(DB)(requestHandler)(bodyParser)(DB.withTransaction)
+  }
+
+  def apply[A](dbName: String)(bodyParser:BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
+    val db = DB(dbName)
+    applyForDB(db)(requestHandler)(bodyParser)(db.withSession)
+  }
+
+  def transaction[A](dbName: String)(bodyParser:BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
+    val db = DB(dbName)
+    applyForDB(db)(requestHandler)(bodyParser)(db.withTransaction)
+  }
+
+  private def applyForDB[A,T](db: Database)(requestHandler: DBSessionRequest[A] => SimpleResult)(bodyParser:BodyParser[A])
+                             (f : (Session => SimpleResult) => SimpleResult)(implicit app: Application) = {
+    Action.async(bodyParser) { implicit request =>
       Future {
-        db.withSession { session: Session =>
+        f { session: Session =>
           requestHandler(DBSessionRequest(session, request))
         }
       }(executionContext)
