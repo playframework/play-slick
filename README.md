@@ -12,7 +12,7 @@ The play-slick plugins consists of 2 parts:
 In the `project/Build.scala` file add::
 
 ```scala
-.dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+.dependsOn(RootProject( uri("http://git.safespeedllc.com:9001/safespeed/play-slick.git") ))
 ```
 
 to your `play.Project`.
@@ -22,22 +22,10 @@ Example :
 ```scala
 val main = play.Project(appName, appVersion, appDependencies).settings(
   // Add your own project settings here      
- ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+ ).dependsOn(RootProject( uri("http://git.safespeedllc.com:9001/safespeed/play-slick.git") ))
 ```
 
-Add `slick.default="models.*"` and:
-```
-db.default.driver=org.h2.Driver
-db.default.url="jdbc:h2:mem:play"
-db.default.user=sa
-db.default.password=""
-```
-to **application.conf** and [create a model](http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables).
-
-
-
-Note that only Play 2.2.x is supported by the 0.5.x series.
-The Play 2.1 was supported in the 0.4.x series.
+Currently only slick 2.0 is supported with no planned support for evolutions. (Worthless gimmick anyway)
 
 Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki)
 
