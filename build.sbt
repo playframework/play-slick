@@ -27,7 +27,7 @@ libraryDependencies ++= {
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
-    "com.typesafe.slick" % "slick_2.10" % "2.0.0-M2",
+    "com.typesafe.slick" %% "slick" % "2.0.0-M2",
     "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
     "com.google.code.findbugs" % "jsr305" % "2.0.1", //needed by org.reflections
     ("org.reflections" % "reflections" % "0.9.8" notTransitive())
