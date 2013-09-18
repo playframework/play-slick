@@ -1,6 +1,6 @@
 package play.api.db.slick
 
-import scala.slick.driver.ExtendedProfile
+import scala.slick.driver.JdbcProfile
 
 /**
  * This profile makes it easier to use
@@ -27,5 +27,5 @@ import scala.slick.driver.ExtendedProfile
  * See the sample application for another example
  */
 trait Profile {
-  val profile: ExtendedProfile
+  val profile: JdbcProfile
 }
