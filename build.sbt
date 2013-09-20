@@ -23,7 +23,7 @@ scalacOptions += "-feature"
 scalacOptions += "-deprecation"
 
 libraryDependencies ++= {
-  val playVersion = "2.2.0-M2"
+  val playVersion = "2.2.0"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
