@@ -12,7 +12,7 @@ package object slick {
   def DB(name: String)(implicit app: Application) = new Database(name, app)
 
   //for export to user app
-  type Session = scala.slick.session.Session
+  type Session = scala.slick.jdbc.JdbcBackend#Session
 
   implicit def dbSessionRequestAsRequest[A](r: DBSessionRequest[A]): Request[A] = r.request
   implicit def dbSessionRequestAsSession[_](implicit r: DBSessionRequest[_]): Session = r.session
