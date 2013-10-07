@@ -26,7 +26,11 @@ class Database(name: String = "default", app: Application) extends PlayDatabase 
   }
 
   private def driverByName: String => Option[JdbcDriver] = Map(
-    "org.apache.derby.jdbc.EmbeddedDriver" -> DerbyDriver, "org.h2.Driver" -> H2Driver, "org.hsqldb.jdbcDriver" -> HsqldbDriver, "com.mysql.jdbc.Driver" -> MySQLDriver, "org.postgresql.Driver" -> PostgresDriver, "org.sqlite.JDBC" -> SQLiteDriver, "com.microsoft.sqlserver.jdbc.SQLServerDriver" -> SQLServerDriver, "net.sourceforge.jtds.jdbc.Driver" -> SQLServerDriver).get(_)
+    "org.apache.derby.jdbc.EmbeddedDriver" -> DerbyDriver, "org.h2.Driver" -> H2Driver, 
+    "org.hsqldb.jdbcDriver" -> HsqldbDriver, "com.mysql.jdbc.Driver" -> MySQLDriver, 
+    "org.postgresql.Driver" -> PostgresDriver, "org.sqlite.JDBC" -> SQLiteDriver, 
+    "com.microsoft.sqlserver.jdbc.SQLServerDriver" -> SQLServerDriver, 
+    "net.sourceforge.jtds.jdbc.Driver" -> SQLServerDriver).get(_)
   def driver = {
     val key = s"db.$name.driver"
     import conf._
