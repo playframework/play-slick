@@ -16,5 +16,5 @@ package object slick {
   type Session = scala.slick.jdbc.JdbcBackend#Session
 
   implicit def dbSessionRequestAsSession[_](implicit r: DBSessionRequest[_]): Session = r.session
-  implicit def dbSessionRequestAsRequest[A](implicit r: DBSessionRequest[A]): Request[A] = r.request
+  implicit def dbSessionRequestAsRequest[A](r: DBSessionRequest[A]): Request[A] = r.request
 }
