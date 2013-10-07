@@ -11,18 +11,17 @@ The play-slick plugins consists of 2 parts:
 
 In the `project/Build.scala` file add::
 
-```scala
-.dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
-```
+In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.4"` to the appDependencies in your `project/Build.scala` file:
 
 to your `play.Project`.
 
 Example :
 
 ```scala
-val main = play.Project(appName, appVersion, appDependencies).settings(
-  // Add your own project settings here      
- ).dependsOn(RootProject( uri("git://github.com/freekh/play-slick.git") ))
+ val appDependencies = Seq(
+   //other deps
+  "com.typesafe.play" %% "play-slick" % "0.5.0.4" 
+ )
 ```
 
 Add `slick.default="models.*"` and:
