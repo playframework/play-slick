@@ -24,7 +24,7 @@ object Application extends Controller{
     )(Cat.apply)(Cat.unapply)
   )
   
-  def insert = DBAction("default") { implicit rs =>
+  def insert = DBAction{ implicit rs =>
     val cat = catForm.bindFromRequest.get
     Cats.insert(cat)
     Redirect(routes.Application.index)

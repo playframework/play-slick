@@ -10,21 +10,20 @@ The play-slick plugins consists of 2 parts:
 
 In the `project/Build.scala` file add::
 
-```scala
-.dependsOn(RootProject( uri("http://git.safespeedllc.com:9001/safespeed/play-slick.git") ))
-```
+In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.4"` to the appDependencies in your `project/Build.scala` file:
 
 to your `play.Project`.
 
 Example :
 
 ```scala
-val main = play.Project(appName, appVersion, appDependencies).settings(
-  // Add your own project settings here      
- ).dependsOn(RootProject( uri("http://git.safespeedllc.com:9001/safespeed/play-slick.git") ))
+ val appDependencies = Seq(
+   //other deps
+  "com.typesafe.play" %% "play-slick" % "0.5.0.4" 
+ )
 ```
 
-Currently only slick 2.0 is supported with no planned support for evolutions. (Worthless gimmick anyway)
+Currently only slick 2.0 is supported with no planned support for evolutions.
 
 Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki)
 

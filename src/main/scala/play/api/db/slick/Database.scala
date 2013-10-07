@@ -4,13 +4,27 @@ package play.api.db.slick
 import play.api.Application
 import scala.slick.driver._
 import scala.slick.jdbc.PlayDatabase
+import java.util.concurrent.ConcurrentHashMap
+
 
 object Database {
+  import collection.JavaConverters._
+  private[slick] val cachedDatabases = (new ConcurrentHashMap[Int, Database]()).asScala
 
-  def apply(name: String = "default")(implicit app: Application) = new Database(name, app)
+  val defaultName = "default"
+  def apply(name: String = defaultName)(implicit app: Application) = {
+    val id = name.hashCode + app.hashCode
+    //creating a new Database means reading the configuration and loading the DataSource,
+    //therefore we cache to shave off some millis
+    cachedDatabases.getOrElse(id, {
+      val db = new Database(name, app)
+      cachedDatabases.put(id, db)
+      db
+    })
+  }
 }
 
-class Database(name: String = "default", app: Application) extends PlayDatabase {
+class Database(val name: String = Database.defaultName, app: Application) extends PlayDatabase {
   def apply(name: String) = Database(name)(app)
 
   def apply(app: Application) = Database(name)(app)

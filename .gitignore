@@ -2,6 +2,9 @@
 *.log
 
 # sbt specific
+.cache
+.classpath
+.target
 dist/*
 target/
 lib_managed/
@@ -11,6 +14,8 @@ project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
+.project
+.settings
 
 # samples
 samples/*/logs
