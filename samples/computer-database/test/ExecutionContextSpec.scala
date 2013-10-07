@@ -25,7 +25,7 @@ class IntegrationSpec extends Specification {
       running(FakeApplication()) {
         val result = Application.threadTest (FakeRequest())
         println( contentAsString(result) )
-        contentAsString(result) must startWith("application-play.akka.actor.slick-context")
+        contentAsString(result) must startWith("slick")
      }
   }  
 }
