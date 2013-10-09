@@ -135,6 +135,7 @@ trait PredicatedDBAction {
           val maxConnections = dbAttributes.maxConnections
           val maxQueriesPerRequest = dbAttributes.maxQueriesPerRequest
           dbAttributes.maybeThreadPool.map { threadPool =>
+            //Stolen from Christopher Hunt's Techempower benchmark's optimization:
             () => threadPool.getQueue.size() < maxConnections * maxQueriesPerRequest
           }.getOrElse {
             () => true
