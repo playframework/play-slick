@@ -33,7 +33,7 @@ class TestableDBActionSpec extends Specification {
   }
   
   "FreeDBAction" should {
-    "be instantiable wihtout a Play Application" in {
+    "be instantiable without a Play Application" in {
       val ids = List(1, 2, 3)
       database.withSession { implicit session: Session =>
         Ids.ddl.create
