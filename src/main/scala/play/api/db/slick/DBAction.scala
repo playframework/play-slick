@@ -98,7 +98,10 @@ class DBAction(database: Database, minConnections: Int = 5, maxConnections: Int 
 
   override protected val errorPage = play.api.mvc.Results.ServiceUnavailable
 
-  override protected def db(name: String, maybeApp: Option[Application]) = database
+  override protected def db(name: String, maybeApp: Option[Application]) = {
+    if (database.name != name) throw new Exception("There only one database configured for this Action: " + database.name + ". name was: " + name)
+    database
+  }
 
   override val attributes = Map(database.name -> {
     val (executionContext, threadPool) = SlickExecutionContext.threadPoolExecutionContext(minConnections, maxConnections)
