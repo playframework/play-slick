@@ -13,17 +13,27 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
   lazy val next = Option(page + 1).filter(_ => (offset + items.size) < total)
 }
 
+/** Data Access Object trait
+ *  
+ *  Used to create the DAOs: Companies and Computers
+ */ 
+private[models] trait DAO {
+  val Companies= new Companies
+  val Computers = new Computers
+}
+
 case class Company(id: Option[Long], name: String)
 
 case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date]= None, discontinued: Option[Date]= None, companyId: Option[Long]=None)
 
-object Companies extends Table[Company]("COMPANY") {
-
+class Companies extends Table[Company]("COMPANY") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
   def * = id.? ~ name <>(Company.apply _, Company.unapply _)
   def autoInc = * returning id
+}
 
+object Companies extends DAO {
   /**
    * Construct the Map[String,String] needed to fill a select options set
    */
@@ -45,7 +55,7 @@ object Companies extends Table[Company]("COMPANY") {
   }
 }
 
-object Computers extends Table[Computer]("COMPUTER") {
+class Computers extends Table[Computer]("COMPUTER") {
 
   implicit val javaUtilDateTypeMapper = MappedTypeMapper.base[java.util.Date, java.sql.Date](
     x => new java.sql.Date(x.getTime),
@@ -62,8 +72,10 @@ object Computers extends Table[Computer]("COMPUTER") {
 
   def autoInc = * returning id
 
-  val byId = createFinderBy(_.id)
+  val byId = createFinderBy(_.id)  
+}
 
+object Computers extends DAO {
   /**
    * Retrieve a computer from the id
    * @param id

@@ -13,6 +13,9 @@ import models._
   */
 class DBSpec extends Specification { 
 
+  //create an instance of the table
+  val Cats = new Cats //see a way to architect your app in the computers-database-slick sample
+
   "DB" should {
     "work as expected" in new WithApplication {
 

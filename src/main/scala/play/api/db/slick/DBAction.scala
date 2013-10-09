@@ -40,15 +40,15 @@ case class DBAttributes(executionContext: ExecutionContext, maybeThreadPool: Opt
  *  }
  * }}}
  */
-object DBAction extends DefaultDBAction
+object DBAction extends CurrentDBAction
 
 /**
  * Defines the DBAction default behaviour
  *
  */
-trait DefaultDBAction extends PredicatedDBAction {
+trait CurrentDBAction extends PredicatedDBAction {
   /** Override to use a different app */
-  protected lazy val app = play.api.Play.current
+  protected lazy val app = Config.app
 
   /** Override to change default error page */
   protected val errorPage = play.api.mvc.Results.ServiceUnavailable
@@ -59,13 +59,18 @@ trait DefaultDBAction extends PredicatedDBAction {
   /** The default name used by the apply action that has a default name */
   override lazy val defaultName = {
     if (app.mode == Mode.Test && app.configuration.getConfig(s"db.$testName").isDefined) testName
-    else Database.defaultName
+    else Config.defaultName
   }
 
   /** Used to determine which db name config sections are to be included */
   protected def includeFilter(name: String) = {
     if (app.mode == Mode.Test && app.configuration.getConfig(s"db.$testName").isDefined) name == testName //only use test in test mode
     else name != testName //never use test in 
+  }
+
+  override protected def db(name: String, maybeApp: Option[Application]) = {
+    val currentApp = maybeApp.getOrElse(app)
+    DB(name)(currentApp)
   }
 
   /**
@@ -83,12 +88,45 @@ trait DefaultDBAction extends PredicatedDBAction {
       dbName -> DBAttributes(executionContext, Some(threadPool), minConnections, maxConnections, paritionCount, maxQueriesPerRequest)
     }(collection.breakOut)
   }
+
+  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(dbName, Option(app))
+    applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
+  }
+
+  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(dbName, Option(app))
+    applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
+  }
+}
+
+/**
+ * DB Action, decoupled from Application
+ *
+ *  Useful for tests, see TestableDBActionTest.scala
+ */
+class DBAction(database: Database, minConnections: Int = 5, maxConnections: Int = 5, partitionCount: Int = 2, maxQueriesPerRequest: Int = 20) extends PredicatedDBAction {
+  override val defaultName = database.name
+
+  override protected val errorPage = play.api.mvc.Results.ServiceUnavailable
+
+  override protected def db(name: String, maybeApp: Option[Application]) = {
+    if (database.name != name) throw new Exception("There only one database configured for this Action: " + database.name + ". name was: " + name)
+    database
+  }
+
+  override val attributes = Map(database.name -> {
+    val (executionContext, threadPool) = SlickExecutionContext.threadPoolExecutionContext(minConnections, maxConnections)
+    DBAttributes(executionContext, Some(threadPool), minConnections, maxConnections, partitionCount, maxQueriesPerRequest)
+  })
 }
 
 trait PredicatedDBAction {
   val defaultName: String
 
   val attributes: Map[String, DBAttributes]
+
+  protected def db(name: String, maybeApp: Option[Application]): Database
 
   /** Defines the functions used to check db availability for each db name */
   protected lazy val available: Map[String, () => Boolean] = {
@@ -120,38 +158,27 @@ trait PredicatedDBAction {
     } else Action(errorPage)
   }
 
-  def transaction(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application) = {
-    applyForDB(DB)(requestHandler)(anyContent)(DB.withTransaction)(errorPage)
+  def apply(requestHandler: DBSessionRequest[_] => SimpleResult)(implicit app: Application = null) = { //use app if found implicitly, can default to another app
+    val current = db(defaultName, Option(app))
+    applyForDB(current)(requestHandler)(anyContent)(current.withSession)(errorPage)
   }
 
-  def apply(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application) = {
-    applyForDB(DB)(requestHandler)(anyContent)(DB.withSession)(errorPage)
+  def apply[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(defaultName, Option(app))
+    applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def apply[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
-    applyForDB(DB)(requestHandler)(bodyParser)(DB.withSession)(errorPage)
+  def transaction(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(defaultName, Option(app))
+    applyForDB(current)(requestHandler)(anyContent)(current.withTransaction)(errorPage)
   }
 
-  def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
-    applyForDB(DB)(requestHandler)(bodyParser)(DB.withTransaction)(errorPage)
-  }
-  
-  def apply(dbName: String)(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application) = {
-    val db = DB(dbName)
-    applyForDB(db)(requestHandler)(anyContent)(db.withSession)(errorPage)
+  def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(defaultName, Option(app))
+    applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
 
-  def apply[A](dbName: String)(bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
-    val db = DB(dbName)
-    applyForDB(db)(requestHandler)(bodyParser)(db.withSession)(errorPage)
-  }
-
-  def transaction[A](dbName: String)(bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
-    val db = DB(dbName)
-    applyForDB(db)(requestHandler)(bodyParser)(db.withTransaction)(errorPage)
-  }
-
-  protected def applyForDB[A](db: Database)(requestHandler: DBSessionRequest[A] => SimpleResult)(bodyParser: BodyParser[A])(f: (Session => SimpleResult) => SimpleResult)(errorPage: => Result)(implicit app: Application, executionContext: ExecutionContext = attributes(defaultName).executionContext): Action[A] = {
+  protected def applyForDB[A](db: Database)(requestHandler: DBSessionRequest[A] => SimpleResult)(bodyParser: BodyParser[A])(f: (Session => SimpleResult) => SimpleResult)(errorPage: => Result)(implicit executionContext: ExecutionContext = attributes(defaultName).executionContext): Action[A] = {
     if (isDBAvailable(db.name)) {
       Action.async(bodyParser) { implicit request =>
         Future {
