@@ -11,7 +11,7 @@ The play-slick plugins consists of 2 parts:
 
 In the `project/Build.scala` file add::
 
-In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.6"` to the appDependencies in your `project/Build.scala` file:
+In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.7"` to the appDependencies in your `project/Build.scala` file:
 
 to your `play.Project`.
 
@@ -20,7 +20,7 @@ Example :
 ```scala
  val appDependencies = Seq(
    //other deps
-  "com.typesafe.play" %% "play-slick" % "0.5.0.6" 
+  "com.typesafe.play" %% "play-slick" % "0.5.0.7" 
  )
 ```
 
@@ -31,12 +31,16 @@ db.default.url="jdbc:h2:mem:play"
 db.default.user=sa
 db.default.password=""
 ```
-to **application.conf** and [create a model](http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables).
+to **application.conf** and create a model. Creating models are described in the Slick documentation: http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables. 
 
+NOTE: the Slick documentation is slightly outdated. 
+The computer-database contains a proposal that better describes the current reality: https://github.com/freekh/play-slick/blob/master/samples/computer-database/app/models/Models.scala#L20.
 
-
-Note that only Play 2.2.x is supported by the 0.5.x series.
+# Versioning
+Play 2.2.x is supported by the 0.5.x series.
 The Play 2.1 was supported in the 0.4.x series.
+
+From Play 2.3 this module will be integrated into Play.
 
 Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
 
