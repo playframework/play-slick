@@ -6,12 +6,13 @@ The play-slick plugins consists of 2 parts:
  - DDL schema generation Plugin that works like the Ebean DDL Plugin. Based on config it generates create schema and drop schema SQL commands and writes them to evolutions.
  - A wrapper DB object that uses the datasources defined in the Play config files. It is there so it is possible to use Slick sessions in the same fashion as you would Anorm JDBC connections.
 
+[![Build Status](https://travis-ci.org/freekh/play-slick.png?branch=master)](https://travis-ci.org/freekh/play-slick)
 
 # Setup
 
 In the `project/Build.scala` file add::
 
-In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.7"` to the appDependencies in your `project/Build.scala` file:
+In your application, add `"com.typesafe.play" %% "play-slick" % "0.5.0.8"` to the appDependencies in your `project/Build.scala` file:
 
 to your `play.Project`.
 
@@ -20,7 +21,7 @@ Example :
 ```scala
  val appDependencies = Seq(
    //other deps
-  "com.typesafe.play" %% "play-slick" % "0.5.0.7" 
+  "com.typesafe.play" %% "play-slick" % "0.5.0.8" 
  )
 ```
 
