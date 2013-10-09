@@ -33,6 +33,7 @@ libraryDependencies ++= {
     ("org.reflections" % "reflections" % "0.9.8" notTransitive())
       .exclude("com.google.guava", "guava") //provided by play
       .exclude("javassist", "javassist"), //provided by play
+    "org.hsqldb" % "hsqldb" % "2.3.1" % "test",
     "com.typesafe.play" %% "play-test" % playVersion % "test")
 }
 
