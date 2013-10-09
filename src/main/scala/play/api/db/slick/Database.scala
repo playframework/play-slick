@@ -29,7 +29,7 @@ class Database(val name: String = Database.defaultName, app: Application) extend
 
   val conf = app.configuration
 
-  override protected val datasource = {
+  override protected lazy val datasource = {
     import conf._
     getConfig(s"db.$name") match {
       case None => throw reportError(s"db.$name", s"While loading datasource: could not find db.$name in configuration")
@@ -40,7 +40,7 @@ class Database(val name: String = Database.defaultName, app: Application) extend
   private def driverByName: String => Option[ExtendedDriver] = Map(
     "org.apache.derby.jdbc.EmbeddedDriver" -> DerbyDriver, "org.h2.Driver" -> H2Driver, "org.hsqldb.jdbcDriver" -> HsqldbDriver, "com.mysql.jdbc.Driver" -> MySQLDriver, "org.postgresql.Driver" -> PostgresDriver, "org.sqlite.JDBC" -> SQLiteDriver, "com.microsoft.sqlserver.jdbc.SQLServerDriver" -> SQLServerDriver, "net.sourceforge.jtds.jdbc.Driver" -> SQLServerDriver).get(_)
     
-  val driver = {
+  lazy val driver = {
     val key = s"db.$name.driver"
     import conf._
     getString(key).map { driverName =>
