@@ -87,10 +87,21 @@ trait CurrentDBAction extends PredicatedDBAction {
       dbName -> DBAttributes(executionContext, Some(threadPool), minConnections, maxConnections, paritionCount, maxQueriesPerRequest)
     }(collection.breakOut)
   }
+
+  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(dbName, Option(app))
+    applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
+  }
+
+  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+    val current = db(dbName, Option(app))
+    applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
+  }
 }
 
-/** DB Action, decoupled from Application
- *  
+/**
+ * DB Action, decoupled from Application
+ *
  *  Useful for tests, see TestableDBActionTest.scala
  */
 class DBAction(database: Database, minConnections: Int = 5, maxConnections: Int = 5, partitionCount: Int = 2, maxQueriesPerRequest: Int = 20) extends PredicatedDBAction {
@@ -156,11 +167,6 @@ trait PredicatedDBAction {
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
-    val current = db(dbName, Option(app))
-    applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
-  }
-
   def transaction(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application = null) = {
     val current = db(defaultName, Option(app))
     applyForDB(current)(requestHandler)(anyContent)(current.withTransaction)(errorPage)
@@ -168,11 +174,6 @@ trait PredicatedDBAction {
 
   def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
     val current = db(defaultName, Option(app))
-    applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
-  }
-
-  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
-    val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
 
