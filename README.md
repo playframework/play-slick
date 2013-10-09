@@ -31,7 +31,9 @@ db.default.url="jdbc:h2:mem:play"
 db.default.user=sa
 db.default.password=""
 ```
-to **application.conf** and create a model. Creating models are described in the Slick documentation: http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables. NOTE: this documentation is slightly outdated. 
+to **application.conf** and create a model. Creating models are described in the Slick documentation: http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables. 
+
+NOTE: the Slick documentation is slightly outdated. 
 The computer-database contains a proposal that better describes the current reality: https://github.com/freekh/play-slick/blob/master/samples/computer-database/app/models/Models.scala#L20.
 
 
