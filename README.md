@@ -38,7 +38,7 @@ to **application.conf** and [create a model](http://slick.typesafe.com/doc/1.0.1
 Note that only Play 2.2.x is supported by the 0.5.x series.
 The Play 2.1 was supported in the 0.4.x series.
 
-Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/ScalaSlickUsage)
+Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
 
 Copyright
 ---------
