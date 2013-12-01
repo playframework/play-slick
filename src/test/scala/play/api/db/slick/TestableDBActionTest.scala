@@ -17,6 +17,7 @@ import play.api.Application
 
 class TestableDBActionSpec extends Specification {
   
+  Class.forName("org.h2.Driver")
   val datasource = new BoneCPDataSource
   datasource.setJdbcUrl("jdbc:h2:mem:play")
   datasource.setUsername("sa")
