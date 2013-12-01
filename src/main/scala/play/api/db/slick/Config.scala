@@ -1,7 +1,7 @@
 package play.api.db.slick
 
 import scala.slick.driver._
-import play.api.Application
+import play.api.{Configuration, Application}
 
 trait Config {
   val defaultName = "default"
@@ -18,13 +18,37 @@ trait Config {
     }
   }
 
+  private def classExists(name: String): Boolean = try{
+    Class.forName(name)
+    true
+  }catch{
+    case e: ClassNotFoundException =>
+      false
+  }
+
+  private def arbitraryDriver(name: String)(conf: Configuration, key: String): ExtendedDriver = {
+    val clazz = try{
+      Class.forName(name+"$")
+    }catch{
+      case e: ClassNotFoundException if(classExists(name)) =>
+        throw conf.reportError(key, s"The class $name is not an object. Use 'object' keyword, please. If it is a third-party class, you may want to create a subclass.")
+    }
+    val instanceField = clazz.getField("MODULE$")
+    instanceField.get() match{
+      case driver: ExtendedDriver => driver
+      case _ => throw conf.reportError(key, s"The class $name is not a "+classOf[ExtendedDriver].getName+".")
+    }
+  }
+
   def driver(name: String = defaultName)(app: Application)= {
     val conf = app.configuration
     val key = s"db.$name.driver"
     conf.getString(key).map { driverName =>
-      driverByName(driverName).getOrElse {
+      driverByName(driverName).orElse(
+        conf.getString(s"db.$name.slickdriver").map(arbitraryDriver(_)(conf, key))
+      ).getOrElse {
         throw conf.reportError(
-          key, s"Slick error : Unknown jdbc driver found in application.conf: [$driverName]")
+          key, s"Slick error : Unknown jdbc driver found in application.conf: [$driverName]. If you have a Slick driver for this database, you can put its class name to db.$name.slickdriver.")
       }
     }.getOrElse {
       throw conf.reportError(
