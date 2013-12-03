@@ -25,8 +25,11 @@ class ConfigSpec extends Specification {
 
       "db.default.driver" -> "com.mysql.jdbc.Driver",
 
-      "db.custom.driver" -> "play.api.db.slick.test.SomeDummyDriver",
-      "db.custom.slickdriver" -> "scala.slick.driver.PostgresDriver",
+      "db.custom-unknown.driver" -> "play.api.db.slick.test.SomeDummyDriver",
+      "db.custom-unknown.slickdriver" -> "scala.slick.driver.PostgresDriver",
+
+      "db.custom-known.driver" -> "org.h2.Driver",
+      "db.custom-known.slickdriver" -> "scala.slick.driver.PostgresDriver",
 
       "db.badDriver.driver"-> "play.api.db.slick.test.SomeDummyDriver",
 
@@ -58,9 +61,16 @@ class ConfigSpec extends Specification {
       }
     }
 
-    "return the arbitrary driver if specified" in {
+    "return the arbitrary driver if specified (for unknown JDBC driver)" in {
       running(fakeApplication) {
-        val driver = Config.driver("custom")(play.api.Play.current)
+        val driver = Config.driver("custom-unknown")(play.api.Play.current)
+        driver must equalTo(scala.slick.driver.PostgresDriver)
+      }
+    }
+
+    "return the arbitrary driver if specified (for known JDBC driver)" in {
+      running(fakeApplication) {
+        val driver = Config.driver("custom-known")(play.api.Play.current)
         driver must equalTo(scala.slick.driver.PostgresDriver)
       }
     }

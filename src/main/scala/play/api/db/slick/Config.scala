@@ -44,9 +44,8 @@ trait Config {
     val conf = app.configuration
     val key = s"db.$name.driver"
     conf.getString(key).map { driverName =>
-      driverByName(driverName).orElse(
-        conf.getString(s"db.$name.slickdriver").map(arbitraryDriver(_)(conf, key))
-      ).getOrElse {
+      def arbitraryDriverOption = conf.getString(s"db.$name.slickdriver").map(arbitraryDriver(_)(conf, key))
+      arbitraryDriverOption.orElse(driverByName(driverName)).getOrElse {
         throw conf.reportError(
           key, s"Slick error : Unknown jdbc driver found in application.conf: [$driverName]. If you have a Slick driver for this database, you can put its class name to db.$name.slickdriver.")
       }
