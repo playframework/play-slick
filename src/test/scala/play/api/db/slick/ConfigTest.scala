@@ -8,10 +8,14 @@ import play.api.Play.current
 import play.api.db.slick.DB
 import play.api.db.slick.Config
 import play.api.PlayException
+import scala.slick.driver.ExtendedDriver
 
 object NotAnExtendedDriver{
 }
-
+object Enclosing{
+  object SomeExtendedDriver extends ExtendedDriver{
+  }
+}
 class ConfigSpec extends Specification {
 
   //abstract class SomeDummyDriver extends java.sql.Driver{}
@@ -30,6 +34,9 @@ class ConfigSpec extends Specification {
 
       "db.custom-known.driver" -> "org.h2.Driver",
       "db.custom-known.slickdriver" -> "scala.slick.driver.PostgresDriver",
+
+      "db.custom-nested.driver" -> "org.h2.Driver",
+      "db.custom-nested.slickdriver" -> "play.api.db.slick.test.Enclosing$SomeExtendedDriver",
 
       "db.badDriver.driver"-> "play.api.db.slick.test.SomeDummyDriver",
 
@@ -72,6 +79,13 @@ class ConfigSpec extends Specification {
       running(fakeApplication) {
         val driver = Config.driver("custom-known")(play.api.Play.current)
         driver must equalTo(scala.slick.driver.PostgresDriver)
+      }
+    }
+
+    "return the arbitrary driver if specified (for known JDBC driver)" in {
+      running(fakeApplication) {
+        val driver = Config.driver("custom-nested")(play.api.Play.current)
+        driver must equalTo(Enclosing.SomeExtendedDriver)
       }
     }
 
