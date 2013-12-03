@@ -38,13 +38,13 @@ class ConfigSpec extends Specification {
       "db.custom-nested.driver" -> "org.h2.Driver",
       "db.custom-nested.slickdriver" -> "play.api.db.slick.test.Enclosing$SomeExtendedDriver",
 
-      "db.badDriver.driver"-> "play.api.db.slick.test.SomeDummyDriver",
+      "db.jdbc-driver-not-recognized.driver"-> "play.api.db.slick.test.SomeDummyDriver",
 
-      "db.badClass.driver"-> "play.api.db.slick.test.SomeDummyDriver",
-      "db.badClass.slickdriver" -> classOf[BadSlickDriver].getName,
+      "db.class-instead-of-object.driver"-> "play.api.db.slick.test.SomeDummyDriver",
+      "db.class-instead-of-object.slickdriver" -> classOf[BadSlickDriver].getName,
 
-      "db.badDriverClass.driver"-> "play.api.db.slick.test.SomeDummyDriver",
-      "db.badDriverClass.slickdriver" -> "play.api.db.slick.test.NotAnExtendedDriver",
+      "db.bad-object-type.driver"-> "play.api.db.slick.test.SomeDummyDriver",
+      "db.bad-object-type.slickdriver" -> "play.api.db.slick.test.NotAnExtendedDriver",
 
       "evolutionplugin" -> "disabled")
   }
@@ -91,19 +91,19 @@ class ConfigSpec extends Specification {
 
     "give a good advice if driver is not supported" in {
       running(fakeApplication) {
-        Config.driver("badDriver")(play.api.Play.current) must throwA[Throwable]("""If you have a Slick driver for this database, you can put its class name to db\.badDriver\.slickdriver\.""")
+        Config.driver("jdbc-driver-not-recognized")(play.api.Play.current) must throwA[Throwable]("""If you have a Slick driver for this database, you can put its class name to db\.jdbc-driver-not-recognized\.slickdriver\.""")
       }
     }
 
     "give a good error message if a class is passed instead of object" in {
       running(fakeApplication) {
-        Config.driver("badClass")(play.api.Play.current) must throwA[Throwable]("""The class play\.api\.db\.slick\.test\.ConfigSpec\$BadSlickDriver is not an object. Use 'object' keyword, please\.""")
+        Config.driver("class-instead-of-object")(play.api.Play.current) must throwA[Throwable]("""The class play\.api\.db\.slick\.test\.ConfigSpec\$BadSlickDriver is not an object. Use 'object' keyword, please\.""")
       }
     }
 
     "give a good error message if the driver object is not an ExtendedDriver" in {
       running(fakeApplication) {
-        Config.driver("badDriverClass")(play.api.Play.current) must throwA[PlayException.ExceptionSource]("""The class play\.api\.db\.slick\.test\.NotAnExtendedDriver is not a scala\.slick\.driver\.ExtendedDriver\.""")
+        Config.driver("bad-object-type")(play.api.Play.current) must throwA[PlayException.ExceptionSource]("""The class play\.api\.db\.slick\.test\.NotAnExtendedDriver is not a scala\.slick\.driver\.ExtendedDriver\.""")
       }
     }
 
