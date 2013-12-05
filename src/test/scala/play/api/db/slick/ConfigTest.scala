@@ -7,13 +7,45 @@ import play.api.db._
 import play.api.Play.current
 import play.api.db.slick.DB
 import play.api.db.slick.Config
+import play.api.PlayException
+import scala.slick.driver.ExtendedDriver
 
+object NotAnExtendedDriver{
+}
+object Enclosing{
+  object SomeExtendedDriver extends ExtendedDriver{
+  }
+}
 class ConfigSpec extends Specification {
+
+  //abstract class SomeDummyDriver extends java.sql.Driver{}
+
+  class BadSlickDriver{}
+
 
   def testConfiguration = {
     Map(
       "db.somedb.driver" -> "org.h2.Driver",
+
       "db.default.driver" -> "com.mysql.jdbc.Driver",
+
+      "db.custom-unknown.driver" -> "play.api.db.slick.test.SomeDummyDriver",
+      "db.custom-unknown.slickdriver" -> "scala.slick.driver.PostgresDriver",
+
+      "db.custom-known.driver" -> "org.h2.Driver",
+      "db.custom-known.slickdriver" -> "scala.slick.driver.PostgresDriver",
+
+      "db.custom-nested.driver" -> "org.h2.Driver",
+      "db.custom-nested.slickdriver" -> "play.api.db.slick.test.Enclosing$SomeExtendedDriver",
+
+      "db.jdbc-driver-not-recognized.driver"-> "play.api.db.slick.test.SomeDummyDriver",
+
+      "db.class-instead-of-object.driver"-> "play.api.db.slick.test.SomeDummyDriver",
+      "db.class-instead-of-object.slickdriver" -> classOf[BadSlickDriver].getName,
+
+      "db.bad-object-type.driver"-> "play.api.db.slick.test.SomeDummyDriver",
+      "db.bad-object-type.slickdriver" -> "play.api.db.slick.test.NotAnExtendedDriver",
+
       "evolutionplugin" -> "disabled")
   }
 
@@ -35,5 +67,45 @@ class ConfigSpec extends Specification {
         driver must equalTo(scala.slick.driver.MySQLDriver)
       }
     }
+
+    "return the arbitrary driver if specified (for unknown JDBC driver)" in {
+      running(fakeApplication) {
+        val driver = Config.driver("custom-unknown")(play.api.Play.current)
+        driver must equalTo(scala.slick.driver.PostgresDriver)
+      }
+    }
+
+    "return the arbitrary driver if specified (for known JDBC driver)" in {
+      running(fakeApplication) {
+        val driver = Config.driver("custom-known")(play.api.Play.current)
+        driver must equalTo(scala.slick.driver.PostgresDriver)
+      }
+    }
+
+    "return the arbitrary driver if specified (for known JDBC driver)" in {
+      running(fakeApplication) {
+        val driver = Config.driver("custom-nested")(play.api.Play.current)
+        driver must equalTo(Enclosing.SomeExtendedDriver)
+      }
+    }
+
+    "give a good advice if driver is not supported" in {
+      running(fakeApplication) {
+        Config.driver("jdbc-driver-not-recognized")(play.api.Play.current) must throwA[Throwable]("""If you have a Slick driver for this database, you can put its class name to db\.jdbc-driver-not-recognized\.slickdriver\.""")
+      }
+    }
+
+    "give a good error message if a class is passed instead of object" in {
+      running(fakeApplication) {
+        Config.driver("class-instead-of-object")(play.api.Play.current) must throwA[Throwable]("""The class play\.api\.db\.slick\.test\.ConfigSpec\$BadSlickDriver is not an object. Use 'object' keyword, please\.""")
+      }
+    }
+
+    "give a good error message if the driver object is not an ExtendedDriver" in {
+      running(fakeApplication) {
+        Config.driver("bad-object-type")(play.api.Play.current) must throwA[PlayException.ExceptionSource]("""The class play\.api\.db\.slick\.test\.NotAnExtendedDriver is not a scala\.slick\.driver\.ExtendedDriver\.""")
+      }
+    }
+
   }
 }
