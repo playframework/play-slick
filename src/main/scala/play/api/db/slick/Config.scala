@@ -26,7 +26,7 @@ trait Config {
       false
   }
 
-  private def arbitraryDriver(name: String)(conf: Configuration, key: String): ExtendedDriver = {
+  private def arbitraryDriver(name: String)(conf: Configuration, key: String): JdbcDriver = {
     val clazz = try{
       Class.forName(name+"$")
     }catch{
@@ -35,8 +35,8 @@ trait Config {
     }
     val instanceField = clazz.getField("MODULE$")
     instanceField.get() match{
-      case driver: ExtendedDriver => driver
-      case _ => throw conf.reportError(key, s"The class $name is not a "+classOf[ExtendedDriver].getName+".")
+      case driver: JdbcDriver => driver
+      case _ => throw conf.reportError(key, s"The class $name is not a "+classOf[JdbcDriver].getName+".")
     }
   }
 
