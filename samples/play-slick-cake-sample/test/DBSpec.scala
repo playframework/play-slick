@@ -26,7 +26,7 @@ class DBSpec extends Specification {
           Cat("creme puff", "grey")
         )
         Cats.insertAll( testKitties: _*)
-        Query(Cats).list must equalTo(testKitties)
+        Cats.list must equalTo(testKitties)
       }
     }
 

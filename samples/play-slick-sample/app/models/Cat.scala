@@ -5,8 +5,6 @@ import play.api.db.slick.Config.driver.simple._
 case class Cat(name: String, color: String)
 
 /* Table mapping
- * 
- * NOTE: objects extending Table not be used
  */
 class Cats extends Table[Cat]("CAT") {
 
