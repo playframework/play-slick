@@ -1,78 +1,68 @@
 package models
 
 import java.util.Date
-
+import java.sql.{ Date => SqlDate }
 import play.api.Play.current
-
 import play.api.db.slick.Config.driver.simple._
-
-import slick.lifted.{Join, MappedTypeMapper}
+import scala.slick.lifted.Tag
+import java.sql.Timestamp
 
 case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
   lazy val prev = Option(page - 1).filter(_ >= 0)
   lazy val next = Option(page + 1).filter(_ => (offset + items.size) < total)
 }
 
-/** Data Access Object trait
- *  
+/**
+ * Data Access Object trait
+ *
  *  Used to create the DAOs: Companies and Computers
- */ 
+ */
 private[models] trait DAO {
-  val Companies= new Companies
-  val Computers = new Computers
+  val Companies = TableQuery[Companies]
+  val Computers = TableQuery[Computers]
 }
 
 case class Company(id: Option[Long], name: String)
 
-case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date]= None, discontinued: Option[Date]= None, companyId: Option[Long]=None)
+case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date] = None, discontinued: Option[Date] = None, companyId: Option[Long] = None)
 
-class Companies extends Table[Company]("COMPANY") {
+class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
-  def * = id.? ~ name <>(Company.apply _, Company.unapply _)
-  def autoInc = * returning id
+  def * = (id.?, name) <> (Company.tupled, Company.unapply _)
 }
 
 object Companies extends DAO {
   /**
    * Construct the Map[String,String] needed to fill a select options set
    */
-  def options(implicit s:Session): Seq[(String, String)] = {
+  def options(implicit s: Session): Seq[(String, String)] = {
     val query = (for {
       company <- Companies
-    } yield (company.id, company.name)
-      ).sortBy(_._2)
+    } yield (company.id, company.name)).sortBy(_._2)
     query.list.map(row => (row._1.toString, row._2))
   }
 
-  
   /**
    * Insert a new company
    * @param company
    */
-  def insert(company: Company)(implicit s:Session){
-    Companies.autoInc.insert(company)
+  def insert(company: Company)(implicit s: Session) {
+    Companies.insert(company)
   }
 }
 
-class Computers extends Table[Computer]("COMPUTER") {
+class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
 
-  implicit val javaUtilDateTypeMapper = MappedTypeMapper.base[java.util.Date, java.sql.Date](
-    x => new java.sql.Date(x.getTime),
-    x => new java.util.Date(x.getTime)
-  )
+  implicit val dateColumnType = MappedColumnType.base[Date, Long](d => d.getTime, d => new Date(d))
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
   def introduced = column[Date]("introduced", O.Nullable)
   def discontinued = column[Date]("discontinued", O.Nullable)
   def companyId = column[Long]("companyId", O.Nullable)
-
-  def * = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <>(Computer.apply _, Computer.unapply _)
-
-  def autoInc = * returning id
-
-  val byId = createFinderBy(_.id)  
+  
+  def * = (id.?, name, introduced.?, discontinued.?, companyId.?) <>(Computer.tupled, Computer.unapply _)
 }
 
 object Computers extends DAO {
@@ -80,21 +70,21 @@ object Computers extends DAO {
    * Retrieve a computer from the id
    * @param id
    */
-  def findById(id: Long)(implicit s:Session): Option[Computer] =
-      Computers.byId(id).firstOption
+  def findById(id: Long)(implicit s: Session): Option[Computer] =
+    Computers.where(_.id === id).firstOption
 
   /**
    * Count all computers
    */
-  def count(implicit s:Session): Int =
-      Query(Computers.length).first
+  def count(implicit s: Session): Int =
+    Query(Computers.length).first
 
   /**
    * Count computers with a filter
    * @param filter
    */
-  def count(filter: String)(implicit s:Session) : Int =
-      Query(Computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
+  def count(filter: String)(implicit s: Session): Int =
+    Query(Computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
 
   /**
    * Return a page of (Computer,Company)
@@ -103,15 +93,14 @@ object Computers extends DAO {
    * @param orderBy
    * @param filter
    */
-  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%")(implicit s:Session): Page[(Computer, Option[Company])] = {
+  def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%")(implicit s: Session): Page[(Computer, Option[Company])] = {
 
     val offset = pageSize * page
     val query =
       (for {
         (computer, company) <- Computers leftJoin Companies on (_.companyId === _.id)
         if computer.name.toLowerCase like filter.toLowerCase()
-      }
-      yield (computer, company.id.?, company.name.?))
+      } yield (computer, company.id.?, company.name.?))
         .drop(offset)
         .take(pageSize)
 
@@ -125,8 +114,8 @@ object Computers extends DAO {
    * Insert a new computer
    * @param computer
    */
-  def insert(computer: Computer)(implicit s:Session) {
-    Computers.autoInc.insert(computer)
+  def insert(computer: Computer)(implicit s: Session) {
+    Computers.insert(computer)
   }
 
   /**
@@ -134,7 +123,7 @@ object Computers extends DAO {
    * @param id
    * @param computer
    */
-  def update(id: Long, computer: Computer)(implicit s:Session) {
+  def update(id: Long, computer: Computer)(implicit s: Session) {
     val computerToUpdate: Computer = computer.copy(Some(id))
     Computers.where(_.id === id).update(computerToUpdate)
   }
@@ -143,7 +132,7 @@ object Computers extends DAO {
    * Delete a computer
    * @param id
    */
-  def delete(id: Long)(implicit s:Session) {
+  def delete(id: Long)(implicit s: Session) {
     Computers.where(_.id === id).delete
   }
 }
