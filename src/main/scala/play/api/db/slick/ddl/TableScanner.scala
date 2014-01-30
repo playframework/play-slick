@@ -1,14 +1,17 @@
 package play.api.db.slick.ddl
 
+import scala.slick.driver.JdbcDriver
+import scala.slick.lifted.AbstractTable
+
 class SlickDDLException(val message: String) extends Exception(message)
 
 object TableScanner {
   type DDL = scala.slick.profile.SqlProfile#DDL
-  
+
   import scala.reflect.runtime.universe
   import scala.reflect.runtime.universe._
 
-  lazy val tableType = typeOf[slick.driver.JdbcTableComponent#Table[_]]
+  lazy val tableType = typeOf[slick.lifted.TableQuery[_]]
 
   private def isTable(sym: Symbol) = {
     sym.typeSignature.baseClasses.find(_.typeSignature == tableType.typeSymbol.typeSignature).isDefined
@@ -46,10 +49,27 @@ object TableScanner {
   private val WildcardPattern = """(.*)\.\*""".r
 
   private def reflectModule(className: String)(implicit mirror: Mirror) = {
+    println("in reflectModule: " + className)
     val moduleSymbol = mirror.staticModule(className)
     if (isTable(moduleSymbol)) {
       Some(tableToDDL(mirror.reflectModule(moduleSymbol).instance))
     } else {
+      moduleSymbol.typeSignature.members.filter { a =>
+        if (a.isTerm && !a.isMethod && !a.isType) {
+          if (isTable(a)) {
+            import scala.slick.driver.H2Driver.simple._
+            val base = mirror.reflectModule(moduleSymbol).instance
+            val b = mirror.reflect(base).reflectField(a.asTerm).get.asInstanceOf[TableQuery[_ <: Table[_]]]
+                try{
+                  println("for " + className)
+            println("instance: " + b.ddl.createStatements.toList)
+                } catch {
+                  case e => println("wow: " + e)
+                }
+          }
+        }
+        true
+      }
       None
     }
   }
@@ -62,13 +82,19 @@ object TableScanner {
       val reflectedClass = mirror.reflectClass(classSymbol)
       val constructor = reflectedClass.reflectConstructor(constructorMethod)
       try {
+
+        println("reflecting in reflectClass: " + className + " is table: " + isTable(classSymbol) + " has constructor: " + constructorSymbol.isMethod)
         val instance = constructor()
-        Some(tableToDDL(instance))
+        val a = Some(tableToDDL(instance))
+        println("reflected in reflectClass: " + className + " is table: " + isTable(classSymbol) + " has constructor: " + constructorSymbol.isMethod)
+        a
       } catch {
         case e: java.lang.IllegalArgumentException =>
+          println("Found a Slick table: " + className + ", but it does not have a constructor without arguments. Cannot create DDL for this class")
           play.api.Logger.warn("Found a Slick table: " + className + ", but it does not have a constructor without arguments. Cannot create DDL for this class")
           None
         case e: java.lang.InstantiationException =>
+          println("Could not initialize " + className + ". DDL Generation will be skipped.")
           play.api.Logger.warn("Could not initialize " + className + ". DDL Generation will be skipped.")
           None
       }
@@ -109,7 +135,7 @@ object TableScanner {
         case _ => scanPackages(name)
       }
     }
-
+    println(classesAndNames)
     classesAndNames.toSeq.sortBy(_._1.toString).map(_._2).distinct
   }
 }
