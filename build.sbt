@@ -4,7 +4,7 @@ licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.
 
 homepage := Some(url("https://github.com/freekh/play-slick"))
 
-version := "0.5.0.3-SNAPSHOT"
+version := "0.6.0-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
@@ -23,16 +23,17 @@ scalacOptions += "-feature"
 scalacOptions += "-deprecation"
 
 libraryDependencies ++= {
-  val playVersion = "2.2.0-M2"
+  val playVersion = "2.2.1"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
-    "com.typesafe.slick" %% "slick" % "1.0.1",
+    "com.typesafe.slick" %% "slick" % "2.0.0",
     "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
     "com.google.code.findbugs" % "jsr305" % "2.0.1", //needed by org.reflections
     ("org.reflections" % "reflections" % "0.9.8" notTransitive())
       .exclude("com.google.guava", "guava") //provided by play
       .exclude("javassist", "javassist"), //provided by play
+    "org.hsqldb" % "hsqldb" % "2.3.1" % "test",
     "com.typesafe.play" %% "play-test" % playVersion % "test")
 }
 

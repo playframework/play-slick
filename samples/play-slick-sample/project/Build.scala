@@ -9,13 +9,12 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     // Add your project dependencies here,
-    jdbc,
-    "com.typesafe.play" %% "play-slick" % "0.5.0.2-SNAPSHOT"
+    jdbc
   )
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     scalaVersion := "2.10.2"
     // Add your own project settings here      
-  )
+  ).dependsOn(RootProject(file("../../")))
 }

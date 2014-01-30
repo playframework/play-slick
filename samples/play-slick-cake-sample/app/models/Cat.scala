@@ -25,11 +25,11 @@ case class Cat(name: String, color: String)
 trait CatComponent { this: Profile => //<- step 1: you must add this "self-type"
   import profile.simple._ //<- step 2: then import the correct Table, ... from the profile
 
-  object Cats extends Table[Cat]("CAT") {
+  class Cats(tag: Tag) extends Table[Cat](tag, "CAT") {
 
     def name = column[String]("name", O.PrimaryKey)
     def color = column[String]("color", O.NotNull)
 
-    def * = name ~ color <> (Cat.apply _, Cat.unapply _)
+    def * = (name, color) <> (Cat.tupled, Cat.unapply _)
   }
 }

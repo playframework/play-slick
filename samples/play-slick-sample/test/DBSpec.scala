@@ -13,6 +13,9 @@ import models._
   */
 class DBSpec extends Specification { 
 
+  //create an instance of the table
+  val Cats = TableQuery[Cats] //see a way to architect your app in the computers-database-slick sample
+
   "DB" should {
     "work as expected" in new WithApplication {
 
@@ -24,7 +27,7 @@ class DBSpec extends Specification {
           Cat("creme puff", "grey")
         )
         Cats.insertAll( testKitties: _*)
-        Query(Cats).list must equalTo(testKitties)
+        Cats.list must equalTo(testKitties)
       }
     }
 

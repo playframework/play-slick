@@ -10,9 +10,11 @@ import play.api.mvc._
 import play.api.Play.current
 
 object Application extends Controller{
+  //create an instance of the table
+  val Cats = TableQuery[Cats] //see a way to architect your app in the computers-database-slick sample
 
   def index = DBAction { implicit rs =>
-    Ok(views.html.index(Query(Cats).list))
+    Ok(views.html.index(Cats.list))
   }
 
   val catForm = Form(

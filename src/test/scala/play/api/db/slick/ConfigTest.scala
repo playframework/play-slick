@@ -6,7 +6,7 @@ import play.api.test.Helpers._
 import play.api.db._
 import play.api.Play.current
 import play.api.db.slick.DB
-
+import play.api.db.slick.Config
 
 class ConfigSpec extends Specification {
 
@@ -24,31 +24,14 @@ class ConfigSpec extends Specification {
   "Config.driver" should {
     "return the driver for the given database" in {
       running(fakeApplication) {
-        val driver = DB("somedb")(play.api.Play.current).driver
+        val driver = Config.driver("somedb")(play.api.Play.current)
         driver must equalTo(scala.slick.driver.H2Driver)
       }
     }
 
     "return the driver for the default database when db name is not specified" in {
       running(fakeApplication) {
-        val driver = DB(play.api.Play.current).driver
-        driver must equalTo(scala.slick.driver.MySQLDriver)
-      }
-    }
-  }
-
-  "DB.driver" should {
-    "return the driver for the given database" in {
-      running(fakeApplication) {
-        val db = DB("somedb")
-        val driver = db(play.api.Play.current).driver
-        driver must equalTo(scala.slick.driver.H2Driver)
-      }
-    }
-
-    "return the driver for the default database when db name is not specified" in {
-      running(fakeApplication) {
-        val driver = DB(play.api.Play.current).driver
+        val driver = Config.driver()(play.api.Play.current)
         driver must equalTo(scala.slick.driver.MySQLDriver)
       }
     }

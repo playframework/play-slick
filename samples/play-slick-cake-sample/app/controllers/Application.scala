@@ -14,7 +14,7 @@ import models.current.dao.profile.simple._
 
 object Application extends Controller{
   def index = DBAction { implicit rs =>
-    Ok(views.html.index(Query(Cats).list))
+    Ok(views.html.index(Cats.list))
   }
 
   val catForm = Form(
@@ -24,7 +24,7 @@ object Application extends Controller{
     )(Cat.apply)(Cat.unapply)
   )
   
-  def insert = DBAction { implicit rs =>
+  def insert = DBAction{ implicit rs =>
     val cat = catForm.bindFromRequest.get
     Cats.insert(cat)
     Redirect(routes.Application.index)
