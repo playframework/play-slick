@@ -18,20 +18,29 @@ trait Config {
     }
   }
 
-  private def classExists(name: String): Boolean = try{
-    Class.forName(name)
+  private def classExists(name: String, classLoader: ClassLoader): Boolean = try{
+    Class.forName(name, true, classLoader)
     true
   }catch{
     case e: ClassNotFoundException =>
       false
   }
 
-  private def arbitraryDriver(name: String)(conf: Configuration, key: String): JdbcDriver = {
-    val clazz = try{
-      Class.forName(name+"$")
+  private def findClass(conf: Configuration, key: String, name: String, classLoader: ClassLoader): Class[_] = {
+    try{
+      Class.forName(name+"$", true, classLoader)
     }catch{
-      case e: ClassNotFoundException if(classExists(name)) =>
+      case e: ClassNotFoundException if(classExists(name, classLoader)) =>
         throw conf.reportError(key, s"The class $name is not an object. Use 'object' keyword, please. If it is a third-party class, you may want to create a subclass.")
+    }
+  }
+
+  private def arbitraryDriver(name: String)(app: Application, conf: Configuration, key: String): JdbcDriver = {
+    import scala.language.existentials
+    val clazz = try{
+      findClass(conf, key, name, this.getClass().getClassLoader())
+    }catch{
+      case e: ClassNotFoundException => findClass(conf, key, name, app.classloader)
     }
     val instanceField = clazz.getField("MODULE$")
     instanceField.get() match{
@@ -44,7 +53,7 @@ trait Config {
     val conf = app.configuration
     val key = s"db.$name.driver"
     conf.getString(key).map { driverName =>
-      def arbitraryDriverOption = conf.getString(s"db.$name.slickdriver").map(arbitraryDriver(_)(conf, key))
+      def arbitraryDriverOption = conf.getString(s"db.$name.slickdriver").map(arbitraryDriver(_)(app, conf, key))
       arbitraryDriverOption.orElse(driverByName(driverName)).getOrElse {
         throw conf.reportError(
           key, s"Slick error : Unknown jdbc driver found in application.conf: [$driverName]. If you have a Slick driver for this database, you can put its class name to db.$name.slickdriver.")
