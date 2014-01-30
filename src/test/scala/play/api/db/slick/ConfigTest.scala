@@ -8,12 +8,12 @@ import play.api.Play.current
 import play.api.db.slick.DB
 import play.api.db.slick.Config
 import play.api.PlayException
-import scala.slick.driver.ExtendedDriver
+import scala.slick.driver.JdbcDriver
 
 object NotAnExtendedDriver{
 }
 object Enclosing{
-  object SomeExtendedDriver extends ExtendedDriver{
+  object SomeExtendedDriver extends JdbcDriver {
   }
 }
 class ConfigSpec extends Specification {
@@ -101,9 +101,9 @@ class ConfigSpec extends Specification {
       }
     }
 
-    "give a good error message if the driver object is not an ExtendedDriver" in {
+    "give a good error message if the driver object is not an JdbcDriver" in {
       running(fakeApplication) {
-        Config.driver("bad-object-type")(play.api.Play.current) must throwA[PlayException.ExceptionSource]("""The class play\.api\.db\.slick\.test\.NotAnExtendedDriver is not a scala\.slick\.driver\.ExtendedDriver\.""")
+        Config.driver("bad-object-type")(play.api.Play.current) must throwA[PlayException.ExceptionSource]("""The class play\.api\.db\.slick\.test\.NotAnExtendedDriver is not a scala\.slick\.driver\.JdbcDriver\.""")
       }
     }
 
