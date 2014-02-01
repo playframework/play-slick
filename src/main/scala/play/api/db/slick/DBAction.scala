@@ -4,6 +4,7 @@ import play.api.Application
 import scala.concurrent.Future
 import play.api.mvc.{ AnyContent, BodyParser, Action, SimpleResult }
 import play.api.mvc.BodyParsers.parse.anyContent
+import scala.slick.jdbc.JdbcBackend
 import scala.concurrent.ExecutionContext
 import java.util.concurrent.ThreadPoolExecutor
 import play.api.mvc.Result

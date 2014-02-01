@@ -4,16 +4,11 @@ import play.api.Application
 import play.api.Plugin
 import play.api.libs.Files
 import play.api.Mode
-import scala.slick.lifted.DDL
 import scala.Option.option2Iterable
 import scala.annotation.tailrec
-import scala.reflect.runtime.universe
-import scala.reflect.runtime.universe.JavaMirror
-import scala.reflect.runtime.universe.ModuleSymbol
-import scala.reflect.runtime.universe.Symbol
-import scala.reflect.runtime.universe.newTermName
-
-class SlickDDLException(val message: String) extends Exception(message)
+import play.api.db.slick.ddl.TableScanner
+import play.api.db.slick.ddl.SlickDDLException
+import play.api.db.slick.Config
 
 class SlickDDLPlugin(app: Application) extends Plugin {
 
@@ -34,7 +29,7 @@ class SlickDDLPlugin(app: Application) extends Plugin {
             val evolutions = app.getFile("conf/evolutions/" + key + "/1.sql");
             if (!evolutions.exists() || Files.readFile(evolutions).startsWith(CreatedBy)) {
               try {
-                evolutionScript(packageNames).foreach { evolutionScript =>
+                evolutionScript(key, packageNames)(app).foreach { evolutionScript =>
                   Files.createDirectory(app.getFile("conf/evolutions/" + key));
                   Files.writeFileIfChanged(evolutions, evolutionScript);
                 }
@@ -50,16 +45,19 @@ class SlickDDLPlugin(app: Application) extends Plugin {
 
   private val CreatedBy = "# --- Created by "
 
-  def evolutionScript(names: Set[String]): Option[String] = {
+  def evolutionScript(driverName: String, names: Set[String])(app: Application): Option[String] = {
     val classloader = app.classloader
 
     import scala.collection.JavaConverters._
-    val ddls = TableScanner.reflectAllDDLMethods(names, classloader)
+    val driver = Config.driver(driverName)(app)
+    val ddls = TableScanner.reflectAllDDLMethods(names, driver, classloader)
 
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
     if (ddls.nonEmpty) {
-      val ddl = ddls.reduceLeft(_ ++ _)
+      val ddl = ddls
+          .toSeq.sortBy(a => a.createStatements.toList.mkString("") ++ a.dropStatements.toList.mkString("")) //sort to avoid generating different schemas
+          .reduceLeft((a, b) => a.asInstanceOf[driver.SchemaDescription] ++ b.asInstanceOf[driver.SchemaDescription])
 
       Some(CreatedBy + "Slick DDL\n" +
         "# To stop Slick DDL generation, remove this comment and start using Evolutions\n" +

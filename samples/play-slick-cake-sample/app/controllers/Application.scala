@@ -14,7 +14,7 @@ import models.current.dao.profile.simple._
 
 object Application extends Controller{
   def index = DBAction { implicit rs =>
-    Ok(views.html.index(Query(Cats).list))
+    Ok(views.html.index(Cats.list))
   }
 
   val catForm = Form(

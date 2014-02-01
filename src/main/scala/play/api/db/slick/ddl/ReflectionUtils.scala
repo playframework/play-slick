@@ -1,19 +1,23 @@
-package play.api.db.slick.plugin
+package play.api.db.slick.ddl
 
 import org.reflections.scanners
 import org.reflections.util
 import org.reflections.Reflections
+import scala.reflect.runtime.universe
+import scala.reflect.runtime.universe._
 
 object ReflectionUtils {
   import annotation.tailrec
-  import scala.reflect.runtime.universe
-  import scala.reflect.runtime.universe._
 
-  def getReflections(classloader: ClassLoader, pkg: String) = {
-    new Reflections(new util.ConfigurationBuilder()
-      .addUrls(org.reflections.util.ClasspathHelper.forPackage(pkg, classloader))
-      .filterInputsBy(new util.FilterBuilder().include(util.FilterBuilder.prefix(pkg + ".")))
-      .setScanners(new scanners.TypeAnnotationsScanner, new scanners.TypesScanner))
+  def getReflections(classloader: ClassLoader, pkg: String): Option[Reflections] = {
+    val scanUrls = org.reflections.util.ClasspathHelper.forPackage(pkg, classloader)
+    if (!scanUrls.isEmpty)
+      Some(new Reflections(new util.ConfigurationBuilder()
+        .addUrls(scanUrls)
+        .filterInputsBy(new util.FilterBuilder().include(util.FilterBuilder.prefix(pkg + ".")))
+        .setScanners(new scanners.TypeAnnotationsScanner, new scanners.TypesScanner)))
+    else
+      None
   }
 
   def splitIdentifiers(names: String) = names.split("""\.""").filter(!_.trim.isEmpty).toList
@@ -25,10 +29,14 @@ object ReflectionUtils {
     var res: Option[ModuleSymbol] = None
     while (i < (elems.size + 1) && !res.isDefined) {
       try {
-        res = Some(mirror.staticModule(assembleIdentifiers(elems.slice(0, i))))
+        val symbol = mirror.staticModule(assembleIdentifiers(elems.slice(0, i)))
+        mirror.reflectModule(symbol).instance //if we can reflect a module it means we are module 
+        res = Some(symbol)
       } catch {
-        case e: reflect.internal.MissingRequirementError =>
+        case _: reflect.internal.MissingRequirementError =>
         //FIXME: must be another way to check if a static modules exists than exceptions!?!
+        case _: ClassNotFoundException =>
+        //We tried to reflect a module but got a class cast exception (again, would be nice to do this differently)
       } finally {
         i += 1
       }
@@ -60,8 +68,13 @@ object ReflectionUtils {
       val extractMembers: PartialFunction[(Any, Symbol), Iterable[(Any, Symbol)]] = {
         case (baseInstance, baseSym) =>
           if (baseInstance != null) {
-            baseSym.typeSignature.members.filter(s => s.isModule || (s.isTerm && s.asTerm.isVal)).map { mSym =>
-              reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym)
+            val vals = baseSym.typeSignature.members.filter(s => s.isModule || (s.isTerm && s.asTerm.isVal))
+            vals.flatMap { mSym =>
+              try {
+                List(reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym))
+              } catch {
+                case _: ScalaReflectionException => List.empty
+              }
             }
           } else List.empty
       }

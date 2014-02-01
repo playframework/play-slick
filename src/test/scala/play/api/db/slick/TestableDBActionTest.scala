@@ -28,21 +28,23 @@ class TestableDBActionSpec extends Specification {
   val testDBAction = new DBAction(database)
   import driver.simple._
   
-  val Ids = new Table[Int]("IDS") {
+  class IDs(tag:Tag) extends Table[Int](tag, "IDS") {
     def id = column[Int]("id")
     def * = id
   }
+
+  val Ids = TableQuery[IDs]
   
   "DBAction" should {
     "be instantiable without a Play Application" in {
       val ids = List(1, 2, 3)
       database.withSession { implicit session: Session =>
         Ids.ddl.create
-        Ids.*.insertAll(ids: _*)
+        Ids.insertAll(ids: _*)
       }
 
       val listAction = testDBAction { implicit rs =>
-        Ok(Query(Ids).list.mkString(" "))
+        Ok(Ids.list.mkString(" "))
       }
 
       val result = listAction(FakeRequest())

@@ -1,10 +1,12 @@
 package play.api.db.slick
 
-import scala.slick.session.PlayDatabase
+
 import play.api.Application
 import scala.slick.driver._
+import scala.slick.jdbc.PlayDatabase
 import java.util.concurrent.ConcurrentHashMap
 import javax.sql.DataSource
+
 
 object Database {
   import collection.JavaConverters._
@@ -22,4 +24,4 @@ object Database {
   }
 }
 
-class Database(val name: String = Config.defaultName, override val datasource: DataSource, val driver: ExtendedDriver) extends PlayDatabase
+class Database(val name: String = Config.defaultName, override val datasource: DataSource, val driver: JdbcDriver) extends PlayDatabase

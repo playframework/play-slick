@@ -1,10 +1,11 @@
 package models
 
 import java.util.Date
+import java.sql.{ Date => SqlDate }
 import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
-import slick.lifted.{ Join, MappedTypeMapper }
-import scala.slick.lifted.ForeignKeyAction
+import scala.slick.lifted.Tag
+import java.sql.Timestamp
 
 case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
   lazy val prev = Option(page - 1).filter(_ >= 0)
@@ -16,24 +17,19 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
  *
  *  Used to create the DAOs: Companies and Computers
  */
-private[models] trait DAO extends ComputersComponent with CompaniesComponent {
-  val Companies = new Companies 
-  val Computers = new Computers 
+private[models] trait DAO {
+  val Companies = TableQuery[Companies]
+  val Computers = TableQuery[Computers]
 }
 
 case class Company(id: Option[Long], name: String)
 
 case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date] = None, discontinued: Option[Date] = None, companyId: Option[Long] = None)
 
-trait CompaniesComponent {
-  val Companies: Companies
-  
-  class Companies extends Table[Company]("COMPANY") {
-    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name", O.NotNull)
-    def * = id.? ~ name <> (Company.apply _, Company.unapply _)
-    def autoInc = * returning id
-  }
+class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
+  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def name = column[String]("name", O.NotNull)
+  def * = (id.?, name) <> (Company.tupled, Company.unapply _)
 }
 
 object Companies extends DAO {
@@ -52,31 +48,21 @@ object Companies extends DAO {
    * @param company
    */
   def insert(company: Company)(implicit s: Session) {
-    Companies.autoInc.insert(company)
+    Companies.insert(company)
   }
 }
 
-trait ComputersComponent { self: CompaniesComponent =>
-  val Computers: Computers
+class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
 
-  class Computers extends Table[Computer]("COMPUTER") {
-    implicit val javaUtilDateTypeMapper = MappedTypeMapper.base[java.util.Date, java.sql.Date](
-      x => new java.sql.Date(x.getTime),
-      x => new java.util.Date(x.getTime))
+  implicit val dateColumnType = MappedColumnType.base[Date, Long](d => d.getTime, d => new Date(d))
 
-    def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-    def name = column[String]("name", O.NotNull)
-    def introduced = column[Date]("introduced", O.Nullable)
-    def discontinued = column[Date]("discontinued", O.Nullable)
-    def companyId = column[Long]("companyId", O.Nullable)
-    def companyFk = foreignKey("company_id", id, Companies)(_.id, onDelete = ForeignKeyAction.Cascade)
-
-    def * = id.? ~ name ~ introduced.? ~ discontinued.? ~ companyId.? <> (Computer.apply _, Computer.unapply _)
-
-    def autoInc = * returning id
-
-    val byId = createFinderBy(_.id)
-  }
+  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def name = column[String]("name", O.NotNull)
+  def introduced = column[Date]("introduced", O.Nullable)
+  def discontinued = column[Date]("discontinued", O.Nullable)
+  def companyId = column[Long]("companyId", O.Nullable)
+  
+  def * = (id.?, name, introduced.?, discontinued.?, companyId.?) <>(Computer.tupled, Computer.unapply _)
 }
 
 object Computers extends DAO {
@@ -85,7 +71,7 @@ object Computers extends DAO {
    * @param id
    */
   def findById(id: Long)(implicit s: Session): Option[Computer] =
-    Computers.byId(id).firstOption
+    Computers.where(_.id === id).firstOption
 
   /**
    * Count all computers
@@ -129,7 +115,7 @@ object Computers extends DAO {
    * @param computer
    */
   def insert(computer: Computer)(implicit s: Session) {
-    Computers.autoInc.insert(computer)
+    Computers.insert(computer)
   }
 
   /**
