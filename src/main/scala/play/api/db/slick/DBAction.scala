@@ -48,7 +48,7 @@ object DBAction extends CurrentDBAction
  */
 trait CurrentDBAction extends PredicatedDBAction {
   /** Override to use a different app */
-  protected lazy val app = Config.app
+  protected def app = Config.app
 
   /** Override to change default error page */
   protected val errorPage = play.api.mvc.Results.ServiceUnavailable
@@ -89,12 +89,12 @@ trait CurrentDBAction extends PredicatedDBAction {
     }(collection.breakOut)
   }
 
-  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
     val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
     val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }

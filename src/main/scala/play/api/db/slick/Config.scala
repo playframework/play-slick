@@ -66,6 +66,6 @@ trait Config {
 }
 
 object Config extends Config {
-  lazy val app = play.api.Play.current
+  def app = play.api.Play.current
   lazy val driver: JdbcDriver = driver()(app)
 }
