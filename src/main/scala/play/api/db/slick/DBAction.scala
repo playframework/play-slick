@@ -89,12 +89,12 @@ trait CurrentDBAction extends PredicatedDBAction {
     }(collection.breakOut)
   }
 
-  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
+  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
     val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application) = {
+  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
     val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
