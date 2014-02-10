@@ -1,0 +1,15 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET        /                    controllers.Application.index
+
+# List of records which are Enumerated from database in chunks of 2
+GET        /list.comet          controllers.Application.listComet
+
+# For comparison purposes, here's the non-enumerated version
+GET        /list.json           controllers.Application.list
+
+# Map static resources from the /public folder to the /assets URL path
+GET        /assets/*file        controllers.Assets.at(path="/public", file)
