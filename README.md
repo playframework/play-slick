@@ -26,8 +26,6 @@ Example :
  )
 ```
 
-This branch supports slick 2.0 but does not support evolutions quiet yet. (It is on my TODO)
-
 ```
 db.default.driver=org.h2.Driver
 db.default.url="jdbc:h2:mem:play"
