@@ -1,6 +1,6 @@
 # About
 
-This plugin makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play 2.2.
+This plugin makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play 2.x.
 
 The play-slick plugins consists of 3 features: 
  - A wrapper DB object that uses the datasources defined in the Play config files, and pulls them from a connection pool. It is there so it is possible to use Slick sessions in the same fashion as you would Anorm JDBC connections. There are some smart caching and load balancing that makes your connections to your DB more performant.
