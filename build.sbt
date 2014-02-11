@@ -24,15 +24,16 @@ scalacOptions += "-deprecation"
 
 libraryDependencies ++= {
   val playVersion = "2.2.1"
+  val slickVersion = "2.0.0"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
-    "com.typesafe.slick" %% "slick" % "2.0.0",
+    "com.typesafe.slick" %% "slick" % slickVersion,
     "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
     "com.google.code.findbugs" % "jsr305" % "2.0.1", //needed by org.reflections
     ("org.reflections" % "reflections" % "0.9.8" notTransitive())
       .exclude("com.google.guava", "guava") //provided by play
-      .exclude("javassist", "javassist"), //provided by play
+      .exclude("javassist", "javassist"),   //provided by play
     "org.hsqldb" % "hsqldb" % "2.3.1" % "test",
     "com.typesafe.play" %% "play-test" % playVersion % "test")
 }
