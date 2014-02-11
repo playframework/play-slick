@@ -17,6 +17,10 @@ import SlickPlayIteratees.{LogFields, LogCallback, enumerateScalaQuery}
 
 
 class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversions {
+
+  // Only one test can execute at a time, as they share an in-memory H2 database
+  sequential
+
   // Create in-memory test DB and import its implicits
   val tdb = new JdbcTestDB("h2mem") {
     type Driver = scala.slick.driver.H2Driver
@@ -41,116 +45,109 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
         testChunkedEnumerationUsingInMemoryDb(Nil, Some(2), Nil)
       }
 
-//      it("should enumerate query results in 1 chunk when chunkSize = 2 and query has 2 results") {
-//        testChunkedEnumerationUsingInMemoryDb(twoRowsInDb, Some(2), List(twoRowsInDb))
-//      }
-//
-//      it("should enumerate query results in 3 chunks when chunkSize = 2 and query has 5 results") {
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList)
-//      }
-//
-//      it("should enumerate query results in 2 chunks when chunkSize = 2 and query has 4 results after applying criteria") {
-//        val criterion: TestQueryCriterion = _.name isNot "c"
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList, Some(rowsInDbExcludingC), Seq(criterion))
-//      }
-//
-//      it("should enumerate query results in 1 chunk when chunkSize = 10 and query has 5 results") {
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(10), List(fiveRowsInDb))
-//      }
-//
-//      it("should enumerate query results in 1 chunk when no chunkSize and query has 5 results") {
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb))
-//      }
-//
-//      it("should close transaction after successful execution") {
-//        val session = new SessionWithAsyncTransactionForTesting
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb), maybeExternalSession = Some(session))
-//        session.isInTransaction should be(false)
-//      }
-//
-//      it("should close underlying jdbc connection after successful execution") {
-//        val session = new SessionWithAsyncTransaction(db)
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb), maybeExternalSession = Some(session))
-//        session.isOpen should be(false)
-//      }
+      "should enumerate query results in 1 chunk when chunkSize = 2 and query has 2 results" in {
+        testChunkedEnumerationUsingInMemoryDb(twoRowsInDb, Some(2), List(twoRowsInDb))
+      }
+
+      "should enumerate query results in 3 chunks when chunkSize = 2 and query has 5 results" in {
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList)
+      }
+
+      "should enumerate query results in 2 chunks when chunkSize = 2 and query has 4 results after applying criteria" in {
+        val criterion: TestQueryCriterion = _.name isNot "c"
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList, Some(rowsInDbExcludingC), Seq(criterion))
+      }
+
+      "should enumerate query results in 1 chunk when chunkSize = 10 and query has 5 results" in {
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(10), List(fiveRowsInDb))
+      }
+
+      "should enumerate query results in 1 chunk when no chunkSize and query has 5 results" in {
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb))
+      }
+
+      "should close transaction after successful execution" in {
+        val session = new SessionWithAsyncTransactionForTesting
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb), maybeExternalSession = Some(session))
+        session.isInTransaction must beFalse
+      }
+
+      "should close underlying jdbc connection after successful execution" in {
+        val session = new SessionWithAsyncTransaction(db)
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb), maybeExternalSession = Some(session))
+        session.isOpen must beFalse
+      }
 
     }
 
-//    describe("Error handling") {
-//
-//      it("should throw argument exception if chunkSize <= 0") {
-//        evaluating { testChunkedEnumerationUsingInMemoryDb(Nil, Some(0), Nil) } should produce [IllegalArgumentException]
-//      }
-//
-//      it("should propagate exception generated during query execution") {
-//        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
-//        val thrown = evaluating { testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion)) } should produce [JdbcSQLException]
-//        thrown.getMessage should startWith ("""Column "x2.DOES_NOT_EXIST" not found;""")
-//      }
-//
-//      it("should close transaction when exception generated during query execution") {
-//        val session = new SessionWithAsyncTransactionForTesting
-//        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
-//        evaluating { testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) } should produce [JdbcSQLException]
-//        session.isInTransaction should be(false)
-//      }
-//
-//      it("should close underlying jdbc connection when exception generated during query execution") {
-//        val session = new SessionWithAsyncTransaction(db)
-//        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
-//        evaluating { testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) } should produce [JdbcSQLException]
-//        session.isOpen should be(false)
-//      }
-//
-//      it("should close transaction when exception generated in downstream Enumeratee") {
+    "Error handling" in {
+
+      "should throw argument exception if chunkSize <= 0" in {
+        testChunkedEnumerationUsingInMemoryDb(Nil, Some(0), Nil) must throwAn [IllegalArgumentException]
+      }
+
+      "should propagate exception generated during query execution" in {
+        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+        testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion)) must throwA [JdbcSQLException].like {
+          case e => e.getMessage must startWith("""Column "x2.DOES_NOT_EXIST" not found;""")
+        }
+      }
+
+      "should close transaction when exception generated during query execution" in {
+        val session = new SessionWithAsyncTransactionForTesting
+        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+        testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) must throwA [JdbcSQLException]
+        session.isInTransaction must beFalse
+      }
+
+      "should close underlying jdbc connection when exception generated during query execution" in {
+        val session = new SessionWithAsyncTransaction(db)
+        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+        testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) must throwA [JdbcSQLException]
+        session.isOpen must beFalse
+      }
+
+//      "should close transaction when exception generated in downstream Enumeratee" in {
 //        val session = new SessionWithAsyncTransactionForTesting
 //        val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
-//        evaluating {
-//          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
-//            maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
-//            maybeExternalSession = Some(session))
-//        } should produce [RuntimeException]
-//        session.isInTransaction should be(false)
+//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
+//          maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
+//          maybeExternalSession = Some(session)) must throwA [RuntimeException]
+//        session.isInTransaction must beFalse
 //      }
 //
-//      it("should close underlying jdbc connection when exception generated in downstream Enumeratee") {
+//      "should close underlying jdbc connection when exception generated in downstream Enumeratee" in {
 //        val session = new SessionWithAsyncTransaction(db)
 //        val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
-//        evaluating {
-//          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
-//            maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
-//            maybeExternalSession = Some(session))
-//        } should produce [RuntimeException]
-//        session.isOpen should be(false)
+//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
+//          maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
+//          maybeExternalSession = Some(session)) must throwA [RuntimeException]
+//        session.isOpen must beFalse
 //      }
-//
-//      it("should close transaction when downstream Enumeratee is in Error state") {
-//        val session = new SessionWithAsyncTransactionForTesting
-//        val errorStateEnumeratee = new Enumeratee[List[TestRow], List[TestRow]] {
-//          def applyOn[A](inner: Iteratee[List[TestRow], A]) = Error("testing!", Input.Empty)
-//        }
-//        evaluating {
-//          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
-//            maybeExtraEnumeratee = Some(errorStateEnumeratee),
-//            maybeExternalSession = Some(session))
-//        } should produce [RuntimeException]
-//        session.isInTransaction should be(false)
-//      }
-//
-//      it("should close underlying jdbc connection when downstream Enumeratee is in Error state") {
-//        val session = new SessionWithAsyncTransaction(db)
-//        val errorStateEnumeratee = new Enumeratee[List[TestRow], List[TestRow]] {
-//          def applyOn[A](inner: Iteratee[List[TestRow], A]) = Error("testing!", Input.Empty)
-//        }
-//        evaluating {
-//          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
-//            maybeExtraEnumeratee = Some(errorStateEnumeratee),
-//            maybeExternalSession = Some(session))
-//        } should produce [RuntimeException]
-//        session.isOpen should be(false)
-//      }
-//
-//    }
+
+      "should close transaction when downstream Enumeratee is in Error state" in {
+        val session = new SessionWithAsyncTransactionForTesting
+        val errorStateEnumeratee = new Enumeratee[List[TestRow], List[TestRow]] {
+          def applyOn[A](inner: Iteratee[List[TestRow], A]) = Error("testing!", Input.Empty)
+        }
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
+          maybeExtraEnumeratee = Some(errorStateEnumeratee),
+          maybeExternalSession = Some(session)) must throwA [RuntimeException]
+        session.isInTransaction must beFalse
+      }
+
+      "should close underlying jdbc connection when downstream Enumeratee is in Error state" in {
+        val session = new SessionWithAsyncTransaction(db)
+        val errorStateEnumeratee = new Enumeratee[List[TestRow], List[TestRow]] {
+          def applyOn[A](inner: Iteratee[List[TestRow], A]) = Error("testing!", Input.Empty)
+        }
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
+          maybeExtraEnumeratee = Some(errorStateEnumeratee),
+          maybeExternalSession = Some(session)) must throwA [RuntimeException]
+        session.isOpen must beFalse
+      }
+
+    }
 //
 //    describe("Read consistency (transactions)") {
 //
@@ -264,8 +261,8 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
     val result = Await.result(eventuallyResult, 5.seconds)
 
     // Verify expectations
-    result should be(maybeExpectedResults.getOrElse(rowsInDb)) // returned expected rows
-    chunksSent should be(expectedChunksSent)                   // chunked as expected
+    result must be_==(maybeExpectedResults.getOrElse(rowsInDb)) // returned expected rows
+    chunksSent must be_==(expectedChunksSent)                   // chunked as expected
   }
 
   def createInterleavedWritesEnumeratee: Enumeratee[List[TestRow], List[TestRow]] = {
@@ -310,20 +307,20 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
   }
 
   def testLoggedNoSqlStatement(scenario: TestScenariosForLogging) {
-    testLogging(scenario).maybeSqlStmt should be(None)
+    testLogging(scenario).maybeSqlStmt must be(None)
   }
 
   def testLoggedSqlStatement(scenario: TestScenariosForLogging) {
-    testLogging(scenario).maybeSqlStmt should beSome(contain ("limit"))
+    testLogging(scenario).maybeSqlStmt must beSome(contain ("limit"))
   }
 
   def testLoggedNoException(scenario: TestScenariosForLogging) {
-    testLogging(scenario).maybeException should be(None)
+    testLogging(scenario).maybeException must be(None)
   }
 
   def testLoggedException(scenario: TestScenariosForLogging, exceptionClass: Class[_] = classOf[JdbcSQLException]) {
     val maybeException = testLogging(scenario).maybeException
-    maybeException should beSome.which(_.getClass == exceptionClass)
+    maybeException must beSome.which(_.getClass == exceptionClass)
   }
 
   def testLogging(scenario: TestScenariosForLogging): LogFields = {
