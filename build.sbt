@@ -34,7 +34,10 @@ libraryDependencies ++= {
     ("org.reflections" % "reflections" % "0.9.8" notTransitive())
       .exclude("com.google.guava", "guava") //provided by play
       .exclude("javassist", "javassist"),   //provided by play
+    // Test-only
     "org.hsqldb" % "hsqldb" % "2.3.1" % "test",
-    "com.typesafe.play" %% "play-test" % playVersion % "test")
+    "com.typesafe.play" %% "play-test" % playVersion % "test",
+    "com.typesafe.slick" %% "slick-testkit" % slickVersion % "test",
+    "org.mockito" % "mockito-all" % "1.9.5" % "test")
 }
 
