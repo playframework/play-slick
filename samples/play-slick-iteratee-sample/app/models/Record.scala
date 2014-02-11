@@ -6,11 +6,10 @@ import play.api.libs.json.{JsObject, JsValue, Writes}
 import play.api.libs.json.Json._
 import play.api.Logger
 import play.api.Play.current
-
 import scala.slick.driver.H2Driver
 import scala.slick.driver.H2Driver.simple._
 
-import com.timgroup.scalaquery_play_iteratees.ScalaQueryPlayIteratees.{enumerateScalaQuery, PlayLogCallback}
+import play.api.db.slick.iteratees.SlickPlayIteratees._
 
 case class Record(id: Int, name: String)
 
