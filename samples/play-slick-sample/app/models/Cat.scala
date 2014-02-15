@@ -6,7 +6,7 @@ case class Cat(name: String, color: String)
 
 /* Table mapping
  */
-class Cats(tag: Tag) extends Table[Cat](tag, "CAT") {
+class CatsTable(tag: Tag) extends Table[Cat](tag, "CAT") {
 
   def name = column[String]("name", O.PrimaryKey)
   def color = column[String]("color", O.NotNull)
