@@ -18,8 +18,8 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
  *  Used to create the DAOs: Companies and Computers
  */
 private[models] trait DAO {
-  val Companies = TableQuery[Companies]
-  val Computers = TableQuery[Computers]
+  val companies = TableQuery[Companies]
+  val computers = TableQuery[Computers]
 }
 
 case class Company(id: Option[Long], name: String)
@@ -38,7 +38,7 @@ object Companies extends DAO {
    */
   def options(implicit s: Session): Seq[(String, String)] = {
     val query = (for {
-      company <- Companies
+      company <- companies
     } yield (company.id, company.name)).sortBy(_._2)
     query.list.map(row => (row._1.toString, row._2))
   }
@@ -48,7 +48,7 @@ object Companies extends DAO {
    * @param company
    */
   def insert(company: Company)(implicit s: Session) {
-    Companies.insert(company)
+    companies.insert(company)
   }
 }
 
@@ -71,20 +71,20 @@ object Computers extends DAO {
    * @param id
    */
   def findById(id: Long)(implicit s: Session): Option[Computer] =
-    Computers.where(_.id === id).firstOption
+    computers.where(_.id === id).firstOption
 
   /**
    * Count all computers
    */
   def count(implicit s: Session): Int =
-    Query(Computers.length).first
+    Query(computers.length).first
 
   /**
    * Count computers with a filter
    * @param filter
    */
   def count(filter: String)(implicit s: Session): Int =
-    Query(Computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
+    Query(computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
 
   /**
    * Return a page of (Computer,Company)
@@ -98,7 +98,7 @@ object Computers extends DAO {
     val offset = pageSize * page
     val query =
       (for {
-        (computer, company) <- Computers leftJoin Companies on (_.companyId === _.id)
+        (computer, company) <- computers leftJoin companies on (_.companyId === _.id)
         if computer.name.toLowerCase like filter.toLowerCase()
       } yield (computer, company.id.?, company.name.?))
         .drop(offset)
@@ -115,7 +115,7 @@ object Computers extends DAO {
    * @param computer
    */
   def insert(computer: Computer)(implicit s: Session) {
-    Computers.insert(computer)
+    computers.insert(computer)
   }
 
   /**
@@ -125,7 +125,7 @@ object Computers extends DAO {
    */
   def update(id: Long, computer: Computer)(implicit s: Session) {
     val computerToUpdate: Computer = computer.copy(Some(id))
-    Computers.where(_.id === id).update(computerToUpdate)
+    computers.where(_.id === id).update(computerToUpdate)
   }
 
   /**
@@ -133,9 +133,6 @@ object Computers extends DAO {
    * @param id
    */
   def delete(id: Long)(implicit s: Session) {
-    Computers.where(_.id === id).delete
+    computers.where(_.id === id).delete
   }
 }
-
-
-
