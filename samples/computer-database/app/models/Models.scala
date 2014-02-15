@@ -18,15 +18,15 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
  *  Used to create the DAOs: Companies and Computers
  */
 private[models] trait DAO {
-  val Companies = TableQuery[Companies]
-  val Computers = TableQuery[Computers]
+  val Companies = TableQuery[CompaniesTables]
+  val Computers = TableQuery[ComputersTable]
 }
 
 case class Company(id: Option[Long], name: String)
 
 case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date] = None, discontinued: Option[Date] = None, companyId: Option[Long] = None)
 
-class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
+class CompaniesTables(tag: Tag) extends Table[Company](tag, "COMPANY") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name", O.NotNull)
   def * = (id.?, name) <> (Company.tupled, Company.unapply _)
@@ -52,7 +52,7 @@ object Companies extends DAO {
   }
 }
 
-class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
+class ComputersTable(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
 
   implicit val dateColumnType = MappedColumnType.base[Date, Long](d => d.getTime, d => new Date(d))
 
@@ -136,6 +136,3 @@ object Computers extends DAO {
     Computers.where(_.id === id).delete
   }
 }
-
-
-
