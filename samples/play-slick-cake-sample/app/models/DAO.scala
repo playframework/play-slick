@@ -6,7 +6,7 @@ import play.api.db.slick.Profile
 import play.api.db.slick.DB
 
 class DAO(override val profile: JdbcProfile) extends CatComponent with Profile {
-  val Cats = TableQuery[Cats]
+  val Cats = TableQuery[CatsTable]
 }
 
 object current {
