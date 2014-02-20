@@ -180,27 +180,27 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
 
     }
 
-//    describe("Logging callbacks") {
-//
-//      describe("when fetch is successful") {
-//        it("should log startTime and endTime") { testLoggedStartAndEndTimes(scenario = Success) }
-//        it("should log sql statement")         { testLoggedSqlStatement(scenario = Success) }
-//        it("should *not* log an exception")    { testLoggedNoException(scenario = Success) }
-//      }
-//
-//      describe("when fetch throws an exception") {
-//        it("should log startTime and endTime") { testLoggedStartAndEndTimes(scenario = ThrowInFetch) }
-//        it("should log sql statement")         { testLoggedSqlStatement(scenario = ThrowInFetch) }
-//        it("should log the exception")         { testLoggedException(scenario = ThrowInFetch) }
-//      }
-//
-//      describe("when sql generation throws an exception") {
-//        it("should log startTime and endTime") { testLoggedStartAndEndTimes(scenario = ThrowInSqlGen) }
-//        it("should *not* log sql statement")   { testLoggedNoSqlStatement(scenario = ThrowInSqlGen) }
-//        it("should log the exception")         { testLoggedException(scenario = ThrowInSqlGen, exceptionClass = classOf[TestSqlGenException]) }
-//      }
-//
-//    }
+    "Logging callbacks" in {
+
+      "when fetch is successful" in {
+        "should log startTime and endTime" in { testLoggedStartAndEndTimes(scenario = Success) }
+        "should log sql statement"         in { testLoggedSqlStatement(scenario = Success) }
+        "should *not* log an exception"    in { testLoggedNoException(scenario = Success) }
+      }
+
+      "when fetch throws an exception" in {
+        "should log startTime and endTime" in { testLoggedStartAndEndTimes(scenario = ThrowInFetch) }
+        "should log sql statement"         in { testLoggedSqlStatement(scenario = ThrowInFetch) }
+        "should log the exception"         in { testLoggedException(scenario = ThrowInFetch) }
+      }
+
+      "when sql generation throws an exception" in {
+        "should log startTime and endTime" in { testLoggedStartAndEndTimes(scenario = ThrowInSqlGen) }
+        "should *not* log sql statement"   in { testLoggedNoSqlStatement(scenario = ThrowInSqlGen) }
+        "should log the exception"         in { testLoggedException(scenario = ThrowInSqlGen, exceptionClass = classOf[TestSqlGenException]) }
+      }
+
+    }
 
   }
 
@@ -307,24 +307,24 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
   case object ThrowInFetch extends TestScenariosForLogging
   case object ThrowInSqlGen extends TestScenariosForLogging
 
-  def testLoggedStartAndEndTimes(scenario: TestScenariosForLogging) {
+  def testLoggedStartAndEndTimes(scenario: TestScenariosForLogging) = {
     val logged = testLogging(scenario)
     logged.startTime.getMillis should be <= (logged.endTime.getMillis)
   }
 
-  def testLoggedNoSqlStatement(scenario: TestScenariosForLogging) {
+  def testLoggedNoSqlStatement(scenario: TestScenariosForLogging) = {
     testLogging(scenario).maybeSqlStmt must be(None)
   }
 
-  def testLoggedSqlStatement(scenario: TestScenariosForLogging) {
-    testLogging(scenario).maybeSqlStmt must beSome(contain ("limit"))
+  def testLoggedSqlStatement(scenario: TestScenariosForLogging) = {
+    testLogging(scenario).maybeSqlStmt must beSome.which(_.contains("limit"))
   }
 
-  def testLoggedNoException(scenario: TestScenariosForLogging) {
+  def testLoggedNoException(scenario: TestScenariosForLogging) = {
     testLogging(scenario).maybeException must be(None)
   }
 
-  def testLoggedException(scenario: TestScenariosForLogging, exceptionClass: Class[_] = classOf[JdbcSQLException]) {
+  def testLoggedException(scenario: TestScenariosForLogging, exceptionClass: Class[_] = classOf[JdbcSQLException]) = {
     val maybeException = testLogging(scenario).maybeException
     maybeException must beSome.which(_.getClass == exceptionClass)
   }
