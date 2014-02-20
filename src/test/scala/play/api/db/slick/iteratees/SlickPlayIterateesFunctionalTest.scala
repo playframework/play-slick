@@ -107,23 +107,27 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
         session.isOpen must beFalse
       }
 
-//      "should close transaction when exception generated in downstream Enumeratee" in {
-//        val session = new SessionWithAsyncTransactionForTesting
-//        val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
-//          maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
-//          maybeExternalSession = Some(session)) must throwA [RuntimeException]
-//        session.isInTransaction must beFalse
-//      }
-//
-//      "should close underlying jdbc connection when exception generated in downstream Enumeratee" in {
-//        val session = new SessionWithAsyncTransaction(db)
-//        val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
-//          maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
-//          maybeExternalSession = Some(session)) must throwA [RuntimeException]
-//        session.isOpen must beFalse
-//      }
+      "should close transaction when exception generated in downstream Enumeratee" in {
+        val session = new SessionWithAsyncTransactionForTesting
+        val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
+        Try {
+          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
+            maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
+            maybeExternalSession = Some(session))
+        }
+        session.isInTransaction must beFalse
+      }
+
+      "should close underlying jdbc connection when exception generated in downstream Enumeratee" in {
+        val session = new SessionWithAsyncTransaction(db)
+        val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
+        Try {
+          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
+            maybeExtraEnumeratee = Some(exceptionThrowingEnumeratee),
+            maybeExternalSession = Some(session))
+        }
+        session.isOpen must beFalse
+      }
 
       "should close transaction when downstream Enumeratee is in Error state" in {
         val session = new SessionWithAsyncTransactionForTesting
