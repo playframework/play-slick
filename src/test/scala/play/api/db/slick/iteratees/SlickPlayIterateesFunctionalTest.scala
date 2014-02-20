@@ -152,32 +152,34 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
     }
-//
-//    describe("Read consistency (transactions)") {
-//
-//      it("should provide consistent reads *by default* when writes are interleaved") {
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList,
-//          maybeExtraEnumeratee = Some(createInterleavedWritesEnumeratee),
-//          maybeExternalSession = None)
-//      }
-//
-//      it("should provide consistent reads given a real external session with async transaction") {
-//        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList,
-//          maybeExtraEnumeratee = Some(createInterleavedWritesEnumeratee),
-//          maybeExternalSession = Some(new SessionWithAsyncTransaction(db)))
-//      }
-//
-//      it("[test of preceding test] should fail to provide consistent reads given a *fake* external session with async transaction") {
-//        val thrown = evaluating {
-//          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList,
-//            maybeExtraEnumeratee = Some(createInterleavedWritesEnumeratee),
-//            maybeExternalSession = Some(new FakeSessionWithAsyncTransactionForTesting(db)))
-//        } should produce [TestFailedException]
-//        thrown.getMessage should endWith ("was not equal to " + fiveRowsInDb.toString)
-//      }
-//
-//    }
-//
+
+    "Read consistency (transactions)" in {
+
+      "should provide consistent reads *by default* when writes are interleaved" in {
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList,
+          maybeExtraEnumeratee = Some(createInterleavedWritesEnumeratee),
+          maybeExternalSession = None)
+      }
+
+      "should provide consistent reads given a real external session with async transaction" in {
+        testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList,
+          maybeExtraEnumeratee = Some(createInterleavedWritesEnumeratee),
+          maybeExternalSession = Some(new SessionWithAsyncTransaction(db)))
+      }
+
+      "[test of preceding tests] should fail to provide consistent reads given a *fake* external session with async transaction" in {
+        val r = Try {
+          testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), fiveRowsInDb.grouped(2).toList,
+            maybeExtraEnumeratee = Some(createInterleavedWritesEnumeratee),
+            maybeExternalSession = Some(new FakeSessionWithAsyncTransactionForTesting(db)))
+        }
+
+        r.isFailure must beTrue
+        r.failed.map(_.getMessage).get must contain ("is not equal to")
+      }
+
+    }
+
 //    describe("Logging callbacks") {
 //
 //      describe("when fetch is successful") {
