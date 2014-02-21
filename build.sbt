@@ -22,6 +22,8 @@ scalacOptions += "-feature"
 
 scalacOptions += "-deprecation"
 
+parallelExecution in Test := false
+
 libraryDependencies ++= {
   val playVersion = "2.2.1"
   val slickVersion = "2.0.0"
