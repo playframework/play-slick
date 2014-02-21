@@ -354,7 +354,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
         logCallback = f => { promisedLogged.trySuccess(f) })
     }
 
-    Await.result(promisedLogged.future, 5.seconds)
+    Await.result(promisedLogged.future, 1 second)
   }
 
   class SessionWithAsyncTransactionForTesting extends SessionWithAsyncTransaction(db) {
