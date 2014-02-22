@@ -38,7 +38,7 @@ NOTE: the Slick documentation is slightly outdated.
 The computer-database contains a proposal that better describes the current reality: https://github.com/freekh/play-slick/blob/master/samples/computer-database/app/models/Models.scala#L20.
 
 # Versioning
-Play 2.2.x and Slick 1.0.x is supported by the 0.6.x series.
+Play 2.2.x and Slick 2.0.x is supported by the 0.6.x series.
 Play 2.2.x and Slick 1.0.x is supported by the 0.5.x series.
 The Play 2.1 was supported in the 0.4.x series.
 
