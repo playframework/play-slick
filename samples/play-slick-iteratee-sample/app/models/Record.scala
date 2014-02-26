@@ -25,25 +25,11 @@ object records extends TableQuery(new Records(_)) {
 
   def mkQuery = for { r <- this } yield r
 
-  def count = database withSession { implicit s => mkQuery.length.run }
-
-  def all = database withSession { implicit s => mkQuery.list }
+  def all = database withSession { implicit s => this.list }
 
   /** This is it: enumerate the query for all Records in chunks of 2 */
   def enumerateAllInChunksOfTwo = enumerateSlickQuery(profile, Right(database), mkQuery, maybeChunkSize = Some(2),
     logCallback = PlayLogCallback(Logger /*, shouldLogSqlOnSuccess = true */ )) // uncomment to log SQL on successful fetches
-
-  def ensureDbPopulated(): Unit = {
-    if (count == 0) {
-      val records = Seq(
-        Record(1, "Alpha"),
-        Record(2, "Beta"),
-        Record(3, "Gamma"),
-        Record(4, "Delta"),
-        Record(5, "Epsilon"))
-      database withSession { implicit s => this.insertAll(records:_*) }
-    }
-  }
 
   // serialize Record to json
   implicit object RecordWrites extends Writes[Record] {

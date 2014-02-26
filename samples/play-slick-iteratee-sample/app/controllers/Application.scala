@@ -17,13 +17,10 @@ object Application extends Controller {
   }
 
   def list = Action { request =>
-    records.ensureDbPopulated()
     Ok(toJson(records.all))
   }
 
   def listComet = Action { request =>
-    records.ensureDbPopulated()
-
     // Records fetched in chunks of 2, and asynchronously piped out to
     // browser in chunked http responses, to be handled by comet callback.
     //
