@@ -7,17 +7,12 @@ import play.api.Play.current
 object Global extends GlobalSettings {
 
   override def onStart(app: Application) {
-    
-    
     InitialData.insert()
   }
 
 }
 
-/**
- * Initial set of data to be imported
- * in the sample application.
- */
+/** Initial set of data to be imported into the sample application. */
 object InitialData {
 
   val sdf = new SimpleDateFormat("yyyy-MM-dd")
