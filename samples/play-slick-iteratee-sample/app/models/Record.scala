@@ -33,7 +33,7 @@ object records extends TableQuery(new Records(_)) {
   def enumerateAllInChunksOfTwo = enumerateSlickQuery(profile, Right(database), mkQuery, maybeChunkSize = Some(2),
     logCallback = PlayLogCallback(Logger /*, shouldLogSqlOnSuccess = true */ )) // uncomment to log SQL on successful fetches
 
-  def ensureDbPopulated() {
+  def ensureDbPopulated(): Unit = {
     if (count == 0) {
       val records = Seq(
         Record(1, "Alpha"),

@@ -31,15 +31,15 @@ class SessionWithAsyncTransaction(db: JdbcBackend#Database) extends JdbcBackend.
   }
 
   /** Bring any active transaction to completion, resulting in either commit or rollback */
-  def ensureAsyncTransactionIsCompleted() {
+  def ensureAsyncTransactionIsCompleted(): Unit = {
     if (inTransaction) { completeAsyncTransaction() }
   }
 
-  def ensureAsyncTransactionIsStarted() {
+  def ensureAsyncTransactionIsStarted(): Unit = {
     if (!inTransaction) { startAsyncTransaction() }
   }
 
-  def startAsyncTransaction() {
+  def startAsyncTransaction(): Unit = {
     if (hasTransactionFailed) { throw new IllegalStateException("An async transaction was already rolled back on this session. A new session is required to create a new transaction") }
     if (inTransaction) { throw new IllegalStateException("An async transaction was already in progress") }
 
@@ -48,7 +48,7 @@ class SessionWithAsyncTransaction(db: JdbcBackend#Database) extends JdbcBackend.
     doRollback = false
   }
 
-  def completeAsyncTransaction() {
+  def completeAsyncTransaction(): Unit = {
     if (!inTransaction) { throw new IllegalStateException("No async transaction was in progress") }
 
     try {

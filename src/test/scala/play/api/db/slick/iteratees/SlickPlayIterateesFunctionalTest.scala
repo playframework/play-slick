@@ -279,7 +279,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
     // NOTE (2013-10-30, msiegel): made this async to handle databases (such as H2),
     //   whose "consistent reads" mode causes the writes to be blocked by locks until
     //   the read completes
-    def addNewRowAsync() {
+    def addNewRowAsync(): Unit = {
       if (numRowsLeftToAdd > 0) {
         Future { addNewRow() }
         Thread.sleep(500) // give it a chance to try (makes the test fail before the fix)
@@ -287,7 +287,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
     }
 
-    def addNewRow() {
+    def addNewRow(): Unit = {
       db withSession { implicit session =>
         testRows.insert(TestRow(Random.nextInt(), Random.alphanumeric.take(5).mkString))
       }

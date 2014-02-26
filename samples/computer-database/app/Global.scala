@@ -22,7 +22,7 @@ object InitialData {
 
   val sdf = new SimpleDateFormat("yyyy-MM-dd")
 
-  def insert() {
+  def insert(): Unit = {
     DB.withSession { implicit s: Session =>
       if (Computers.count == 0) {
         Seq(

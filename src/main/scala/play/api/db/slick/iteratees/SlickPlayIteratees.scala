@@ -117,7 +117,7 @@ object SlickPlayIteratees {
       * underlying read locks or other mechanisms used by the database to ensure read
       * consistency across multiple statements in a single transaction.
       */
-    def completeTransaction() {
+    def completeTransaction(): Unit = {
       session.ensureAsyncTransactionIsCompleted()
     }
 
