@@ -18,16 +18,14 @@ class SessionWithAsyncTransaction(db: JdbcBackend#Database) extends JdbcBackend.
   def withAsyncTransaction[T](f: JdbcBackend#Session => T): T = {
     ensureAsyncTransactionIsStarted()
 
-    var doneWithThisBlock = false
     try {
-      val result = f(this)
-      doneWithThisBlock = true
-      result
-    } finally {
-      if (!doneWithThisBlock) {
+      f(this)
+    } catch {
+      case ex: Throwable => {
         doRollback = true
         hasTransactionFailed = true
         ensureAsyncTransactionIsCompleted()
+        throw ex
       }
     }
   }
