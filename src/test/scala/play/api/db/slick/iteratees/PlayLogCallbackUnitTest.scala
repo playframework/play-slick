@@ -30,24 +30,24 @@ class PlayLogCallbackUnitSpec extends Specification with Mockito {
     "on success with default settings" in {
       "logs at info level without SQL" in {
         callback(fieldsOnSuccess)
-        there was one(slf4jLogger).info("enumerateScalaQuery - fetched chunk in 500 ms: offset 0, 100 records")
+        there was one(slf4jLogger).info("enumerateSlickQuery - fetched chunk in 500 ms: offset 0, 100 records")
       }
 
       "logs zero records returned" in {
         callback(fieldsOnSuccess.copy(maybeNumResults = None))
-        there was one(slf4jLogger).info("enumerateScalaQuery - fetched chunk in 500 ms: offset 0, 0 records")
+        there was one(slf4jLogger).info("enumerateSlickQuery - fetched chunk in 500 ms: offset 0, 0 records")
       }
     }
 
     "on success with settings: should log SQL on success" in {
       "logs at info level *with* SQL" in {
         callbackLogSql(fieldsOnSuccess)
-        there was one(slf4jLogger).info("enumerateScalaQuery - fetched chunk in 500 ms: offset 0, 100 records [sql]")
+        there was one(slf4jLogger).info("enumerateSlickQuery - fetched chunk in 500 ms: offset 0, 100 records [sql]")
       }
 
       "logs zero records returned" in {
         callbackLogSql(fieldsOnSuccess.copy(maybeNumResults = None))
-        there was one(slf4jLogger).info("enumerateScalaQuery - fetched chunk in 500 ms: offset 0, 0 records [sql]")
+        there was one(slf4jLogger).info("enumerateSlickQuery - fetched chunk in 500 ms: offset 0, 0 records [sql]")
       }
     }
 
@@ -55,7 +55,7 @@ class PlayLogCallbackUnitSpec extends Specification with Mockito {
       callback(fieldsOnException)
 
       "logs at error level with SQL" in {
-        there was one(slf4jLogger).error("enumerateScalaQuery - failed to fetch chunk in 500 ms: offset 0 [sql]", exception)
+        there was one(slf4jLogger).error("enumerateSlickQuery - failed to fetch chunk in 500 ms: offset 0 [sql]", exception)
       }
     }
 
@@ -63,7 +63,7 @@ class PlayLogCallbackUnitSpec extends Specification with Mockito {
       callbackLogSql(fieldsOnException)
 
       "logs at error level with SQL" in {
-        there was one(slf4jLogger).error("enumerateScalaQuery - failed to fetch chunk in 500 ms: offset 0 [sql]", exception)
+        there was one(slf4jLogger).error("enumerateSlickQuery - failed to fetch chunk in 500 ms: offset 0 [sql]", exception)
       }
     }
 

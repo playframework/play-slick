@@ -41,7 +41,7 @@ object SlickPlayIteratees {
     // Log zero results in the success case where no more results available
     val maybeNumResults = fields.maybeNumResults.orElse(Some(0).filter(_ => fields.maybeException.isEmpty))
 
-    val message = "enumerateScalaQuery - %s chunk in %d ms: offset %d%s%s".format(
+    val message = "enumerateSlickQuery - %s chunk in %d ms: offset %d%s%s".format(
       if (fields.maybeException.isEmpty) "fetched" else "failed to fetch",
       durationMs,
       fields.offset,
@@ -54,14 +54,14 @@ object SlickPlayIteratees {
     }
   }
 
-  /** Returns a Play Enumerator which fetches the results of the given ScalaQuery Query in chunks.
+  /** Returns a Play Enumerator which fetches the results of the given Slick query in chunks.
     *
     * @param sessionOrDatabase   Provide either a session (useful for consistent reads across a
     *                            larger transaction), or a database with which to create a session.
     *                            NOTE: closes the transaction on the session regardless of whether
     *                              it was passed in or created from a database.
     */
-  def enumerateScalaQuery[Q, E, R](driverProfile: JdbcProfile,
+  def enumerateSlickQuery[Q, E, R](driverProfile: JdbcProfile,
                                    sessionOrDatabase: Either[SessionWithAsyncTransaction, JdbcBackend#Database],
                                    query: Query[Q, R],
                                    maybeChunkSize: Option[Int] = Some(DefaultQueryChunkSize),
@@ -69,7 +69,7 @@ object SlickPlayIteratees {
     maybeChunkSize.filter(_ <= 0).foreach { _ => throw new IllegalArgumentException("chunkSize must be >= 1") }
 
     val session = sessionOrDatabase.fold(session => session, db => new SessionWithAsyncTransaction(db))
-    val chunkedFetcher = new ChunkedScalaQueryFetcher(driverProfile, session, query, maybeChunkSize, logCallback)
+    val chunkedFetcher = new ChunkedSlickQueryFetcher(driverProfile, session, query, maybeChunkSize, logCallback)
 
     Enumerator.generateM(chunkedFetcher.fetchNextChunk) &>
       Enumeratee.onEOF(() => chunkedFetcher.completeTransaction) &>
@@ -85,7 +85,7 @@ object SlickPlayIteratees {
     *   configuration of the underlying database, to ensure that read consistency
     *   is maintained across the fetching of multiple chunks.
     */
-  private class ChunkedScalaQueryFetcher[Q, R](val driverProfile: JdbcProfile,
+  private class ChunkedSlickQueryFetcher[Q, R](val driverProfile: JdbcProfile,
                                                val session: SessionWithAsyncTransaction,
                                                val query: Query[Q, R],
                                                val maybeChunkSize: Option[Int],

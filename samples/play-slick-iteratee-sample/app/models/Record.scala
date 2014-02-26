@@ -30,7 +30,7 @@ object records extends TableQuery(new Records(_)) {
   def all = database withSession { implicit s => mkQuery.list }
 
   /** This is it: enumerate the query for all Records in chunks of 2 */
-  def enumerateAllInChunksOfTwo = enumerateScalaQuery(profile, Right(database), mkQuery, maybeChunkSize = Some(2),
+  def enumerateAllInChunksOfTwo = enumerateSlickQuery(profile, Right(database), mkQuery, maybeChunkSize = Some(2),
     logCallback = PlayLogCallback(Logger /*, shouldLogSqlOnSuccess = true */ )) // uncomment to log SQL on successful fetches
 
   def ensureDbPopulated() {

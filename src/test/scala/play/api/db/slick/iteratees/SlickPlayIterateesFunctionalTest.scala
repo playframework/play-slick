@@ -13,7 +13,7 @@ import play.api.libs.iteratee.{Enumeratee, Error, Input, Iteratee}
 import scala.slick.driver.JdbcProfile
 import scala.slick.jdbc.SessionWithAsyncTransaction
 
-import SlickPlayIteratees.{LogFields, LogCallback, enumerateScalaQuery}
+import SlickPlayIteratees.{LogFields, LogCallback, enumerateSlickQuery}
 
 
 class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversions {
@@ -24,7 +24,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
   // Create in-memory test DB and import its implicits
   val tdb = new JdbcTestDB("h2mem") {
     type Driver = scala.slick.driver.H2Driver
-    val url = "jdbc:h2:mem:scalaquery-play-iteratees_spec;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1;LOCK_MODE=1"
+    val url = "jdbc:h2:mem:slick-play-iteratees_spec;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1;LOCK_MODE=1"
     val jdbcDriver = "org.h2.Driver"
     val driver = scala.slick.driver.H2Driver
   }
@@ -37,7 +37,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
   val twoRowsInDb = fiveRowsInDb.take(2)
   val rowsInDbExcludingC = fiveRowsInDb.filterNot(_.name == "c")
 
-  ".enumerateScalaQuery" should {
+  ".enumerateSlickQuery" should {
 
     "Basic happy path" in {
 
@@ -253,7 +253,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
     //   optional extra Enumeratee passed in by the caller, into a consuming Iteratee
     val sessionOrDatabase = maybeExternalSession.toLeft(db)
     val driver = maybeDriverProfile.getOrElse(tdb.driver)
-    val enumerator = enumerateScalaQuery(driver, sessionOrDatabase, mkQuery(criteria:_*), maybeChunkSize, logCallback)
+    val enumerator = enumerateSlickQuery(driver, sessionOrDatabase, mkQuery(criteria:_*), maybeChunkSize, logCallback)
 
     var chunksSent: List[List[TestRow]] = Nil
     val chunksSentEnumeratee = Enumeratee.map { chunk: List[TestRow] => chunksSent = chunksSent :+ chunk; chunk }
