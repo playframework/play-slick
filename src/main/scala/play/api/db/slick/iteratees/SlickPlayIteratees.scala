@@ -147,7 +147,7 @@ object SlickPlayIteratees {
 
         position += results.size // update mutable counter based on count of results fetched
 
-        Some(results).filterNot(_.isEmpty) // return Future.successful(None) if no results
+        if (results.isEmpty) None else Some(results) // return Future.successful(None) if no results
       } else {
         None
       }
