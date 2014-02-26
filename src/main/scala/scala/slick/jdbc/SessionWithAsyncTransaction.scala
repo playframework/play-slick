@@ -7,7 +7,7 @@ package scala.slick.jdbc
   * NOTE: Used by SlickPlayIteratees to provide read consistency across chunked reads.
   */
 class SessionWithAsyncTransaction(db: JdbcBackend#Database) extends JdbcBackend.BaseSession(db.asInstanceOf[JdbcBackend.Database]) {
-  var hasTransactionFailed = false // don't allow asynchronously re-opening after a failed transaction
+  private var hasTransactionFailed = false // don't allow asynchronously re-opening after a failed transaction
 
   /** Execute the given block with an active async transaction
     *
