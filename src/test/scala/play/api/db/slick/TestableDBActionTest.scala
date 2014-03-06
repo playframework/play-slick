@@ -1,20 +1,11 @@
 package play.api.db.slick
 
-import java.sql.DriverManager
+import com.jolbox.bonecp.BoneCPDataSource
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
-import play.api.db._
-import play.api.http._
 import play.api.mvc.Results._
-import com.jolbox.bonecp.BoneCPDataSource
 import scala.slick.driver.H2Driver
-import play.api.mvc._
-import scala.concurrent.Await
-import java.util.concurrent.TimeUnit
-import play.api.libs.iteratee.Enumerator
-import play.api.libs.iteratee.Iteratee
-import play.api.Application
 
 class TestableDBActionSpec extends Specification {
 
