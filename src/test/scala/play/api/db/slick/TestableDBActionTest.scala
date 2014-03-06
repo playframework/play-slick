@@ -54,7 +54,7 @@ class TestableDBActionSpec extends Specification {
 
     "provide an implicit Database-specific ExecutionContext" in {
       val expectedDBSpecificEC = testDBAction.attributes(database.name).executionContext.toString
-      val notExpectedDefaultEC = play.api.libs.concurrent.Execution.defaultContext.toString
+      val notExpectedDefaultEC = scala.concurrent.ExecutionContext.Implicits.global.toString
 
       val ecAction = testDBAction { implicit rs =>
         def implicitECToString(implicit ec: ExecutionContext) = ec.toString
