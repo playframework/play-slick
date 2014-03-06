@@ -1,7 +1,7 @@
 package play.api.db.slick
 
 import play.api.Application
-import scala.concurrent.Future
+import scala.concurrent.{ Future, blocking }
 import play.api.mvc.{ AnyContent, BodyParser, Action, SimpleResult }
 import play.api.mvc.BodyParsers.parse.anyContent
 import scala.slick.jdbc.JdbcBackend
@@ -183,8 +183,10 @@ trait PredicatedDBAction {
     if (isDBAvailable(db.name)) {
       Action.async(bodyParser) { implicit request =>
         Future {
-          f { session: Session =>
-            requestHandler(DBSessionRequest(session, request))
+          blocking {
+            f { session: Session =>
+              requestHandler(DBSessionRequest(session, request))
+            }
           }
         }(executionContext)
       }
