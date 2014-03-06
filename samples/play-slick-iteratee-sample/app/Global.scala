@@ -1,8 +1,9 @@
 import play.api._
-import models._
 import play.api.db.slick._
 import play.api.Play.current
 import scala.slick.driver.H2Driver.simple._
+
+import models._
 
 object Global extends GlobalSettings {
 
@@ -16,8 +17,9 @@ object Global extends GlobalSettings {
 object InitialData {
 
   def insert(): Unit = {
+    import play.api.libs.concurrent.Execution.Implicits.defaultContext
     DB.withSession { implicit s: Session =>
-      if (records.length.run == 0) {
+      if (Records.DAO().count == 0) {
         val rows = Seq(
           Record(1, "Alpha"),
           Record(2, "Beta"),
@@ -25,7 +27,7 @@ object InitialData {
           Record(4, "Delta"),
           Record(5, "Epsilon"))
 
-        records.insertAll(rows:_*)
+        Records.records.insertAll(rows:_*)
       }
     }
   }
