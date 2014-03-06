@@ -1,5 +1,7 @@
 package play.api.db.slick
 
+import scala.concurrent.ExecutionContext
+
 import com.jolbox.bonecp.BoneCPDataSource
 import org.specs2.mutable._
 import play.api.test._
@@ -48,6 +50,22 @@ class TestableDBActionSpec extends Specification {
 
       status(result) must equalTo(OK)
       contentAsString(result) must contain(ids.mkString(" "))
+    }
+
+    "provide an implicit Database-specific ExecutionContext" in {
+      val expectedDBSpecificEC = testDBAction.attributes(database.name).executionContext.toString
+      val notExpectedDefaultEC = play.api.libs.concurrent.Execution.defaultContext.toString
+
+      val ecAction = testDBAction { implicit rs =>
+        def implicitECToString(implicit ec: ExecutionContext) = ec.toString
+        Ok(implicitECToString)
+      }
+
+      val result = ecAction(FakeRequest())
+
+      status(result) must equalTo(OK)
+      contentAsString(result) must be_==(expectedDBSpecificEC)
+      contentAsString(result) must be_!==(notExpectedDefaultEC)
     }
   }
 }

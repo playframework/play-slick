@@ -1,5 +1,6 @@
 package play.api.db
 
+import scala.concurrent.ExecutionContext
 import scala.language.higherKinds
 import scala.language.implicitConversions
 
@@ -13,5 +14,7 @@ package object slick {
   // Type alias for export to user app
   type Session = scala.slick.jdbc.JdbcBackend#Session
 
+  // Implicitly extract db session and execution context from wrapped request
   implicit def dbSessionRequestAsSession[_](implicit r: DBSessionRequest[_]): Session = r.dbSession
+  implicit def dbSessionRequestAsExecutionContext[_](implicit r: DBSessionRequest[_]): ExecutionContext = r.dbExecutionContext
 }

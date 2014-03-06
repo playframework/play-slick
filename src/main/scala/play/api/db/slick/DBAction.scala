@@ -184,7 +184,7 @@ trait PredicatedDBAction {
       Action.async(bodyParser) { implicit request =>
         Future {
           f { session: Session =>
-            requestHandler(DBSessionRequest(session, request))
+            requestHandler(DBSessionRequest(session, executionContext, request))
           }
         }(executionContext)
       }
