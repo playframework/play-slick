@@ -183,10 +183,8 @@ trait PredicatedDBAction {
     if (isDBAvailable(db.name)) {
       Action.async(bodyParser) { implicit request =>
         Future {
-          blocking {
-            f { session: Session =>
-              requestHandler(DBSessionRequest(session, request))
-            }
+          f { session: Session =>
+            requestHandler(DBSessionRequest(session, executionContext, request))
           }
         }(executionContext)
       }

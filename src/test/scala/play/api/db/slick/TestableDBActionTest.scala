@@ -1,23 +1,22 @@
 package play.api.db.slick
 
+import scala.concurrent.ExecutionContext
+
+import com.jolbox.bonecp.BoneCPDataSource
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
-import play.api.db._
-import play.api.http._
 import play.api.mvc.Results._
-import com.jolbox.bonecp.BoneCPDataSource
 import scala.slick.driver.H2Driver
-import play.api.mvc._
-import scala.concurrent.Await
-import java.util.concurrent.TimeUnit
-import play.api.libs.iteratee.Enumerator
-import play.api.libs.iteratee.Iteratee
-import play.api.Application
 
 class TestableDBActionSpec extends Specification {
-  
+
+  // NOTE (2014-02-20, ms-tg): Following two lines workaround the
+  //   SQLException("No suitable driver found for jdbc:h2:mem:play")
+  //   when an H2 db has already been created in another test
   Class.forName("org.h2.Driver")
+  java.sql.DriverManager.registerDriver(new org.h2.Driver());
+
   val datasource = new BoneCPDataSource
   datasource.setJdbcUrl("jdbc:h2:mem:play")
   datasource.setUsername("sa")
@@ -51,6 +50,22 @@ class TestableDBActionSpec extends Specification {
 
       status(result) must equalTo(OK)
       contentAsString(result) must contain(ids.mkString(" "))
+    }
+
+    "provide an implicit Database-specific ExecutionContext" in {
+      val expectedDBSpecificEC = testDBAction.attributes(database.name).executionContext.toString
+      val notExpectedDefaultEC = scala.concurrent.ExecutionContext.Implicits.global.toString
+
+      val ecAction = testDBAction { implicit rs =>
+        def implicitECToString(implicit ec: ExecutionContext) = ec.toString
+        Ok(implicitECToString)
+      }
+
+      val result = ecAction(FakeRequest())
+
+      status(result) must equalTo(OK)
+      contentAsString(result) must be_==(expectedDBSpecificEC)
+      contentAsString(result) must be_!==(notExpectedDefaultEC)
     }
   }
 }

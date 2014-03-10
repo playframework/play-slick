@@ -15,6 +15,12 @@ pomExtra := (
       <name>Fredrik Ekholdt</name>
       <url>http://ch.linkedin.com/in/freekh</url>
     </developer>
+    <developer>
+      <id>ms-tg</id>
+      <name>Marc Siegel</name>
+      <email>marc.siegel@timgroup.com</email>
+      <url>https://github.com/ms-tg</url>
+    </developer>
   </developers>
 )
 
