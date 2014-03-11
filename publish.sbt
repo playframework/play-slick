@@ -27,6 +27,12 @@ pomExtra := (
       <email>loic.descotte@gmail.com</email>
       <url>https://github.com/loicdescotte</url>
     </developer>
+    <developer>
+       <id>cvogt</id>
+       <name>Jan Christopher Vogt</name>
+       <email>play-slick.nsp@cvogt.org</email>
+       <url>https://github.com/cvogt</url>
+    </developer>
   </developers>
 )
 
