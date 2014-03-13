@@ -12,16 +12,6 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
   lazy val next = Option(page + 1).filter(_ => (offset + items.size) < total)
 }
 
-/**
- * Data Access Object trait
- *
- *  Used to create the DAOs: Companies and Computers
- */
-private[models] trait DAO {
-  val Companies = TableQuery[Companies]
-  val Computers = TableQuery[Computers]
-}
-
 case class Company(id: Option[Long], name: String)
 
 case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date] = None, discontinued: Option[Date] = None, companyId: Option[Long] = None)
@@ -32,7 +22,10 @@ class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
   def * = (id.?, name) <> (Company.tupled, Company.unapply _)
 }
 
-object Companies extends DAO {
+object Companies {
+  
+  val Companies = TableQuery[Companies]
+  
   /**
    * Construct the Map[String,String] needed to fill a select options set
    */
@@ -65,7 +58,11 @@ class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
   def * = (id.?, name, introduced.?, discontinued.?, companyId.?) <>(Computer.tupled, Computer.unapply _)
 }
 
-object Computers extends DAO {
+object Computers {
+  
+  val Computers = TableQuery[Computers]
+  val Companies = TableQuery[Companies]
+  
   /**
    * Retrieve a computer from the id
    * @param id
