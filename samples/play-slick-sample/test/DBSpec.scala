@@ -17,7 +17,7 @@ class DBSpec extends Specification {
     "work as expected" in new WithApplication {
 
       //create an instance of the table
-      val Cats = TableQuery[Cats] //see a way to architect your app in the computers-database-slick sample
+      val Cats = TableQuery[CatsTable] //see a way to architect your app in the computers-database-slick sample
 
       DB.withSession { implicit s: Session =>
         val testKitties = Seq(
