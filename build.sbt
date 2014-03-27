@@ -11,5 +11,7 @@ lazy val playSlickSample = ProjectRef(file("samples/play-slick-sample"), "play-s
 
 name := "play-slick-project"
 
+parallelExecution in Test := false
+
 lazy val root = project.in(file(".")).aggregate(playSlick, playSlickSample, computerDatabase, playSlickCakeSample, playSlickIterateeSample)
 

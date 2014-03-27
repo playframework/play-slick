@@ -12,8 +12,9 @@ class IntegrationSpec extends Specification {
   "Application" should {
     
     "work from within a browser" in {
-      running(TestServer(3333), HTMLUNIT) { browser =>
-        browser.goTo("http://localhost:3333/")
+      val port = 3335
+      running(TestServer(port), HTMLUNIT) { browser =>
+        browser.goTo("http://localhost:"+port)
         
         browser.$("header h1").first.getText must equalTo("Play 2.0 sample application — Computer database")
         browser.$("section h1").first.getText must equalTo("574 computers found")
