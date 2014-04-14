@@ -1,45 +1,17 @@
-name := "play-slick"
 
-licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
+lazy val playSlick = ProjectRef(file("code/"), "playSlick")
 
-homepage := Some(url("https://github.com/freekh/play-slick"))
+lazy val computerDatabase = ProjectRef(file("samples/computer-database"), "computer-database-slick")
 
-version := "0.6.0-SNAPSHOT"
+lazy val playSlickCakeSample = ProjectRef(file("samples/play-slick-cake-sample"), "play-slick-cake-sample")
 
-organization := "com.typesafe.play"
+lazy val playSlickIterateeSample = ProjectRef(file("samples/play-slick-iteratee-sample"), "play-slick-iteratee-sample")
 
-scalaVersion := "2.10.2"
+lazy val playSlickSample = ProjectRef(file("samples/play-slick-sample"), "play-slick-sample")
 
-resolvers += Classpaths.sbtPluginReleases
-
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-resolvers += "Typesafe snapshots" at "http://repo.typesafe.com/typesafe/snapshots/"
-
-resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-
-scalacOptions += "-feature"
-
-scalacOptions += "-deprecation"
+name := "play-slick-project"
 
 parallelExecution in Test := false
 
-libraryDependencies ++= {
-  val playVersion = "2.2.1"
-  val slickVersion = "2.0.0"
-  Seq(
-    "com.typesafe.play" %% "play" % playVersion,
-    "com.typesafe.play" %% "play-jdbc" % playVersion,
-    "com.typesafe.slick" %% "slick" % slickVersion,
-    "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
-    "com.google.code.findbugs" % "jsr305" % "2.0.1", //needed by org.reflections
-    ("org.reflections" % "reflections" % "0.9.8" notTransitive())
-      .exclude("com.google.guava", "guava") //provided by play
-      .exclude("javassist", "javassist"),   //provided by play
-    // Test-only
-    "org.hsqldb" % "hsqldb" % "2.3.1" % "test",
-    "com.typesafe.play" %% "play-test" % playVersion % "test",
-    "com.typesafe.slick" %% "slick-testkit" % slickVersion % "test",
-    "org.mockito" % "mockito-all" % "1.9.5" % "test")
-}
+lazy val root = project.in(file(".")).aggregate(playSlick, playSlickSample, computerDatabase, playSlickCakeSample, playSlickIterateeSample)
 

@@ -12,10 +12,11 @@ class IntegrationSpec extends Specification {
   "Application" should {
 
     "return all records, which were enumerated in chunks" in {
-      running(TestServer(3333), HTMLUNIT) { browser =>
+      val port = 3334
+      running(TestServer(port), HTMLUNIT) { browser =>
 
         // verify that comet handler received records in chunks
-        browser.goTo("http://localhost:3333/")
+        browser.goTo("http://localhost:"+port)
         browser.await().atMost(2, TimeUnit.SECONDS).until("#items-list ul li").isPresent()
         browser.pageSource must contain("""{"id":1,"name":"Alpha"}""")
         browser.pageSource must contain("""{"id":2,"name":"Beta"}""")

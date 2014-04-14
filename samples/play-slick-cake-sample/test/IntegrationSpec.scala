@@ -14,9 +14,9 @@ class IntegrationSpec extends Specification {
   "Application" should {
     
     "work from within a browser" in {
-      running(TestServer(3333), HTMLUNIT) { browser =>
-
-        browser.goTo("http://localhost:3333/")
+      val port = 3332
+      running(TestServer(port), HTMLUNIT) { browser =>
+        browser.goTo("http://localhost:"+port)
 
         browser.pageSource must contain("kitty cat")
        
