@@ -18,7 +18,7 @@ object InitialData {
 
   def insert(): Unit = {
     import play.api.libs.concurrent.Execution.Implicits.defaultContext
-    DB.withSession { implicit s: Session =>
+    DB.withSession { implicit s =>
       if (Records.DAO().count == 0) {
         val rows = Seq(
           Record(1, "Alpha"),
