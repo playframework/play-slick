@@ -24,13 +24,6 @@ object Application extends Controller{
     Ok(toJson(Cats.list))
   }
 
-  val catForm = Form(
-    mapping(
-      "name" -> text(),
-      "color" -> text()
-    )(Cat.apply)(Cat.unapply)
-  )
-
   def insert = DBAction(parse.json) { implicit rs =>
     rs.request.body.validate[Cat].map { cat =>
         Cats.insert(cat)
