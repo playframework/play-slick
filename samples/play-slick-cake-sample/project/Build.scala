@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
-import play.Project._
+import play.Play.autoImport._
+import PlayKeys._
 
 object ApplicationBuild extends Build {
 
@@ -8,14 +9,14 @@ object ApplicationBuild extends Build {
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
-    // Add your project dependencies here,
     jdbc
   )
 
-
-  val main = play.Project(appName, appVersion, appDependencies).settings(
-    scalaVersion := "2.10.2"
-    // Add your own project settings here      
+  val main = Project(appName, file(".")).enablePlugins(play.PlayScala).settings(
+    scalaVersion := "2.10.2",
+    version := appVersion,
+    libraryDependencies ++= appDependencies
   ).dependsOn(ProjectRef(file("../../code"), "playSlick"))
 
 }
+
