@@ -4,13 +4,12 @@ import scala.concurrent.ExecutionContext
 
 import com.jolbox.bonecp.BoneCPDataSource
 import java.sql.DriverManager
-import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
 import play.api.mvc.Results._
 import scala.slick.driver.H2Driver
 
-class TestableDBActionSpec extends Specification {
+class TestableDBActionSpec extends SpecificationWithoutFutureMatchers {
 
   // Force H2 driver registration, to fix "java.sql.SQLException: No suitable driver found".
   // Probably caused by overeager driver deregistration in a previous test. It may be
@@ -26,6 +25,7 @@ class TestableDBActionSpec extends Specification {
   val driver = H2Driver
   val database = new Database("test", datasource, driver)
   val testDBAction = new DBAction(database)
+
   import driver.simple._
   
   class IDs(tag:Tag) extends Table[Int](tag, "IDS") {

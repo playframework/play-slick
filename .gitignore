@@ -17,6 +17,9 @@ project/plugins/project/
 .project
 .settings
 
+# IntelliJ IDEA specific
+.idea
+
 # samples
 samples/*/logs
 samples/*/project/project
