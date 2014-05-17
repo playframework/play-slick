@@ -42,7 +42,8 @@ Play 2.2.x and Slick 2.0.x is supported by the 0.6.x series.
 Play 2.2.x and Slick 1.0.x is supported by the 0.5.x series.
 The Play 2.1 was supported in the 0.4.x series.
 
-From Play 2.3 this module will be integrated into Play.
+This plugin has its own release cycle and will therefore not be integrated into core Play.
+
 
 Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
 
