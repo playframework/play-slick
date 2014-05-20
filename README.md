@@ -7,7 +7,7 @@ The play-slick plugins consists of 3 features:
  - A DDL plugin, that reads Slick tables and automatically creates schema updates on reload. This is useful in particular for demos and to get started.
  - In addition it contains a wrapper to use play enumeratees together with Slick (thanks to Marc)
 
-[![Build Status](https://travis-ci.org/freekh/play-slick.png?branch=master)](https://travis-ci.org/freekh/play-slick)
+[![Build Status](https://travis-ci.org/playframework/play-slick.png?branch=master)](https://travis-ci.org/playframework/play-slick)
 
 # Setup
 
@@ -34,6 +34,9 @@ db.default.password=""
 ```
 to **application.conf** and create a model. Creating models are described in the Slick documentation: http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables. 
 
+# Usage
+Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
+
 NOTE: the Slick documentation is slightly outdated. 
 The computer-database contains a proposal that better describes the current reality: https://github.com/freekh/play-slick/blob/master/samples/computer-database/app/models/Models.scala#L20.
 
@@ -44,8 +47,6 @@ The Play 2.1 was supported in the 0.4.x series.
 
 This plugin has its own release cycle and will therefore not be integrated into core Play.
 
-
-Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
 
 Copyright
 ---------
