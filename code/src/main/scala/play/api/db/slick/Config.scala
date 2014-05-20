@@ -8,7 +8,7 @@ trait Config {
 
   /** Extend this to add driver or change driver mapping */
   protected def driverByName: String => Option[JdbcDriver] = Map(
-    "org.apache.derby.jdbc.EmbeddedDriver" -> DerbyDriver, "org.h2.Driver" -> H2Driver, "org.hsqldb.jdbcDriver" -> HsqldbDriver, "com.mysql.jdbc.Driver" -> MySQLDriver, "org.postgresql.Driver" -> PostgresDriver, "org.sqlite.JDBC" -> SQLiteDriver).get(_)
+    "org.apache.derby.jdbc.EmbeddedDriver" -> DerbyDriver, "org.h2.Driver" -> H2Driver, "org.hsqldb.jdbcDriver" -> HsqldbDriver, "org.hsqldb.jdbc.JDBCDriver" -> HsqldbDriver, "com.mysql.jdbc.Driver" -> MySQLDriver, "org.postgresql.Driver" -> PostgresDriver, "org.sqlite.JDBC" -> SQLiteDriver).get(_)
 
   def datasource(name: String, app: Application) = {
     val conf = app.configuration
