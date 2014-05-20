@@ -19,6 +19,7 @@ project/plugins/project/
 
 # Jetbrains IDEA specific
 .idea/
+.iml
 out/
 
 # samples
