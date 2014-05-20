@@ -17,6 +17,10 @@ project/plugins/project/
 .project
 .settings
 
+# Jetbrains IDEA specific
+.idea/
+out/
+
 # samples
 samples/*/logs
 samples/*/project/project
