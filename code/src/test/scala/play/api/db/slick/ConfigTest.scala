@@ -38,6 +38,9 @@ class ConfigSpec extends Specification {
       "db.custom-nested.driver" -> "org.h2.Driver",
       "db.custom-nested.slickdriver" -> "play.api.db.slick.test.Enclosing$SomeExtendedDriver",
 
+      "db.hsqldb-jdbc-driver.driver"-> "org.hsqldb.jdbcDriver",
+      "db.hsqldb-alternative-jdbc-driver.driver"-> "org.hsqldb.jdbc.JDBCDriver",
+
       "db.jdbc-driver-not-recognized.driver"-> "play.api.db.slick.test.SomeDummyDriver",
 
       "db.class-instead-of-object.driver"-> "play.api.db.slick.test.SomeDummyDriver",
@@ -86,6 +89,16 @@ class ConfigSpec extends Specification {
       running(fakeApplication) {
         val driver = Config.driver("custom-nested")(play.api.Play.current)
         driver must equalTo(Enclosing.SomeExtendedDriver)
+      }
+    }
+
+    "return HSQLDB driver for both drivers names" in {
+      running(fakeApplication) {
+        val hsqldbDriver = Config.driver("hsqldb-jdbc-driver")(play.api.Play.current)
+        val altHsqldbDriver = Config.driver("hsqldb-alternative-jdbc-driver")(play.api.Play.current)
+
+        hsqldbDriver must equalTo(scala.slick.driver.HsqldbDriver)
+        altHsqldbDriver must equalTo(scala.slick.driver.HsqldbDriver)
       }
     }
 
