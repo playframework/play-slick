@@ -44,7 +44,7 @@ object ReflectionUtils {
     res
   }
 
-  def reflectModuleOrField(name: String, base: Any, baseSymbol: Symbol)(implicit mirror: JavaMirror) = {
+  def reflectModuleOrField(name: String, base: Any, baseSymbol: Symbol)(implicit mirror: JavaMirror): (Symbol, Any) = {
     val baseIM = mirror.reflect(base)
     val baseMember = baseSymbol.typeSignature.member(newTermName(name))
     val instance = if (baseMember.isModule) {
@@ -57,16 +57,16 @@ object ReflectionUtils {
       assert(baseMember.isTerm, "Expected " + baseMember + " to be something that can be reflected on " + base + " as a field")
       baseIM.reflectField(baseMember.asTerm).get
     }
-    instance -> baseMember
+    baseMember -> instance 
   }
 
-  def scanModuleOrFieldByReflection(instance: Any, sym: Symbol)(checkSymbol: Symbol => Boolean)(implicit mirror: JavaMirror): List[(Any, Symbol)] = {
-    @tailrec def scanModuleOrFieldByReflection(found: List[(Any, Symbol)],
+  def scanModuleOrFieldByReflection( sym: Symbol, instance: Any)(checkSymbol: Symbol => Boolean)(implicit mirror: JavaMirror): List[(Symbol, Any)] = {
+    @tailrec def scanModuleOrFieldByReflection(found: List[(Symbol, Any)],
       checked: Vector[Symbol],
-      instancesNsyms: List[(Any, Symbol)]): List[(Any, Symbol)] = {
+      instancesNsyms: List[(Symbol, Any)]): List[(Symbol, Any)] = {
 
-      val extractMembers: PartialFunction[(Any, Symbol), Iterable[(Any, Symbol)]] = {
-        case (baseInstance, baseSym) =>
+      val extractMembers: PartialFunction[(Symbol, Any), Iterable[(Symbol, Any)]] = {
+        case (baseSym, baseInstance) =>
           if (baseInstance != null) {
             val vals = baseSym.typeSignature.members.filter(s => s.isModule || (s.isTerm && s.asTerm.isVal))
             vals.flatMap { mSym =>
@@ -78,15 +78,15 @@ object ReflectionUtils {
             }
           } else List.empty
       }
-      val matching = instancesNsyms.flatMap(extractMembers).filter { case (_, s) => checkSymbol(s) }
-      val candidates = instancesNsyms.flatMap(extractMembers).filter { case (_, s) => !checkSymbol(s) && !checked.contains(s) }
+      val matching = instancesNsyms.flatMap(extractMembers).filter { case ( s, _) => checkSymbol(s) }
+      val candidates = instancesNsyms.flatMap(extractMembers).filter { case (s, _) => !checkSymbol(s) && !checked.contains(s) }
       if (candidates.isEmpty)
         (found ++ matching).distinct
       else
-        scanModuleOrFieldByReflection(found ++ matching, checked ++ (matching ++ candidates).map(_._2), candidates)
+        scanModuleOrFieldByReflection(found ++ matching, checked ++ (matching ++ candidates).map(_._1), candidates)
     }
 
-    scanModuleOrFieldByReflection(List.empty, Vector.empty, List(instance -> sym))
+    scanModuleOrFieldByReflection(List.empty, Vector.empty, List(sym -> instance))
   }
 
 }

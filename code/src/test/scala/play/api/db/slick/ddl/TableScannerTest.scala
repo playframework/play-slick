@@ -30,7 +30,16 @@ package play.api.db.slick.ddl {
       "find instances of table queries when (semi-)cake pattern is usesd (like in computer database)" in {
         TableScanner.reflectAllDDLMethods(Set("cake.computer.database.*"), play.api.db.slick.ddl.test.driver, classloader) must have size (2)
       }
-      
+
+      "find instances of table queries in the pets example" in {
+        val ddls = TableScanner.reflectAllDDLMethods(Set("cake.pets.current.*"), play.api.db.slick.ddl.test.driver, classloader)
+        ddls must have size (2)
+
+        val flatDDLs = ddls.map(_.createStatements.mkString).mkString
+        flatDDLs must contain("CAT")
+        flatDDLs must contain("DOG")
+      }
+
       "not fail if there is nothing is found (errors will be printed)" in {
         TableScanner.reflectAllDDLMethods(Set("blah.blah.Zoo"), play.api.db.slick.ddl.test.driver, classloader) must have size (0)
         //prints out logging error (which is expected)
@@ -110,13 +119,51 @@ package cake.computer.database {
     def * = id
   }
 
-  object Companies extends DAO {
+  object Companies extends DAO
+  object Computers extends DAO
+}
 
+package cake.pets {
+  import play.api.db.slick.Profile
+
+  case class Cat(name: String, color: String)
+  case class Dog(name: String, color: String)
+
+  trait CatComponent { this: Profile =>
+    import profile.simple._
+
+    class CatsTable(tag: Tag) extends Table[Cat](tag, "CAT") {
+
+      def name = column[String]("name", O.PrimaryKey)
+      def color = column[String]("color", O.NotNull)
+
+      def * = (name, color) <> (Cat.tupled, Cat.unapply _)
+    }
   }
 
-  object Computers extends DAO {
+  trait DogComponent { this: Profile =>
+    import profile.simple._
 
+    class DogsTable(tag: Tag) extends Table[Dog](tag, "DOG") {
+
+      def name = column[String]("name", O.PrimaryKey)
+      def color = column[String]("color", O.NotNull)
+
+      def * = (name, color) <> (Dog.tupled, Dog.unapply _)
+    }
   }
 
+  class DAO(override val profile: JdbcProfile) extends Profile
+      with CatComponent
+      with DogComponent {
+    
+    import profile.simple._
+    val Cats = TableQuery[CatsTable]
+    val Dogs = TableQuery[DogsTable]
+  }
+
+  object current {
+    val dao = new DAO(play.api.db.slick.ddl.test.driver)
+  }
 }
 

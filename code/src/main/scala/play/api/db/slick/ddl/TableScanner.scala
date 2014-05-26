@@ -30,8 +30,8 @@ object TableScanner {
     val isWildCard = allIds.lastOption.map(_ == "*").getOrElse(false)
     val ids = if (isWildCard) allIds.init else allIds
 
-    val (outerInstance, outerSym) = ids.foldLeft(baseInstance -> (baseSym: Symbol)) {
-      case ((instance, sym), id) =>
+    val (outerSym, outerInstance) = ids.foldLeft((baseSym: Symbol)-> baseInstance) {
+      case ((sym, instance), id) =>
         ReflectionUtils.reflectModuleOrField(id, instance, sym)
     }
 
@@ -40,21 +40,21 @@ object TableScanner {
       typeOf[TableQuery[_]].typeSymbol
     }
 
-    val foundInstances = if (subTypeOf(outerSym, tableQueryTypeSymbol) && !isWildCard) { //name was referencing a specific value
+    val foundInstances: List[(Symbol, Any)] = if (subTypeOf(outerSym, tableQueryTypeSymbol) && !isWildCard) { //name was referencing a specific value
       logger.debug("scanModulesAndFields for: found table query instance (not wildcard): " + name)
-      List(outerInstance)
+      List(baseSym -> outerInstance)
     } else if (isWildCard) { //wildcard so we scan the instance we found for table queries
-      val instancesNsyms = ReflectionUtils.scanModuleOrFieldByReflection(outerInstance, outerSym)(subTypeOf(_, tableQueryTypeSymbol))
+      val instancesNsyms = ReflectionUtils.scanModuleOrFieldByReflection(outerSym, outerInstance)(subTypeOf(_, tableQueryTypeSymbol))
       if (instancesNsyms.isEmpty) logger.warn("Scanned object: '" + baseSym.fullName + "' for '" + name + "' but did not find any Slick Tables")
       logger.debug("scanModulesAndFields for: found " + instancesNsyms.size + " sub-instances (wildcard): " + name)
-      instancesNsyms.map(_._1)
+      instancesNsyms
     } else {
       throw new SlickDDLException("Found a matching object: '" + baseSym.fullName + "' for '" + name + "' but it is not a Slick Table and a wildcard was not specified")
     }
 
-    foundInstances.map { instance =>
+    foundInstances.map { case (name, instance) =>
       import driver.simple._
-      baseSym -> logSlickException(instance.asInstanceOf[TableQuery[Table[_]]].ddl)
+      name -> logSlickException(instance.asInstanceOf[TableQuery[Table[_]]].ddl)
     }.toSet
   }
 
@@ -150,6 +150,6 @@ object TableScanner {
         if (ddls.size > 1) logger.warn(s"Found multiple ddls ${ddls.size} for: $name")
         ddls.headOption.map(_._2)
     }.toSet
-
   }
+
 }
