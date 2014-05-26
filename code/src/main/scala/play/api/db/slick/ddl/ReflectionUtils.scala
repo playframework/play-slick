@@ -21,28 +21,36 @@ object ReflectionUtils {
   }
 
   def splitIdentifiers(names: String) = names.split("""\.""").filter(!_.trim.isEmpty).toList
-  def assembleIdentifiers(ids: List[String]) = ids.mkString(".")
-
+  def assembleIdentifiers(ids: Seq[String]) = ids.mkString(".")
+  
   def findFirstModule(names: String)(implicit mirror: JavaMirror): Option[ModuleSymbol] = {
-    val elems = splitIdentifiers(names)
-    var i = 1 //FIXME: vars...
-    var res: Option[ModuleSymbol] = None
-    while (i < (elems.size + 1) && !res.isDefined) {
+
+    // Check if a given ident is a module
+    def symbolForIdent(ident: String): Option[ModuleSymbol] = {
       try {
-        val symbol = mirror.staticModule(assembleIdentifiers(elems.slice(0, i)))
+        val symbol = mirror.staticModule(ident)
         mirror.reflectModule(symbol).instance //if we can reflect a module it means we are module 
-        res = Some(symbol)
+        Some(symbol)
       } catch {
-        case _: reflect.internal.MissingRequirementError =>
+        case _: reflect.internal.MissingRequirementError => None
         //FIXME: must be another way to check if a static modules exists than exceptions!?!
-        case _: ClassNotFoundException =>
+        case _: ClassNotFoundException => None
         //We tried to reflect a module but got a class cast exception (again, would be nice to do this differently)
-      } finally {
-        i += 1
       }
     }
-    res
+
+     // Produce a sequence of all the identifier prefixes of the given name
+    val identifierSeqs: Seq[Seq[String]] = splitIdentifiers(names).scanLeft(Seq.empty[String]) {
+      case (prefix, elem) => prefix :+ elem
+    }.drop(1)
+    
+    // Get the first matching module, if any
+    identifierSeqs.foldLeft(Option.empty[ModuleSymbol]) {
+      case (found@Some(_), _) => found
+      case (None, identifier) => symbolForIdent(assembleIdentifiers(identifier))
+    }
   }
+  
 
   def reflectModuleOrField(name: String, base: Any, baseSymbol: Symbol)(implicit mirror: JavaMirror): (Symbol, Any) = {
     val baseIM = mirror.reflect(base)
