@@ -1,10 +1,9 @@
 package play.api.db.slick
 
 import play.api.Application
-import scala.concurrent.{ Future, blocking }
-import play.api.mvc.{ AnyContent, BodyParser, Action, SimpleResult }
+import scala.concurrent.Future
+import play.api.mvc.{ AnyContent, BodyParser, Action }
 import play.api.mvc.BodyParsers.parse.anyContent
-import scala.slick.jdbc.JdbcBackend
 import scala.concurrent.ExecutionContext
 import java.util.concurrent.ThreadPoolExecutor
 import play.api.mvc.Result
@@ -89,12 +88,12 @@ trait CurrentDBAction extends PredicatedDBAction {
     }(collection.breakOut)
   }
 
-  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
     val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
     val current = db(dbName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
@@ -151,7 +150,7 @@ trait PredicatedDBAction {
 
   protected val errorPage: Result
 
-  def apply(resultFunction: => SimpleResult): Action[AnyContent] = {
+  def apply(resultFunction: => Result): Action[AnyContent] = {
     if (isDBAvailable(defaultName)) {
       Action.async {
         Future(resultFunction)(attributes(defaultName).executionContext)
@@ -159,27 +158,27 @@ trait PredicatedDBAction {
     } else Action(errorPage)
   }
 
-  def apply(requestHandler: DBSessionRequest[_] => SimpleResult)(implicit app: Application = null) = { //use app if found implicitly, can default to another app
+  def apply(requestHandler: DBSessionRequest[AnyContent] => Result)(implicit app: Application = null) = { //use app if found implicitly, can default to another app
     val current = db(defaultName, Option(app))
     applyForDB(current)(requestHandler)(anyContent)(current.withSession)(errorPage)
   }
 
-  def apply[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+  def apply[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
     val current = db(defaultName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def transaction(requestHandler: DBSessionRequest[AnyContent] => SimpleResult)(implicit app: Application = null) = {
+  def transaction(requestHandler: DBSessionRequest[AnyContent] => Result)(implicit app: Application = null) = {
     val current = db(defaultName, Option(app))
     applyForDB(current)(requestHandler)(anyContent)(current.withTransaction)(errorPage)
   }
 
-  def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => SimpleResult)(implicit app: Application = null) = {
+  def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
     val current = db(defaultName, Option(app))
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
 
-  protected def applyForDB[A](db: Database)(requestHandler: DBSessionRequest[A] => SimpleResult)(bodyParser: BodyParser[A])(f: (Session => SimpleResult) => SimpleResult)(errorPage: => Result)(implicit executionContext: ExecutionContext = attributes(defaultName).executionContext): Action[A] = {
+  protected def applyForDB[A](db: Database)(requestHandler: DBSessionRequest[A] => Result)(bodyParser: BodyParser[A])(f: (Session => Result) => Result)(errorPage: => Result)(implicit executionContext: ExecutionContext = attributes(defaultName).executionContext): Action[A] = {
     if (isDBAvailable(db.name)) {
       Action.async(bodyParser) { implicit request =>
         Future {
