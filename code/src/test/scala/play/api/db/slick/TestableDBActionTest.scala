@@ -9,7 +9,7 @@ import play.api.test.Helpers._
 import play.api.mvc.Results._
 import scala.slick.driver.H2Driver
 
-class TestableDBActionSpec extends SpecificationWithoutFutureMatchers {
+class TestableDBActionSpec extends SpecificationWithoutExecutionContext {
 
   // Force H2 driver registration, to fix "java.sql.SQLException: No suitable driver found".
   // Probably caused by overeager driver deregistration in a previous test. It may be
