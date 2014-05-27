@@ -3,6 +3,7 @@ package play.api.db.slick
 import scala.concurrent.ExecutionContext
 
 import com.jolbox.bonecp.BoneCPDataSource
+import java.sql.DriverManager
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
@@ -11,11 +12,11 @@ import scala.slick.driver.H2Driver
 
 class TestableDBActionSpec extends Specification {
 
-  // NOTE (2014-02-20, ms-tg): Following two lines workaround the
-  //   SQLException("No suitable driver found for jdbc:h2:mem:play")
-  //   when an H2 db has already been created in another test
-  Class.forName("org.h2.Driver")
-  java.sql.DriverManager.registerDriver(new org.h2.Driver());
+  // Force H2 driver registration, to fix "java.sql.SQLException: No suitable driver found".
+  // Probably caused by overeager driver deregistration in a previous test. It may be
+  // possible to remove this line and the line in SlickPlayIterateesFunctionalTest in the near future
+  // once a DB plugin fix makes it into Play: https://github.com/playframework/playframework/pull/2794
+  DriverManager.registerDriver(new org.h2.Driver())
 
   val datasource = new BoneCPDataSource
   datasource.setJdbcUrl("jdbc:h2:mem:play")
