@@ -37,9 +37,6 @@ to **application.conf** and create a model. Creating models are described in the
 # Usage
 Please read more about usage on the [wiki](https://github.com/playframework/play-slick/wiki/Usage)
 
-NOTE: the Slick documentation is slightly outdated. 
-The computer-database contains a proposal that better describes the current reality: https://github.com/playframework/play-slick/blob/master/samples/computer-database/app/models/Models.scala#L20.
-
 # Versioning
 
 The Play Slick plugin supports several different versions of Play and Slick.
