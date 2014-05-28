@@ -6,8 +6,8 @@ pomIncludeRepository := { _ => false }
 
 pomExtra := (
   <scm>
-    <url>git@github.com:freekh/play-slick.git</url>
-    <connection>scm:git:git@github.com:freekh/play-slick.git</connection>
+    <url>git@github.com:playframework/play-slick.git</url>
+    <connection>scm:git:git@github.com:playframework/play-slick.git</connection>
   </scm>
   <developers>
     <developer>
