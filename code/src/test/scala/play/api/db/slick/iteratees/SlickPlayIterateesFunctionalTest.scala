@@ -6,6 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Try, Random}
 
 import com.typesafe.slick.testkit.util.JdbcTestDB
+import java.sql.DriverManager
 import org.h2.jdbc.JdbcSQLException
 import org.specs2.mutable.Specification
 import org.specs2.time.NoTimeConversions
@@ -20,6 +21,12 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
 
   // Only one test can execute at a time, as they share an in-memory H2 database
   sequential
+
+  // Force H2 driver registration, to fix "java.sql.SQLException: No suitable driver found".
+  // Probably caused by overeager driver deregistration in a previous test. It may be
+  // possible to remove this line and the line in TestableDBActionTest in the near future
+  // once a DB plugin fix makes it into Play: https://github.com/playframework/playframework/pull/2794
+  DriverManager.registerDriver(new org.h2.Driver())
 
   // Create in-memory test DB and import its implicits
   val tdb = new JdbcTestDB("h2mem") {

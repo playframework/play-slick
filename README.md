@@ -35,15 +35,21 @@ db.default.password=""
 to **application.conf** and create a model. Creating models are described in the Slick documentation: http://slick.typesafe.com/doc/1.0.1/lifted-embedding.html#tables. 
 
 # Usage
-Please read more about usage on the [wiki](https://github.com/freekh/play-slick/wiki/Usage)
+Please read more about usage on the [wiki](https://github.com/playframework/play-slick/wiki/Usage)
 
 # Versioning
-Play 2.2.x and Slick 2.0.x is supported by the 0.6.x series.
-Play 2.2.x and Slick 1.0.x is supported by the 0.5.x series.
-The Play 2.1 was supported in the 0.4.x series.
 
-This plugin has its own release cycle and will therefore not be integrated into core Play.
+The Play Slick plugin supports several different versions of Play and Slick.
 
+| Plugin version  | Play version       | Slick version      | Scala version |
+|-----------------|--------------------|--------------------|---------------|
+| 0.4.x           | 2.1.x              | 1.0.x              | 2.10.x        |
+| 0.5.x           | 2.2.x              | 1.0.x              | 2.10.x        |
+| 0.6.x           | 2.2.x              | 2.0.x              | 2.10.x        |
+| 0.7.x (planned) | 2.3.x (unreleased) | 2.0.x              | 2.10.x        |
+| 0.8.x (planned) | 2.3.x (unreleased) | 2.1.x (unreleased) | 2.10.x/2.11.x |
+
+The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 
 Copyright
 ---------
