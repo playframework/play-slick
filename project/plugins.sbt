@@ -8,5 +8,3 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 
 resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
-// Needed to reference play application
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % Option(System.getProperty("play.version")).getOrElse("2.2.1"))

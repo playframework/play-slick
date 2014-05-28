@@ -6,6 +6,7 @@ import org.apache.xerces.dom3.as.ASModel
 import scala.slick.driver.JdbcProfile
 import scala.slick.lifted.Tag
 
+import scala.reflect.internal.MissingRequirementError
 import scala.reflect.runtime.universe
 import scala.reflect.runtime.universe._
 import scala.slick.SlickException
@@ -74,7 +75,7 @@ object TableScanner {
       val classSymbol = mirror.staticClass(className)
       val constructorSymbol = classSymbol.typeSignature.declaration(universe.nme.CONSTRUCTOR)
       if (subTypeOf(classSymbol, tableSymbol) && constructorSymbol.isMethod) {
-        logger.debug("classToDDL for: " + className + " is table and has constuctor")
+        logger.debug("classToDDL for: " + className + " is table and has constructor")
         val constructorMethod = constructorSymbol.asMethod
         val reflectedClass = mirror.reflectClass(classSymbol)
         val constructor = reflectedClass.reflectConstructor(constructorMethod)
@@ -89,14 +90,17 @@ object TableScanner {
         None
       }
     } catch {
-      case e: java.lang.IllegalArgumentException =>
+      case e: IllegalArgumentException =>
         logger.warn("Found a Slick table: " + className + ", but it does not have a constructor without arguments. Cannot create DDL for this class")
         None
-      case e: java.lang.InstantiationException =>
+      case e: InstantiationException =>
         logger.warn("Could not initialize " + className + ". DDL Generation will be skipped.")
         None
-      case e: scala.reflect.internal.MissingRequirementError =>
+      case e: MissingRequirementError =>
         logger.debug("MissingRequirementError for " + className + ". Probably means this is not a class. DDL Generation will be skipped.")
+        None
+      case e: AssertionError if e.getMessage.contains("not a type") =>
+        logger.debug(s"Class $className couldn't be reflected into a Scala symbol. DDL Generation will be skipped: ${e.getMessage}")
         None
     }
   }
