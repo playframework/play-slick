@@ -40,6 +40,15 @@ package play.api.db.slick.ddl {
         flatDDLs must contain("DOG")
       }
 
+      "find instances of table queries in the store example" in {
+        val ddls = TableScanner.reflectAllDDLMethods(Set("cake.store.current.*"), play.api.db.slick.ddl.test.driver, classloader)
+        ddls must have size (2)
+
+        val flatDDLs = ddls.map(_.createStatements.mkString).mkString
+        flatDDLs must contain("ORDER")
+        flatDDLs must contain("CUSTOMER")
+      }
+
       "not fail if there is nothing is found (errors will be printed)" in {
         TableScanner.reflectAllDDLMethods(Set("blah.blah.Zoo"), play.api.db.slick.ddl.test.driver, classloader) must have size (0)
         //prints out logging error (which is expected)
@@ -57,7 +66,6 @@ package no.dao {
     def id = column[Long]("ID")
     def * = id
   }
-
 }
 
 package basic.dao {
@@ -156,11 +164,52 @@ package cake.pets {
   class DAO(override val profile: JdbcProfile) extends Profile
       with CatComponent
       with DogComponent {
-    
+
     import profile.simple._
     val Cats = TableQuery[CatsTable]
     val Dogs = TableQuery[DogsTable]
   }
+
+  object current {
+    val dao = new DAO(play.api.db.slick.ddl.test.driver)
+  }
+}
+
+package cake.store {
+  import play.api.db.slick.Profile
+
+  case class Customer(name: String)
+  case class Order(customerName: String, product: String)
+
+  trait CustomerComponent { self: Profile =>
+    import profile.simple._
+
+    class CustomerTable(tag: Tag) extends Table[Customer](tag, "CUSTOMER") {
+      def name = column[String]("name", O.PrimaryKey)
+      def * = (name) <> (Customer.apply, Customer.unapply _)
+    }
+
+    val Customers = TableQuery[CustomerTable]
+  }
+
+  trait OrderComponent { self: Profile with CustomerComponent =>
+    import profile.simple._
+
+    class OrderTable(tag: Tag) extends Table[Order](tag, "ORDER") {
+      def customerName = column[String]("customerName", O.PrimaryKey)
+      def customer = foreignKey("FK_ORDER_CUSTOMER", customerName, Customers)(_.name)
+      def product = column[String]("product", O.NotNull)
+
+      def * = (customerName, product) <> (Order.tupled, Order.unapply _)
+    }
+
+    // Should be working with object declaration also
+    object Orders extends TableQuery(new OrderTable(_))
+  }
+
+  class DAO(override val profile: JdbcProfile) extends Profile
+    with CustomerComponent
+    with OrderComponent
 
   object current {
     val dao = new DAO(play.api.db.slick.ddl.test.driver)

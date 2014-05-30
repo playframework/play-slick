@@ -21,8 +21,8 @@ object ReflectionUtils {
   }
 
   def splitIdentifiers(names: String) = names.split("""\.""").filter(!_.trim.isEmpty).toList
-  def assembleIdentifiers(ids: Seq[String]) = ids.mkString(".")
-  
+  private def assembleIdentifiers(ids: Seq[String]) = ids.mkString(".")
+
   def findFirstModule(names: String)(implicit mirror: JavaMirror): Option[ModuleSymbol] = {
 
     // Check if a given ident is a module
@@ -62,39 +62,46 @@ object ReflectionUtils {
         baseIM.reflectModule(baseMember.asModule).instance
       }
     } else {
-      assert(baseMember.isTerm, "Expected " + baseMember + " to be something that can be reflected on " + base + " as a field")
-      baseIM.reflectField(baseMember.asTerm).get
+      assert(baseMember.isTerm, s"Expected '$name' to be something that can be reflected on $base as a field")
+      baseIM.reflectMethod(baseMember.asTerm.asMethod).apply()
+      
     }
-    baseMember -> instance 
+    baseMember -> instance
   }
 
-  def scanModuleOrFieldByReflection( sym: Symbol, instance: Any)(checkSymbol: Symbol => Boolean)(implicit mirror: JavaMirror): List[(Symbol, Any)] = {
-    @tailrec def scanModuleOrFieldByReflection(found: List[(Symbol, Any)],
-      checked: Vector[Symbol],
-      instancesNsyms: List[(Symbol, Any)]): List[(Symbol, Any)] = {
+  def scanModuleOrFieldByReflection(baseSym: Symbol, sym: Symbol, instance: Any)(checkSymbol: Symbol => Boolean)(implicit mirror: JavaMirror): List[(Symbol, Any)] = {
+    val rootPackage = baseSym.fullName
 
-      val extractMembers: PartialFunction[(Symbol, Any), Iterable[(Symbol, Any)]] = {
-        case (baseSym, baseInstance) =>
-          if (baseInstance != null) {
-            val vals = baseSym.typeSignature.members.filter(s => s.isModule || (s.isTerm && s.asTerm.isVal))
-            vals.flatMap { mSym =>
-              try {
-                List(reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym))
-              } catch {
-                case _: ScalaReflectionException => List.empty
-              }
-            }
-          } else List.empty
-      }
-      val matching = instancesNsyms.flatMap(extractMembers).filter { case ( s, _) => checkSymbol(s) }
-      val candidates = instancesNsyms.flatMap(extractMembers).filter { case (s, _) => !checkSymbol(s) && !checked.contains(s) }
+    val extractMembers: PartialFunction[(Symbol, Any), Iterable[(Symbol, Any)]] = {
+      case (baseSym, baseInstance) if (baseInstance != null) =>
+        val members = baseSym.typeSignature.members
+        val vals = members.filter(s => s.isModule || (s.isTerm && s.asTerm.isAccessor))
+
+        vals.flatMap { mSym =>
+          try {
+            List(reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym))
+          } catch {
+            case _: ScalaReflectionException => List.empty
+          }
+        }
+      case _ => List.empty
+    }
+
+    @tailrec def _scanModuleOrFieldByReflection(found: List[(Symbol, Any)],
+                                                checked: Set[Symbol],
+                                                instancesNsyms: List[(Symbol, Any)]): List[(Symbol, Any)] = {
+      val members = instancesNsyms.flatMap(extractMembers)
+      val (matching, possibleCandidates) = members.partition { case (symb, _) => checkSymbol(symb) }
+      val candidates = possibleCandidates
+        .filter { case (symb, instance) => !checked.contains(symb) && symb.fullName.startsWith(rootPackage) }
+
       if (candidates.isEmpty)
         (found ++ matching).distinct
       else
-        scanModuleOrFieldByReflection(found ++ matching, checked ++ (matching ++ candidates).map(_._1), candidates)
+        _scanModuleOrFieldByReflection(found ++ matching, checked ++ (matching ++ candidates).map(_._1), candidates)
     }
 
-    scanModuleOrFieldByReflection(List.empty, Vector.empty, List(sym -> instance))
+    _scanModuleOrFieldByReflection(List.empty, Set.empty, List(sym -> instance))
   }
 
 }

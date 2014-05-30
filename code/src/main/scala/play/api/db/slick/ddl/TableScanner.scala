@@ -43,8 +43,9 @@ object TableScanner {
     val foundInstances: List[(Symbol, Any)] = if (subTypeOf(outerSym, tableQueryTypeSymbol) && !isWildCard) { //name was referencing a specific value
       logger.debug("scanModulesAndFields for: found table query instance (not wildcard): " + name)
       List(baseSym -> outerInstance)
-    } else if (isWildCard) { //wildcard so we scan the instance we found for table queries
-      val instancesNsyms = ReflectionUtils.scanModuleOrFieldByReflection(outerSym, outerInstance)(subTypeOf(_, tableQueryTypeSymbol))
+    } else if (isWildCard) { 
+      //wildcard so we scan the instance we found for table queries
+      val instancesNsyms = ReflectionUtils.scanModuleOrFieldByReflection(baseSym, outerSym, outerInstance)(subTypeOf(_, tableQueryTypeSymbol))
       if (instancesNsyms.isEmpty) logger.warn("Scanned object: '" + baseSym.fullName + "' for '" + name + "' but did not find any Slick Tables")
       logger.debug("scanModulesAndFields for: found " + instancesNsyms.size + " sub-instances (wildcard): " + name)
       instancesNsyms
@@ -144,7 +145,9 @@ object TableScanner {
         logger.error("Could not find any classes or table queries for: " + name + "")
       currentDDLs
     }
-
+    
+    logger.debug(s"reflectAllDDLMethods(), will generate DDL for: ${ddls.toMap.keys.map(_.fullName).mkString(", ")}")
+    
     ddls.groupBy(_._1.fullName).flatMap {
       case (name, ddls) =>
         if (ddls.size > 1) logger.warn(s"Found multiple ddls ${ddls.size} for: $name")
