@@ -2,5 +2,6 @@
  scala:
    - "2.10.4"
  jdk:
-   - openjdk7
    - openjdk6
+   - openjdk7
+   - oraclejdk8
