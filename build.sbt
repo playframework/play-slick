@@ -8,7 +8,7 @@ version := "0.5.0.9-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.3"
 
 resolvers += Classpaths.sbtPluginReleases
 
@@ -23,7 +23,7 @@ scalacOptions += "-feature"
 scalacOptions += "-deprecation"
 
 libraryDependencies ++= {
-  val playVersion = "2.2.0"
+  val playVersion = "2.2.3"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
