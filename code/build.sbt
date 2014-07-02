@@ -4,7 +4,7 @@ licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.
 
 homepage := Some(url("https://github.com/playframework/play-slick"))
 
-version := "0.7.1-SNAPSHOT"
+version := "0.8.0-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
