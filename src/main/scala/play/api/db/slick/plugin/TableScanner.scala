@@ -69,6 +69,9 @@ object TableScanner {
         case e: java.lang.InstantiationException =>
           play.api.Logger.warn("Could not initialize " + className + ". DDL Generation will be skipped.")
           None
+        case e: java.lang.NoSuchMethodException =>
+          play.api.Logger.debug("Could not initialize object type" + className + ".")
+          None
       }
     } else {
       None
