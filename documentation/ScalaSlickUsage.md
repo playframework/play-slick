@@ -28,6 +28,6 @@ db.default.user=sa
 db.default.password=""
 ```
 
-If you need to use more than one database driver per mode (run or test), please read the [Using multiple drivers](https://github.com/freekh/play-slick/wiki/Using-multiple-drivers)!
+If you need to use more than one database driver per mode (run or test), please read the [Using multiple drivers](https://github.com/playframework/play-slick/wiki/Using-multiple-drivers)!
 
 
