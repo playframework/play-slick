@@ -14,7 +14,7 @@ object ApplicationBuild extends Build {
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    scalaVersion := "2.10.2"
+    scalaVersion := "2.10.4"
     // Add your own project settings here      
   ).dependsOn(ProjectRef(file("../../code"), "playSlick"))
 }
