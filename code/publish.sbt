@@ -6,8 +6,8 @@ pomIncludeRepository := { _ => false }
 
 pomExtra := (
   <scm>
-    <url>git@github.com:freekh/play-slick.git</url>
-    <connection>scm:git:git@github.com:freekh/play-slick.git</connection>
+    <url>git@github.com:playframework/play-slick.git</url>
+    <connection>scm:git:git@github.com:playframework/play-slick.git</connection>
   </scm>
   <developers>
     <developer>
@@ -36,10 +36,7 @@ pomExtra := (
   </developers>
 )
 
-publishTo <<= version { v: String =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT")) 
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else                             
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+publishTo := {
+  if (isSnapshot.value) Some(Opts.resolver.sonatypeSnapshots)
+  else Some(Opts.resolver.sonatypeStaging)
 }

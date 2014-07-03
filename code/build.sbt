@@ -2,13 +2,13 @@ name := "play-slick"
 
 licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
-homepage := Some(url("https://github.com/freekh/play-slick"))
+homepage := Some(url("https://github.com/playframework/play-slick"))
 
 version := "0.6.0-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.4"
 
 resolvers += Classpaths.sbtPluginReleases
 
@@ -25,8 +25,8 @@ scalacOptions += "-deprecation"
 parallelExecution in Test := false
 
 libraryDependencies ++= {
-  val playVersion = "2.2.1"
-  val slickVersion = "2.0.0"
+  val playVersion = "2.2.3"
+  val slickVersion = "2.0.2"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,

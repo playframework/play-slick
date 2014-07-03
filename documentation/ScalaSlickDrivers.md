@@ -12,7 +12,7 @@ But what about the driver configuration if "myOtherDb" needs another database dr
 When having multiple datasources and drivers it is recommended to use the cake pattern.
 Do not worry about the scary name it is quite easy.
 
-Have a look in the [samples](https://github.com/freekh/play-slick/tree/master/samples) for an example of this or keep reading.
+Have a look in the [samples](https://github.com/playframework/play-slick/tree/master/samples) for an example of this or keep reading.
 
 For each table you have, create a self-type of `play.api.db.slick.Profile` and import everything from the `profile` on your table:
 
