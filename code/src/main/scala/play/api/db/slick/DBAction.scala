@@ -88,13 +88,13 @@ trait CurrentDBAction extends PredicatedDBAction {
     }(collection.breakOut)
   }
 
-  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
-    val current = db(dbName, Option(app))
+  def apply[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => Result)(implicit maybeApp: MaybeApplication) = {
+    val current = db(dbName, maybeApp.option)
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
-    val current = db(dbName, Option(app))
+  def transaction[A](dbName: String, bodyParser: BodyParser[A] = anyContent)(requestHandler: DBSessionRequest[A] => Result)(implicit maybeApp: MaybeApplication) = {
+    val current = db(dbName, maybeApp.option)
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
 }
@@ -158,23 +158,23 @@ trait PredicatedDBAction {
     } else Action(errorPage)
   }
 
-  def apply(requestHandler: DBSessionRequest[AnyContent] => Result)(implicit app: Application = null) = { //use app if found implicitly, can default to another app
-    val current = db(defaultName, Option(app))
+  def apply(requestHandler: DBSessionRequest[AnyContent] => Result)(implicit maybeApp: MaybeApplication) = { //use app if found implicitly, can default to another app
+    val current = db(defaultName, maybeApp.option)
     applyForDB(current)(requestHandler)(anyContent)(current.withSession)(errorPage)
   }
 
-  def apply[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
-    val current = db(defaultName, Option(app))
+  def apply[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => Result)(implicit maybeApp: MaybeApplication) = {
+    val current = db(defaultName, maybeApp.option)
     applyForDB(current)(requestHandler)(bodyParser)(current.withSession)(errorPage)
   }
 
-  def transaction(requestHandler: DBSessionRequest[AnyContent] => Result)(implicit app: Application = null) = {
-    val current = db(defaultName, Option(app))
+  def transaction(requestHandler: DBSessionRequest[AnyContent] => Result)(implicit maybeApp: MaybeApplication) = {
+    val current = db(defaultName, maybeApp.option)
     applyForDB(current)(requestHandler)(anyContent)(current.withTransaction)(errorPage)
   }
 
-  def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => Result)(implicit app: Application = null) = {
-    val current = db(defaultName, Option(app))
+  def transaction[A](bodyParser: BodyParser[A])(requestHandler: DBSessionRequest[A] => Result)(implicit maybeApp: MaybeApplication) = {
+    val current = db(defaultName, maybeApp.option)
     applyForDB(current)(requestHandler)(bodyParser)(current.withTransaction)(errorPage)
   }
 
@@ -190,4 +190,18 @@ trait PredicatedDBAction {
     } else Action(bodyParser) { _ => errorPage }
   }
 
+}
+
+/**
+ * Value class wrapper for optionally supplied implicit Applications.
+ */
+class MaybeApplication(val app: Application) extends AnyVal {
+  def option: Option[Application] = Option(app)
+}
+
+/**
+ * Use the MaybeApplication wrapper to avoid multiple overloaded methods with defaults.
+ */
+object MaybeApplication {
+  implicit def maybe(implicit app: Application = null) = new MaybeApplication(app)
 }

@@ -100,7 +100,13 @@ object TableScanner {
       case e: MissingRequirementError =>
         logger.debug("MissingRequirementError for " + className + ". Probably means this is not a class. DDL Generation will be skipped.")
         None
+      case e: ScalaReflectionException =>
+        logger.debug("ScalaReflectionException for " + className + ". Probably means this is not a class. DDL Generation will be skipped.")
+        None
       case e: AssertionError if e.getMessage.contains("not a type") =>
+        logger.debug(s"Class $className couldn't be reflected into a Scala symbol. DDL Generation will be skipped: ${e.getMessage}")
+        None
+      case e: AssertionError if e.getMessage.contains("no symbol could be loaded") =>
         logger.debug(s"Class $className couldn't be reflected into a Scala symbol. DDL Generation will be skipped: ${e.getMessage}")
         None
     }
