@@ -46,17 +46,14 @@ class SlickDDLPlugin(app: Application) extends Plugin {
   private val CreatedBy = "# --- Created by "
 
   def evolutionScript(driverName: String, names: Set[String])(app: Application): Option[String] = {
-    val classloader = app.classloader
-
-    import scala.collection.JavaConverters._
     val driver = Config.driver(driverName)(app)
-    val ddls = TableScanner.reflectAllDDLMethods(names, driver, classloader)
+    val ddls = TableScanner.reflectAllDDLMethods(names, driver, app.classloader)
 
     val delimiter = ";" //TODO: figure this out by asking the db or have a configuration setting?
 
-    if (ddls.nonEmpty) {
+    if (ddls.nonEmpty) {     
       val ddl = ddls
-          .toSeq.sortBy(a => a.createStatements.toList.mkString("") ++ a.dropStatements.toList.mkString("")) //sort to avoid generating different schemas
+          .toSeq.sortBy(a => a.createStatements.mkString ++ a.dropStatements.mkString) //sort to avoid generating different schemas
           .reduceLeft((a, b) => a.asInstanceOf[driver.SchemaDescription] ++ b.asInstanceOf[driver.SchemaDescription])
 
       Some(CreatedBy + "Slick DDL\n" +
