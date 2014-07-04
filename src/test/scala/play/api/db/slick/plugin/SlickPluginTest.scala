@@ -30,6 +30,14 @@ package testTables {
     def c = column[String]("c", O.NotNull)
     def * = id ~ c
   }
+
+  object C extends Table[CC]("C") {
+    def id = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    def d = column[String]("d", O.NotNull)
+    def * = id ~ d <>(CC.apply _, CC.unapply _)
+  }
+
+  case class CC(id: Int, d: String)
 }
 
 class SlickDDLPluginSpec extends Specification {
@@ -48,6 +56,7 @@ class SlickDDLPluginSpec extends Specification {
             val uId = U.insert((1, "q"))
             val tId = T.insert((1, "t", uId))
             val qId = Q.insert((1, "q", tId))
+            val cId = C.insert(CC(1, "d"))
 
             Query(Q).list must equalTo(Seq((1, "q", tId)))
           }
