@@ -12,4 +12,4 @@ libraryDependencies ++= Seq(
   jdbc
 )
 
-javaOptions in (Test, test) += "-XX:MaxPermSize=128M"
+javaOptions in (Test, test) := Seq("-Xmx256m", "-XX:MaxPermSize=128M")

@@ -11,3 +11,5 @@ scalaVersion := "2.10.4"
 libraryDependencies ++= Seq(
   jdbc
 )
+
+javaOptions in (Test, test) := Seq("-Xmx256m", "-XX:MaxPermSize=128M")
