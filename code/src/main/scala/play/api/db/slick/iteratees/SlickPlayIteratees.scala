@@ -5,11 +5,11 @@ import scala.concurrent.{ExecutionContext, Future}
 import org.joda.time.DateTime
 import play.api.libs.iteratee.{Enumeratee, Enumerator}
 import play.api.LoggerLike
+import scala.language.higherKinds
 import scala.slick.driver.JdbcProfile
 import scala.slick.jdbc.JdbcBackend
 import scala.slick.lifted.Query
 import scala.slick.jdbc.SessionWithAsyncTransaction
-
 
 object SlickPlayIteratees {
 
@@ -61,9 +61,9 @@ object SlickPlayIteratees {
     *                            NOTE: closes the transaction on the session regardless of whether
     *                              it was passed in or created from a database.
     */
-  def enumerateSlickQuery[Q, E, R](driverProfile: JdbcProfile,
+  def enumerateSlickQuery[Q, E, R, C[_]](driverProfile: JdbcProfile,
                                    sessionOrDatabase: Either[SessionWithAsyncTransaction, JdbcBackend#Database],
-                                   query: Query[Q, R],
+                                   query: Query[Q, R, C],
                                    maybeChunkSize: Option[Int] = Some(DefaultQueryChunkSize),
                                    logCallback: LogCallback = EmptyLogCallback)(implicit ec: ExecutionContext): Enumerator[List[R]] = {
     maybeChunkSize.filter(_ <= 0).foreach { _ => throw new IllegalArgumentException("chunkSize must be >= 1") }
@@ -85,9 +85,9 @@ object SlickPlayIteratees {
     *   configuration of the underlying database, to ensure that read consistency
     *   is maintained across the fetching of multiple chunks.
     */
-  private class ChunkedSlickQueryFetcher[Q, R](val driverProfile: JdbcProfile,
+  private class ChunkedSlickQueryFetcher[Q, R, C[_]](val driverProfile: JdbcProfile,
                                                val session: SessionWithAsyncTransaction,
-                                               val query: Query[Q, R],
+                                               val query: Query[Q, R, C],
                                                val maybeChunkSize: Option[Int],
                                                val logCallback: LogCallback)(implicit val ec: ExecutionContext) {
     import driverProfile.Implicit._
@@ -122,7 +122,7 @@ object SlickPlayIteratees {
     }
 
     /** First place that an exception might occur: chunking the query */
-    private def chunkQuery(query: Query[Q, R]): Future[Option[Query[Q, R]]] = Future {
+    private def chunkQuery(query: Query[Q, R, C]): Future[Option[Query[Q, R, C]]] = Future {
       (maybeChunkSize, position) match {
         case (Some(chunkSize), _) => Some(query.drop(position).take(chunkSize))
         case (None, 0)            => Some(query)
@@ -131,12 +131,12 @@ object SlickPlayIteratees {
     }
 
     /** Second place that an exception might occur: generating the sql (for logging) */
-    private def generateSql(maybeQueryWithChunking: Option[Query[Q, R]]): Future[Option[String]] = Future {
+    private def generateSql(maybeQueryWithChunking: Option[Query[Q, R, C]]): Future[Option[String]] = Future {
       maybeQueryWithChunking.map(_.selectStatement)
     }
 
     /** Third place that an exception might occur: executing the query */
-    private def executeQuery(maybeQueryWithChunking: Option[Query[Q, R]]) = Future {
+    private def executeQuery(maybeQueryWithChunking: Option[Query[Q, R, C]]) = Future {
       if (session.isOpen) {
         val results: List[R] = session.withAsyncTransaction { implicit sessionWithTransaction =>
           maybeQueryWithChunking match {

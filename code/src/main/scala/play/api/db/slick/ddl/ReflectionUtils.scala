@@ -32,6 +32,7 @@ object ReflectionUtils {
         mirror.reflectModule(symbol).instance //if we can reflect a module it means we are module 
         Some(symbol)
       } catch {
+        case _: ScalaReflectionException => None
         case _: reflect.internal.MissingRequirementError => None
         //FIXME: must be another way to check if a static modules exists than exceptions!?!
         case _: ClassNotFoundException => None
@@ -79,7 +80,7 @@ object ReflectionUtils {
 
         vals.flatMap { mSym =>
           try {
-            List(reflectModuleOrField(mSym.name.decoded, baseInstance, baseSym))
+            List(reflectModuleOrField(mSym.name.decodedName.toString, baseInstance, baseSym))
           } catch {
             case _: ScalaReflectionException => List.empty
           }

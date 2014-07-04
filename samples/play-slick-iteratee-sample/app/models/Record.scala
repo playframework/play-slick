@@ -27,7 +27,7 @@ object Records {
     * (individually meaningful) Column. Methods placed here can be
     * chained/combined.
     */
-  implicit class QueryExtensions(val q: Query[Records, Record]) {
+  implicit class QueryExtensions(val q: Query[Records, Record, Seq]) {
     def names = q.map(_.name)
     def byId(id: Column[Int]) = q.filter(_.id === id)
   }

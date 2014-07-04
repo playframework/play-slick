@@ -51,7 +51,7 @@ trait Config {
       case e: ClassNotFoundException => findClass(conf, key, name, app.classloader)
     }
     val instanceField = clazz.getField("MODULE$")
-    instanceField.get() match {
+    instanceField.get(null) match {
       case driver: JdbcDriver => driver
       case _                  => throw conf.reportError(key, s"The class $name is not a ${classOf[JdbcDriver].getName}.")
     }

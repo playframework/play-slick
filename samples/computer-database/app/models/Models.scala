@@ -23,9 +23,9 @@ class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
 }
 
 object Companies {
-  
+
   val companies = TableQuery[Companies]
-  
+
   /**
    * Construct the Map[String,String] needed to fill a select options set
    */
@@ -54,21 +54,21 @@ class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
   def introduced = column[Date]("introduced", O.Nullable)
   def discontinued = column[Date]("discontinued", O.Nullable)
   def companyId = column[Long]("companyId", O.Nullable)
-  
+
   def * = (id.?, name, introduced.?, discontinued.?, companyId.?) <>(Computer.tupled, Computer.unapply _)
 }
 
 object Computers {
-  
+
   val computers = TableQuery[Computers]
   val companies = TableQuery[Companies]
-  
+
   /**
    * Retrieve a computer from the id
    * @param id
    */
   def findById(id: Long)(implicit s: Session): Option[Computer] =
-    computers.where(_.id === id).firstOption
+    computers.filter(_.id === id).firstOption
 
   /**
    * Count all computers
@@ -81,7 +81,7 @@ object Computers {
    * @param filter
    */
   def count(filter: String)(implicit s: Session): Int =
-    Query(computers.where(_.name.toLowerCase like filter.toLowerCase).length).first
+    Query(computers.filter(_.name.toLowerCase like filter.toLowerCase).length).first
 
   /**
    * Return a page of (Computer,Company)
@@ -122,7 +122,7 @@ object Computers {
    */
   def update(id: Long, computer: Computer)(implicit s: Session) {
     val computerToUpdate: Computer = computer.copy(Some(id))
-    computers.where(_.id === id).update(computerToUpdate)
+    computers.filter(_.id === id).update(computerToUpdate)
   }
 
   /**
@@ -130,6 +130,6 @@ object Computers {
    * @param id
    */
   def delete(id: Long)(implicit s: Session) {
-    computers.where(_.id === id).delete
+    computers.filter(_.id === id).delete
   }
 }

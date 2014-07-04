@@ -5,7 +5,7 @@ import scala.concurrent.duration.DurationInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Try, Random}
 
-import com.typesafe.slick.testkit.util.JdbcTestDB
+import com.typesafe.slick.testkit.util.InternalJdbcTestDB
 import java.sql.DriverManager
 import org.h2.jdbc.JdbcSQLException
 import org.specs2.mutable.Specification
@@ -29,8 +29,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
   DriverManager.registerDriver(new org.h2.Driver())
 
   // Create in-memory test DB and import its implicits
-  val tdb = new JdbcTestDB("h2mem") {
-    type Driver = scala.slick.driver.H2Driver
+  val tdb = new InternalJdbcTestDB("h2mem") {
     val url = "jdbc:h2:mem:slick-play-iteratees_spec;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1;LOCK_MODE=1"
     val jdbcDriver = "org.h2.Driver"
     val driver = scala.slick.driver.H2Driver
@@ -61,7 +60,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
       "should enumerate query results in 2 chunks when chunkSize = 2 and query has 4 results after applying criteria" in {
-        val criterion: TestQueryCriterion = _.name isNot "c"
+        val criterion: TestQueryCriterion = _.name =!= "c"
         testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList, Some(rowsInDbExcludingC), Seq(criterion))
       }
 
@@ -94,7 +93,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
       "should propagate exception generated during query execution" in {
-        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+        val criterion: TestQueryCriterion = (_.doesNotExist isDefined)
         testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion)) must throwA [JdbcSQLException].like {
           case e => e.getMessage must startWith("""Column "x2.DOES_NOT_EXIST" not found;""")
         }
@@ -102,14 +101,14 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
 
       "should close transaction when exception generated during query execution" in {
         val session = new SessionWithAsyncTransactionForTesting
-        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+        val criterion: TestQueryCriterion = (_.doesNotExist isDefined)
         testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) must throwA [JdbcSQLException]
         session.isInTransaction must beFalse
       }
 
       "should close underlying jdbc connection when exception generated during query execution" in {
         val session = new SessionWithAsyncTransaction(db)
-        val criterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+        val criterion: TestQueryCriterion = (_.doesNotExist isDefined)
         testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) must throwA [JdbcSQLException]
         session.isOpen must beFalse
       }
@@ -225,7 +224,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
   class TestTableWithMissingColumn(tag: Tag) extends Table[TestRow](tag, "TEST") {
     def id = column[Int]("ID")
     def name = column[String]("NAME")
-    def doesNotExist = column[String]("DOES_NOT_EXIST") // this NamedColumn will not be in SQL schema above
+    def doesNotExist = column[Option[String]]("DOES_NOT_EXIST") // this NamedColumn will not be in SQL schema above
     def * = (id, name) <> (TestRow.tupled, TestRow.unapply)
   }
   lazy val testRowsNoCol = TableQuery[TestTableWithMissingColumn]
@@ -340,7 +339,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
     val promisedLogged = Promise[LogFields]()
 
     Try {
-      val throwingCriterion: TestQueryCriterion = (_.doesNotExist isNotNull)
+      val throwingCriterion: TestQueryCriterion = (_.doesNotExist isDefined)
 
       val criteria = scenario match {
         case ThrowInFetch => Seq(throwingCriterion)
