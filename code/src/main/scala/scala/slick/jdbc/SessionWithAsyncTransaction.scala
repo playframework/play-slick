@@ -61,7 +61,7 @@ class SessionWithAsyncTransaction(db: JdbcBackend#Database) extends JdbcBackend.
     }
   }
 
-  def isOpen: Boolean = {
+  override def isOpen: Boolean = {
     conn // force instantiation of lazy val so we can assume it starts open
     open
   }
