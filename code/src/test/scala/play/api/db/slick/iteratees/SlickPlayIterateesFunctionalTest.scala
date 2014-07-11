@@ -73,7 +73,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
       "should close transaction after successful execution" in {
-        val session = new SessionWithAsyncTransactionForTesting
+        val session = new SessionWithAsyncTransaction(db)
         testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, None, List(fiveRowsInDb), maybeExternalSession = Some(session))
         session.isInTransaction must beFalse
       }
@@ -100,7 +100,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
       "should close transaction when exception generated during query execution" in {
-        val session = new SessionWithAsyncTransactionForTesting
+        val session = new SessionWithAsyncTransaction(db)
         val criterion: TestQueryCriterion = (_.doesNotExist isDefined)
         testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion), maybeExternalSession = Some(session)) must throwA [JdbcSQLException]
         session.isInTransaction must beFalse
@@ -114,7 +114,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
       "should close transaction when exception generated in downstream Enumeratee" in {
-        val session = new SessionWithAsyncTransactionForTesting
+        val session = new SessionWithAsyncTransaction(db)
         val exceptionThrowingEnumeratee = Enumeratee.map { chunk: List[TestRow] => throw new RuntimeException("boo!"); chunk }
         Try {
           testChunkedEnumerationUsingInMemoryDb(fiveRowsInDb, Some(2), rowsInDbExcludingC.grouped(2).toList,
@@ -136,7 +136,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       }
 
       "should close transaction when downstream Enumeratee is in Error state" in {
-        val session = new SessionWithAsyncTransactionForTesting
+        val session = new SessionWithAsyncTransaction(db)
         val errorStateEnumeratee = new Enumeratee[List[TestRow], List[TestRow]] {
           def applyOn[A](inner: Iteratee[List[TestRow], A]) = Error("testing!", Input.Empty)
         }
@@ -361,11 +361,6 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
     }
 
     Await.result(promisedLogged.future, 1 second)
-  }
-
-  class SessionWithAsyncTransactionForTesting extends SessionWithAsyncTransaction(db) {
-    /** Expose for test assertions. Slick made this protected in 2.0.0 */
-    def isInTransaction = inTransaction
   }
 
   class TestSqlGenException extends RuntimeException
