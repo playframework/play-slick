@@ -39,13 +39,13 @@ Please read more about usage on the [wiki](https://github.com/playframework/play
 
 The Play Slick plugin supports several different versions of Play and Slick.
 
-| Plugin version  | Play version       | Slick version      | Scala version |
-|-----------------|--------------------|--------------------|---------------|
-| 0.4.x           | 2.1.x              | 1.0.x              | 2.10.x        |
-| 0.5.x           | 2.2.x              | 1.0.x              | 2.10.x        |
-| 0.6.x           | 2.2.x              | 2.0.x              | 2.10.x        |
-| 0.7.x           | 2.3.x              | 2.0.x              | 2.10.x        |
-| 0.8.x (planned) | 2.3.x              | 2.1.x (unreleased) | 2.10.x/2.11.x |
+| Plugin version      | Play version       | Slick version       | Scala version |
+|---------------------|--------------------|---------------------|---------------|
+| 0.4.x               | 2.1.x              | 1.0.x               | 2.10.x        |
+| 0.5.x               | 2.2.x              | 1.0.x               | 2.10.x        |
+| 0.6.x               | 2.2.x              | 2.0.x               | 2.10.x        |
+| 0.7.x               | 2.3.x              | 2.0.x               | 2.10.x        |
+| 0.8.x (pre-release) | 2.3.x              | 2.1.x (pre-release) | 2.10.x/2.11.x |
 
 The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 
@@ -63,10 +63,10 @@ For Play 2.3 and Slick 2.0 (with Scala 2.10):
 "com.typesafe.play" %% "play-slick" % "0.7.0"
 ```
 
-For Play 2.3 and Slick 2.1 **milestone** (with Scala 2.10 or 2.11):
+For Play 2.3 and Slick 2.1 **release candidate** (with Scala 2.10 or 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "0.8.0-M1"
+"com.typesafe.play" %% "play-slick" % "0.8.0-RC1"
 ```
 
 # Copyright
