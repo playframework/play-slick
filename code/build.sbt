@@ -28,7 +28,7 @@ parallelExecution in Test := false
 
 libraryDependencies ++= {
   val playVersion = "2.3.2"
-  val slickVersion = "2.1.0-RC2"
+  val slickVersion = "2.1.0-RC3"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
