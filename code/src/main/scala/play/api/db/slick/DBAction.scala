@@ -47,7 +47,7 @@ object DBAction extends CurrentDBAction
  */
 trait CurrentDBAction extends PredicatedDBAction {
   /** Override to use a different app */
-  protected def app = Config.app
+  protected def app = play.api.Play.current
 
   /** Override to change default error page */
   protected val errorPage = play.api.mvc.Results.ServiceUnavailable
@@ -64,7 +64,7 @@ trait CurrentDBAction extends PredicatedDBAction {
   /** Used to determine which db name config sections are to be included */
   protected def includeFilter(name: String) = {
     if (app.mode == Mode.Test && app.configuration.getConfig(s"db.$testName").isDefined) name == testName //only use test in test mode
-    else name != testName //never use test in 
+    else name != testName //never use test in
   }
 
   override protected def db(name: String, maybeApp: Option[Application]) = {
