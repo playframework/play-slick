@@ -1,2 +1,0 @@
-400:play.api.db.slick.plugin.DatabaseManagementPlugin
-401:play.api.db.slick.plugin.SlickDDLPlugin

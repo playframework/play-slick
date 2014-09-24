@@ -4,7 +4,7 @@ licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.
 
 homepage := Some(url("https://github.com/playframework/play-slick"))
 
-version := "0.8-SNAPSHOT"
+version := "0.9-SNAPSHOT"
 
 organization := "com.typesafe.play"
 
@@ -27,7 +27,7 @@ scalacOptions += "-deprecation"
 parallelExecution in Test := false
 
 libraryDependencies ++= {
-  val playVersion = "2.3.2"
+  val playVersion = "2.4.0-M1"
   val slickVersion = "2.1.0"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,
