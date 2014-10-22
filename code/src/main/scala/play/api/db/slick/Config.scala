@@ -20,7 +20,7 @@ class DefaultSlickConfig @Inject() (conf: Configuration, environment: Environmen
     (for {
       config <- conf.getConfig("slick").toSeq
       key <- config.keys
-      names = config.getString(key).getOrElse(keyNotFound(key)).split(",").toSet
+      names = config.getString(key).getOrElse(keyNotFound(key)).split("""(,\n|\n|,)""").toSet
     } yield {
       key -> names
     }).toMap
