@@ -51,3 +51,16 @@ projectID := {
   val sourceUrl = s"${baseUrl}/tree/${sourceTree}/code"
   projectID.value.extra("info.sourceUrl" -> sourceUrl)
 }
+
+val packagePlaydoc = TaskKey[File]("package-playdoc", "Package play documentation")
+
+Defaults.packageTaskSettings(packagePlaydoc, mappings in packagePlaydoc) ++
+Seq(
+  mappings in packagePlaydoc := {
+    val base = baseDirectory.value.getParentFile / "docs"
+    (base / "manual").***.get pair relativeTo(base)
+  },
+  artifactClassifier in packagePlaydoc := Some("playdoc"),
+  artifact in packagePlaydoc ~= { _.copy(configurations = Seq(Docs)) }
+) ++
+addArtifact(artifact in packagePlaydoc, packagePlaydoc)
