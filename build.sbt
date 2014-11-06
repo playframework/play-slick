@@ -1,6 +1,8 @@
 
 lazy val playSlick = ProjectRef(file("code"), "playSlick")
 
+lazy val playSlickDocs = RootProject(file("docs"))
+
 lazy val computerDatabase = ProjectRef(file("samples/computer-database"), "computer-database-slick")
 
 lazy val playSlickCakeSample = ProjectRef(file("samples/play-slick-cake-sample"), "play-slick-cake-sample")
@@ -15,6 +17,6 @@ name := "play-slick-project"
 
 parallelExecution in Test := false
 
-lazy val root = project.in(file(".")).aggregate(playSlick, playSlickSample, computerDatabase, playSlickCakeSample, playSlickIterateeSample, playSlickJsonSample)
+lazy val root = project.in(file(".")).aggregate(playSlick, playSlickDocs, playSlickSample, computerDatabase, playSlickCakeSample, playSlickIterateeSample, playSlickJsonSample)
 
 crossScalaVersions := Seq("2.10.4", "2.11.2")
