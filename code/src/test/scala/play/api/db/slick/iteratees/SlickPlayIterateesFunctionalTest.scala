@@ -95,7 +95,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
       "should propagate exception generated during query execution" in {
         val criterion: TestQueryCriterion = (_.doesNotExist isDefined)
         testChunkedEnumerationUsingInMemoryDb(Nil, None, Nil, criteria = Seq(criterion)) must throwA [JdbcSQLException].like {
-          case e => e.getMessage must startWith("""Column "x2.DOES_NOT_EXIST" not found;""")
+          case e => e.getMessage must beMatching("""(?s)Column "\w+\.DOES_NOT_EXIST" not found;.*""")
         }
       }
 
