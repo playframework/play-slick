@@ -46,3 +46,12 @@ libraryDependencies ++= {
 }
 
 val playSlick = project.in(file("."))
+
+// Aggregated documentation
+
+projectID := {
+  val baseUrl = "https://github.com/playframework/play-slick"
+  val sourceTree = if (isSnapshot.value) "master" else ("v" + version.value)
+  val sourceUrl = s"${baseUrl}/tree/${sourceTree}/code"
+  projectID.value.extra("info.sourceUrl" -> sourceUrl)
+}
