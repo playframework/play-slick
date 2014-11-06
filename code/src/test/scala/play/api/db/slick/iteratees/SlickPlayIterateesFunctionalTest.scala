@@ -30,7 +30,7 @@ class SlickPlayIterateesFunctionalTest extends Specification with NoTimeConversi
 
   // Create in-memory test DB and import its implicits
   val tdb = new InternalJdbcTestDB("h2mem") {
-    val url = "jdbc:h2:mem:slick-play-iteratees_spec;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1;LOCK_MODE=1"
+    val url = "jdbc:h2:mem:slick-play-iteratees_spec;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1;LOCK_MODE=1;MVCC=FALSE"
     val jdbcDriver = "org.h2.Driver"
     val driver = scala.slick.driver.H2Driver
   }
