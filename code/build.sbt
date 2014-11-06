@@ -28,7 +28,6 @@ libraryDependencies ++= {
   val playVersion = "2.4-2014-11-04-10ce984-SNAPSHOT"
   val slickVersion = "2.1.0"
   Seq(
-    "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
     "com.typesafe.slick" %% "slick" % slickVersion,
     "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
