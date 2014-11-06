@@ -2,21 +2,15 @@
 
 ## Multiple datasources and drivers
 
-You can load a different datasource than the default, using the DB name parameter :
+You can load a different datasource than the default, using the DB name parameter:
 
-```scala
-play.api.db.slick.DB("myOtherDb").withSession{ implicit session =>
-  Users.insert(User("fredrik","ekholdt"))
-}
-```
+@[db-other](code/ScalaSlickDrivers.scala)
 
-But what about the driver configuration if "myOtherDb" needs another database driver that the default one?
-When having multiple datasources and drivers it is recommended to use the cake pattern.
-Do not worry about the scary name it is quite easy.
+But what about the driver configuration if "other" needs another database driver that the default one? When having multiple datasources and drivers it is recommended to use the cake pattern. Do not worry about the scary name it is quite easy.
 
 Have a look in the [samples](https://github.com/playframework/play-slick/tree/master/samples) for an example of this or keep reading.
 
-For each table you have, create a self-type of `play.api.db.slick.Profile` and import everything from the `profile` on your table:
+For each table you have, create a self-type of `play.api.db.slick.Profile` and import everything from the `profile` value into your table:
 
 ```scala
 trait UserComponent extends Profile { this: Profile =>
