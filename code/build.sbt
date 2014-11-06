@@ -12,13 +12,9 @@ scalaVersion := "2.10.4"
 
 crossScalaVersions := Seq("2.10.4", "2.11.1")
 
-resolvers += Classpaths.sbtPluginReleases
+resolvers ++= DefaultOptions.resolvers(snapshot = true)
 
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
-
-resolvers += "Typesafe snapshots" at "http://repo.typesafe.com/typesafe/snapshots/"
-
-resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+resolvers += Resolver.typesafeRepo("releases")
 
 scalacOptions += "-feature"
 
@@ -27,7 +23,7 @@ scalacOptions += "-deprecation"
 parallelExecution in Test := false
 
 libraryDependencies ++= {
-  val playVersion = "2.4-SNAPSHOT"
+  val playVersion = "2.4-2014-11-04-10ce984-SNAPSHOT"
   val slickVersion = "2.1.0"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,

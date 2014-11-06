@@ -8,6 +8,10 @@ lazy val root = Project("computer-database-slick", file("."))
 
 scalaVersion := "2.10.4"
 
+resolvers ++= DefaultOptions.resolvers(snapshot = true)
+
+resolvers += Resolver.typesafeRepo("releases")
+
 libraryDependencies ++= Seq(
   jdbc
 )
