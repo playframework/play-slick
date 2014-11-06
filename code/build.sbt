@@ -27,7 +27,7 @@ scalacOptions += "-deprecation"
 parallelExecution in Test := false
 
 libraryDependencies ++= {
-  val playVersion = "2.4.0-M1"
+  val playVersion = "2.4-SNAPSHOT"
   val slickVersion = "2.1.0"
   Seq(
     "com.typesafe.play" %% "play" % playVersion,

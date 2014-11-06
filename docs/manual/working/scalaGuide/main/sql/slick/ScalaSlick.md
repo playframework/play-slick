@@ -32,19 +32,14 @@ For more information about creating models see the [Slick documentation].
 ## DBAction
 
 Use the DBAction in lieu of Action when you need an implicit Session in your controller.
+
 The DBAction is predicated, meaning that it returns an error if the amount of requests are higher than a threshold. This means that your users will get an error when traffic is too high, instead of taking down the whole system.
 
 Usage:
 
-```scala
-def index(name: String) = DBAction { implicit rs =>
-  val users  = Query(Users).filter(name === name)
-  Ok(views.html.index(users.list))
-}
-```
+@[implicit-session](code/DBActionSpec.scala)
 
-Note : rs contains the Play request and the Slick session.
-You can access to the Play request via `rs.request` and to the Slick session via `rs.dbSession`.
+Note: `rs` contains the Play request and the Slick session. You can access the Play request via `rs.request` and the Slick session via `rs.dbSession`.
 
 If you find yourself in need of combining the DBAction, consider using the DB wrapper directly instead.
 
