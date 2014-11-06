@@ -1,0 +1,5 @@
+ScalaSlick:Using Play Slick
+ScalaSlickResources:Play Slick resources
+ScalaSlickDrivers:Advanced drivers configuration
+ScalaSlickTables:Keeping tables separated
+ScalaSlickThreads:Using a separated execution context
