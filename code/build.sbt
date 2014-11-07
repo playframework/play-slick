@@ -12,13 +12,11 @@ scalaVersion := "2.10.4"
 
 crossScalaVersions := Seq("2.10.4", "2.11.1")
 
-resolvers += Classpaths.sbtPluginReleases
+resolvers ++= DefaultOptions.resolvers(snapshot = true)
 
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+resolvers += Resolver.typesafeRepo("releases")
 
-resolvers += "Typesafe snapshots" at "http://repo.typesafe.com/typesafe/snapshots/"
-
-resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+resolvers += "scalaz-releases" at "http://dl.bintray.com/scalaz/releases" // specs2 depends on scalaz-stream
 
 scalacOptions += "-feature"
 
@@ -27,10 +25,9 @@ scalacOptions += "-deprecation"
 parallelExecution in Test := false
 
 libraryDependencies ++= {
-  val playVersion = "2.4.0-M1"
+  val playVersion = "2.4-2014-11-04-10ce984-SNAPSHOT"
   val slickVersion = "2.1.0"
   Seq(
-    "com.typesafe.play" %% "play" % playVersion,
     "com.typesafe.play" %% "play-jdbc" % playVersion,
     "com.typesafe.slick" %% "slick" % slickVersion,
     "javax.servlet" % "javax.servlet-api" % "3.0.1", //needed by org.reflections
@@ -46,3 +43,25 @@ libraryDependencies ++= {
 }
 
 val playSlick = project.in(file("."))
+
+// Aggregated documentation
+
+projectID := {
+  val baseUrl = "https://github.com/playframework/play-slick"
+  val sourceTree = if (isSnapshot.value) "master" else ("v" + version.value)
+  val sourceUrl = s"${baseUrl}/tree/${sourceTree}/code"
+  projectID.value.extra("info.sourceUrl" -> sourceUrl)
+}
+
+val packagePlaydoc = TaskKey[File]("package-playdoc", "Package play documentation")
+
+Defaults.packageTaskSettings(packagePlaydoc, mappings in packagePlaydoc) ++
+Seq(
+  mappings in packagePlaydoc := {
+    val base = baseDirectory.value.getParentFile / "docs"
+    (base / "manual").***.get pair relativeTo(base)
+  },
+  artifactClassifier in packagePlaydoc := Some("playdoc"),
+  artifact in packagePlaydoc ~= { _.copy(configurations = Seq(Docs)) }
+) ++
+addArtifact(artifact in packagePlaydoc, packagePlaydoc)

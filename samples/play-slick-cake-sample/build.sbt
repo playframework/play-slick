@@ -8,6 +8,12 @@ lazy val root = Project("play-slick-cake-sample", file("."))
 
 scalaVersion := "2.10.4"
 
+resolvers ++= DefaultOptions.resolvers(snapshot = true)
+
+resolvers += Resolver.typesafeRepo("releases")
+
+resolvers += "scalaz-releases" at "http://dl.bintray.com/scalaz/releases" // specs2 depends on scalaz-stream
+
 libraryDependencies ++= Seq(
   jdbc
 )

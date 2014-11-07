@@ -1,0 +1,7 @@
+@import scalaguide.slick.ScalaSlickSchema.User
+
+@(users: List[User])
+
+@for(user <- users) {
+  @user.name @user.surname
+}

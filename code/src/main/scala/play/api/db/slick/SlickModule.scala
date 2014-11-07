@@ -11,16 +11,10 @@ import play.api.libs.Files
 
 @Singleton
 class SlickModule extends Module {
-  def bindings(environment: Environment, configuration: Configuration) = {
-    if (configuration.underlying.getBoolean("play.modules.slick.enabled")) {
-      Seq(
-        bind[DynamicEvolutions].to[SlickDynamicEvolutions],
-        bind[SlickConfig].to[DefaultSlickConfig]
-      )
-    } else {
-      Nil
-    }
-  }
+  def bindings(environment: Environment, configuration: Configuration) = Seq(
+    bind[DynamicEvolutions].to[SlickDynamicEvolutions],
+    bind[SlickConfig].to[DefaultSlickConfig]
+  )
 }
 
 trait SlickComponents {
