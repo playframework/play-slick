@@ -1,3 +1,5 @@
+import com.typesafe.tools.mima.plugin.MimaKeys
+
 name := "play-slick"
 
 licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
@@ -44,5 +46,9 @@ libraryDependencies ++= {
     "com.typesafe.slick" %% "slick-testkit" % slickVersion % "test",
     "org.mockito" % "mockito-all" % "1.9.5" % "test")
 }
+
+mimaDefaultSettings
+
+MimaKeys.previousArtifact := Some(organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % "0.8.0")
 
 val playSlick = project.in(file("."))
