@@ -1,8 +1,9 @@
  language: scala
- scala:
-   - "2.10.4"
-   - "2.11.4"
+
  jdk:
-   - openjdk6
-   - openjdk7
-   - oraclejdk8
+  - openjdk6
+  - oraclejdk7
+  - oraclejdk8
+
+script:
+  - sbt +test +docs/test +samples/test
