@@ -7,7 +7,6 @@ object CommonSettings extends AutoPlugin {
   override def trigger  = allRequirements
 
   override def projectSettings = Seq(
-    version := "0.9-SNAPSHOT",
     organization := "com.typesafe.play",
     scalaVersion := "2.11.4",
     crossScalaVersions := Seq("2.10.4", scalaVersion.value),

@@ -45,5 +45,6 @@ lazy val samplePlaySlick = project
 
 Publish.settings
 Omnidoc.settings
+Release.settings
 
 libraryDependencies ++= Dependencies.playSlick
