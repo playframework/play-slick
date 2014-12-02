@@ -1,22 +1,49 @@
+name := "play-slick"
 
-lazy val playSlick = ProjectRef(file("code"), "playSlick")
+lazy val playSlick = project
+  .in(file("."))
 
-lazy val playSlickDocs = RootProject(file("docs"))
+lazy val docs = project
+  .in(file("docs"))
+  .enablePlugins(PlayDocsPlugin)
+  .dependsOn(playSlick)
 
-lazy val computerDatabase = ProjectRef(file("samples/computer-database"), "computer-database-slick")
+lazy val samples = project
+  .in(file("samples"))
+  .aggregate(
+    sampleCake,
+    sampleComputerDatabase,
+    sampleIteratee,
+    sampleJson,
+    samplePlaySlick
+  )
 
-lazy val playSlickCakeSample = ProjectRef(file("samples/play-slick-cake-sample"), "play-slick-cake-sample")
+lazy val sampleCake = project
+  .in(file("samples") / "cake")
+  .enablePlugins(PlayScala)
+  .dependsOn(playSlick)
 
-lazy val playSlickIterateeSample = ProjectRef(file("samples/play-slick-iteratee-sample"), "play-slick-iteratee-sample")
+lazy val sampleComputerDatabase = project
+  .in(file("samples") / "computer-database")
+  .enablePlugins(PlayScala)
+  .dependsOn(playSlick)
 
-lazy val playSlickJsonSample = ProjectRef(file("samples/play-slick-json-sample"), "play-slick-json-sample")
+lazy val sampleIteratee = project
+  .in(file("samples") / "iteratee")
+  .enablePlugins(PlayScala)
+  .dependsOn(playSlick)
 
-lazy val playSlickSample = ProjectRef(file("samples/play-slick-sample"), "play-slick-sample")
+lazy val sampleJson = project
+  .in(file("samples") / "json")
+  .enablePlugins(PlayScala)
+  .dependsOn(playSlick)
 
-name := "play-slick-project"
+lazy val samplePlaySlick = project
+  .in(file("samples") / "sample")
+  .enablePlugins(PlayScala)
+  .dependsOn(playSlick)
 
-parallelExecution in Test := false
+Publish.settings
+Omnidoc.settings
 
-lazy val root = project.in(file(".")).aggregate(playSlick, playSlickDocs, playSlickSample, computerDatabase, playSlickCakeSample, playSlickIterateeSample, playSlickJsonSample)
-
-crossScalaVersions := Seq("2.10.4", "2.11.4")
+libraryDependencies ++= Dependencies.playSlick
