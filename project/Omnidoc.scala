@@ -19,7 +19,7 @@ object Omnidoc {
     Defaults.packageTaskSettings(packagePlaydoc, mappings in packagePlaydoc) ++
     Seq(
       mappings in packagePlaydoc := {
-        val base = baseDirectory.value.getParentFile / "docs"
+        val base = baseDirectory.value / "docs"
         (base / "manual").***.get pair relativeTo(base)
       },
       artifactClassifier in packagePlaydoc := Some("playdoc"),
