@@ -11,11 +11,7 @@ The Play Slick module consists of 3 features:
 
 ## Setup
 
-Add a library dependency on play-slick:
-
-```scala
-"com.typesafe.play" %% "play-slick" % "0.9.0-M1"
-```
+Add a library dependency on play-slick. See the [play-slick README] for the latest library dependency and version information.
 
 Configure the database in your **application.conf** as for other Play databases. For example:
 
@@ -36,6 +32,7 @@ If you need to use more than one database driver per mode (run or test), please 
 
 For more information about creating models see the [Slick documentation].
 
+[play-slick README]: https://github.com/playframework/play-slick
 [Slick documentation]: http://slick.typesafe.com/docs
 
 
