@@ -67,7 +67,7 @@ For Play 2.3 and Slick 2.0 (with Scala 2.10):
 For Play 2.3 and Slick 2.1 (with Scala 2.10 or 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "0.8.0"
+"com.typesafe.play" %% "play-slick" % "0.8.1"
 ```
 
 For Play 2.4 **milestone** and Slick 2.1 (with Scala 2.10 or 2.11):
