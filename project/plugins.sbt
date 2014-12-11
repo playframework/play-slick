@@ -4,7 +4,7 @@ resolvers ++= DefaultOptions.resolvers(snapshot = true)
 
 resolvers += Resolver.typesafeRepo("releases")
 
-addSbtPlugin("com.typesafe.play" % "play-docs-sbt-plugin" % "2.4.0-M2")
+addSbtPlugin("com.typesafe.play" % "play-docs-sbt-plugin" % sys.props.getOrElse("play.version", "2.4.0-M2"))
 
 addSbtPlugin("com.typesafe.play" % "interplay" % "0.1.0")
 
