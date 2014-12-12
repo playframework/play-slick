@@ -2,6 +2,7 @@ name := "play-slick"
 
 lazy val playSlick = project
   .in(file("."))
+  .enablePlugins(Playdoc, Omnidoc)
 
 lazy val docs = project
   .in(file("docs"))
@@ -44,7 +45,8 @@ lazy val samplePlaySlick = project
   .dependsOn(playSlick)
 
 Publish.settings
-Omnidoc.settings
 Release.settings
 
 libraryDependencies ++= Dependencies.playSlick
+
+OmnidocKeys.githubRepo := "playframework/play-slick"
