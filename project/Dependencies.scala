@@ -8,7 +8,7 @@ object Dependencies {
     Library.javaxServlet,
     Library.findbugs,
     Library.reflections.notTransitive,
-    Library.playTest % "test",
+    Library.playSpecs2 % "test",
     Library.slickTestkit % "test",
     Library.hsqldb % "test",
     Library.mockito % "test"
@@ -37,7 +37,7 @@ object Library {
   val javaxServlet = "javax.servlet"            %  "javax.servlet-api" % Version.javaxServlet
   val mockito      = "org.mockito"              %  "mockito-all"       % Version.mockito
   val playJdbc     = "com.typesafe.play"        %% "play-jdbc"         % Version.play
-  val playTest     = "com.typesafe.play"        %% "play-test"         % Version.play
+  val playSpecs2   = "com.typesafe.play"        %% "play-specs2"       % Version.play
   val reflections  = "org.reflections"          %  "reflections"       % Version.reflections
   val slick        = "com.typesafe.slick"       %% "slick"             % Version.slick
   val slickTestkit = "com.typesafe.slick"       %% "slick-testkit"     % Version.slick
