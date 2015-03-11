@@ -16,7 +16,8 @@ object ScalaSlickDriversSpec extends PlaySpecification {
   "DB" should {
 
     "support named data sources" in {
-      val app = FakeApplication(additionalConfiguration = inMemoryDatabase("other"))
+      val app = FakeApplication(additionalConfiguration = inMemoryDatabase("other") ++
+        inMemoryDatabase())
 
       new WithApplication(app) {
         DB("other").withSession { implicit session =>
