@@ -3,7 +3,6 @@ package play.api.db.slick.ddl
 import org.reflections.scanners
 import org.reflections.util
 import org.reflections.Reflections
-import scala.reflect.runtime.universe
 import scala.reflect.runtime.universe._
 
 object ReflectionUtils {
@@ -15,7 +14,7 @@ object ReflectionUtils {
       Some(new Reflections(new util.ConfigurationBuilder()
         .addUrls(scanUrls)
         .filterInputsBy(new util.FilterBuilder().include(util.FilterBuilder.prefix(pkg + ".")))
-        .setScanners(new scanners.TypeAnnotationsScanner, new scanners.TypesScanner)))
+        .setScanners(new scanners.TypeAnnotationsScanner, new scanners.TypeElementsScanner)))
     else
       None
   }

@@ -27,7 +27,7 @@ object Version {
   val hsqldb       = "2.3.1"
   val javaxServlet = "3.0.1"
   val mockito      = "1.9.5"
-  val reflections  = "0.9.8"
+  val reflections  = "0.9.9"
   val slick        = "2.1.0"
 }
 

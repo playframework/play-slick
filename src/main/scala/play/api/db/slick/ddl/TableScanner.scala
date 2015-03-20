@@ -2,9 +2,6 @@ package play.api.db.slick.ddl
 
 import scala.slick.driver.JdbcDriver
 import scala.slick.lifted.AbstractTable
-import org.apache.xerces.dom3.as.ASModel
-import scala.slick.driver.JdbcProfile
-import scala.slick.lifted.Tag
 
 import scala.reflect.internal.MissingRequirementError
 import scala.reflect.runtime.universe
@@ -121,7 +118,7 @@ object TableScanner {
     import scala.collection.JavaConverters._
     ReflectionUtils.getReflections(classloader, name).map { reflections =>
       reflections.getStore //TODO: would be nicer if we did this using Scala reflection, alas staticPackage is non-deterministic:  https://issues.scala-lang.org/browse/SI-6573
-        .get(classOf[org.reflections.scanners.TypesScanner])
+        .get(classOf[org.reflections.scanners.TypeElementsScanner].getSimpleName)
         .keySet.asScala.toSet[String]
     }.toSet.flatten
   }
