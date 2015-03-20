@@ -12,6 +12,7 @@ object CommonSettings extends AutoPlugin {
     crossScalaVersions := Seq("2.10.4", scalaVersion.value),
     scalacOptions ++= Seq("-feature", "-deprecation"),
     parallelExecution in Test := false,
-    resolvers ++= Dependencies.resolvers
+    resolvers ++= Dependencies.resolvers,
+    fork in Test := true
   )
 }
