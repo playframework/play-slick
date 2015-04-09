@@ -1,7 +1,12 @@
 name := "play-slick"
 
+lazy val commonSettings = Seq(
+  libraryDependencies += Library.playSpecs2 % "test"
+)
+
 lazy val playSlick = project
   .in(file("."))
+  .settings(commonSettings: _*)
   .enablePlugins(Playdoc, Omnidoc)
 
 lazy val docs = project
@@ -12,37 +17,32 @@ lazy val docs = project
 lazy val samples = project
   .in(file("samples"))
   .aggregate(
-    sampleCake,
-    sampleComputerDatabase,
-    sampleIteratee,
-    sampleJson,
-    samplePlaySlick
+    daoSample,
+    computerDatabaseSample,
+    iterateeSample,
+    jsonSample,
+    basicSample,
+    diSample
   )
 
-lazy val sampleCake = project
-  .in(file("samples") / "cake")
-  .enablePlugins(PlayScala)
-  .dependsOn(playSlick)
+def sampleProject(name: String) = (
+  Project(s"$name-sample", file("samples") / name)
+  settings(commonSettings: _*)
+  enablePlugins(PlayScala)
+  dependsOn(playSlick)
+)
 
-lazy val sampleComputerDatabase = project
-  .in(file("samples") / "computer-database")
-  .enablePlugins(PlayScala)
-  .dependsOn(playSlick)
+lazy val daoSample = sampleProject("dao")
 
-lazy val sampleIteratee = project
-  .in(file("samples") / "iteratee")
-  .enablePlugins(PlayScala)
-  .dependsOn(playSlick)
+lazy val computerDatabaseSample = sampleProject("computer-database")
 
-lazy val sampleJson = project
-  .in(file("samples") / "json")
-  .enablePlugins(PlayScala)
-  .dependsOn(playSlick)
+lazy val iterateeSample = sampleProject("iteratee")
 
-lazy val samplePlaySlick = project
-  .in(file("samples") / "sample")
-  .enablePlugins(PlayScala)
-  .dependsOn(playSlick)
+lazy val jsonSample = sampleProject("json")
+
+lazy val basicSample = sampleProject("basic")
+
+lazy val diSample = sampleProject("di")
 
 Publish.settings
 Release.settings

@@ -1,4 +1,4 @@
-name := "play-slick-json-sample"
+name := "json-sample"
 
 PlayKeys.playOmnidoc := false
 

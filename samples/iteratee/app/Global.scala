@@ -1,9 +1,10 @@
-import play.api._
-import play.api.db.slick._
-import play.api.Play.current
-import scala.slick.driver.H2Driver.simple._
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
-import models._
+import dao.RecordsDAO
+import models.Record
+import play.api.Application
+import play.api.GlobalSettings
 
 object Global extends GlobalSettings {
 
@@ -16,20 +17,19 @@ object Global extends GlobalSettings {
 /** Initial set of data to be imported into the sample application. */
 object InitialData {
 
+  def recordsDao = new RecordsDAO
   def insert(): Unit = {
     import play.api.libs.concurrent.Execution.Implicits.defaultContext
-    DB.withSession { implicit s =>
-      if (Records.DAO().count == 0) {
-        val rows = Seq(
-          Record(1, "Alpha"),
-          Record(2, "Beta"),
-          Record(3, "Gamma"),
-          Record(4, "Delta"),
-          Record(5, "Epsilon"))
+    val storedRecords = Await.result(recordsDao.count(), Duration.Inf)
+    if (storedRecords == 0) {
+      val rows = Seq(
+        Record(1, "Alpha"),
+        Record(2, "Beta"),
+        Record(3, "Gamma"),
+        Record(4, "Delta"),
+        Record(5, "Epsilon"))
 
-        Records.records.insertAll(rows:_*)
-      }
+      Await.result(recordsDao.insert(rows), Duration.Inf)
     }
   }
-
 }

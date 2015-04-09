@@ -1,0 +1,9 @@
+#cats {
+  float: left;
+  width: 400px;
+}
+
+#dogs {
+  float: left;
+  margin-left: 50px;
+}

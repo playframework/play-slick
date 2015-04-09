@@ -1,25 +1,31 @@
 package play.api.db.slick.ddl
 
-import scala.slick.driver.JdbcDriver
-import scala.slick.lifted.AbstractTable
-
+import scala.collection.JavaConverters.asScalaSetConverter
 import scala.reflect.internal.MissingRequirementError
 import scala.reflect.runtime.universe
-import scala.reflect.runtime.universe._
-import scala.slick.SlickException
+import scala.reflect.runtime.universe.Mirror
+import scala.reflect.runtime.universe.ModuleSymbol
+import scala.reflect.runtime.universe.Symbol
+import scala.reflect.runtime.universe.typeOf
+
+import org.reflections.scanners.TypesScanner
+
+import slick.SlickException
+import slick.driver.JdbcProfile
+import slick.lifted.AbstractTable
 
 class SlickDDLException(val message: String) extends Exception(message)
 
 object TableScanner {
   lazy val logger = play.api.Logger(TableScanner.getClass)
 
-  type DDL = scala.slick.profile.SqlProfile#DDL
+  type SchemaDescription = JdbcProfile#SchemaDescription
 
   private def subTypeOf(sym: Symbol, subTypeSymbol: Symbol) = {
     sym.typeSignature.baseClasses.find(_ == subTypeSymbol).isDefined
   }
 
-  private def scanModulesAndFields(driver: JdbcDriver, baseSym: ModuleSymbol, name: String)(implicit mirror: Mirror): Set[(Symbol, DDL)] = {
+  private def scanModulesAndFields(driver: JdbcProfile, baseSym: ModuleSymbol, name: String)(implicit mirror: Mirror): Set[(Symbol, SchemaDescription)] = {
     logger.debug("scanModulesAndFields for: " + name)
 
     val baseInstance = mirror.reflectModule(baseSym).instance
@@ -41,7 +47,7 @@ object TableScanner {
     val foundInstances: List[(Symbol, Any)] = if (subTypeOf(outerSym, tableQueryTypeSymbol) && !isWildCard) { //name was referencing a specific value
       logger.debug("scanModulesAndFields for: found table query instance (not wildcard): " + name)
       List(baseSym -> outerInstance)
-    } else if (isWildCard) { 
+    } else if (isWildCard) {
       //wildcard so we scan the instance we found for table queries
       val instancesNsyms = ReflectionUtils.scanModuleOrFieldByReflection(baseSym, outerSym, outerInstance)(subTypeOf(_, tableQueryTypeSymbol))
       if (instancesNsyms.isEmpty) logger.warn("Scanned object: '" + baseSym.fullName + "' for '" + name + "' but did not find any Slick Tables")
@@ -52,8 +58,8 @@ object TableScanner {
     }
 
     foundInstances.map { case (name, instance) =>
-      import driver.simple._
-      name -> logSlickException(instance.asInstanceOf[TableQuery[Table[_]]].ddl)
+      import driver.api._
+      name -> logSlickException(instance.asInstanceOf[TableQuery[Table[_]]].schema)
     }.toSet
   }
 
@@ -67,22 +73,22 @@ object TableScanner {
     }
   }
 
-  private def classToDDL(driver: JdbcDriver, className: String, tableSymbol: Symbol)(implicit mirror: Mirror): Option[(Symbol, DDL)] = {
+  private def classToDDL(driver: JdbcProfile, className: String, tableSymbol: Symbol)(implicit mirror: Mirror): Option[(Symbol, SchemaDescription)] = {
     try {
       logger.debug("classToDDL for: " + className)
       val classSymbol = mirror.staticClass(className)
-      val constructorSymbol = classSymbol.typeSignature.declaration(universe.nme.CONSTRUCTOR)
+      val constructorSymbol = classSymbol.typeSignature.decl(universe.termNames.CONSTRUCTOR)
       if (subTypeOf(classSymbol, tableSymbol) && constructorSymbol.isMethod) {
         logger.debug("classToDDL for: " + className + " is table and has constructor")
         val constructorMethod = constructorSymbol.asMethod
         val reflectedClass = mirror.reflectClass(classSymbol)
         val constructor = reflectedClass.reflectConstructor(constructorMethod)
-        import driver.simple._
+        import driver.api._
         logSlickException {
           Some(classSymbol -> TableQuery { tag =>
             val instance = constructor(tag)
             instance.asInstanceOf[Table[_]]
-          }.ddl)
+          }.schema)
         }
       } else {
         None
@@ -126,7 +132,7 @@ object TableScanner {
   /**
    * Reflect all DDL methods found for a set of names with wildcards used to scan for Slick Table classes, objects and packages
    */
-  def reflectAllDDLMethods(names: Set[String], driver: JdbcDriver, classloader: ClassLoader): Set[DDL] = synchronized { //reflection API not thread-safe
+  def reflectAllDDLMethods(names: Set[String], driver: JdbcProfile, classloader: ClassLoader): Set[SchemaDescription] = synchronized { //reflection API not thread-safe
     implicit val mirror = universe.runtimeMirror(classloader)
 
     val tableTypeSymbol = typeOf[AbstractTable[_]].typeSymbol
@@ -149,12 +155,12 @@ object TableScanner {
           classDDLs
       }
       if (currentDDLs.isEmpty)
-        logger.error("Could not find any classes or table queries for: " + name + "")
+        logger.debug("Could not find any classes or table queries for: " + name + "")
       currentDDLs
     }
-    
+
     logger.debug(s"reflectAllDDLMethods(), will generate DDL for: ${ddls.toMap.keys.map(_.fullName).mkString(", ")}")
-    
+
     ddls.groupBy(_._1.fullName).flatMap {
       case (name, ddls) =>
         if (ddls.size > 1) logger.warn(s"Found multiple ddls ${ddls.size} for: $name")
