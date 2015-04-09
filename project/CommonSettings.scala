@@ -8,7 +8,7 @@ object CommonSettings extends AutoPlugin {
 
   override def projectSettings = Seq(
     organization := "com.typesafe.play",
-    scalaVersion := "2.11.4",
+    scalaVersion := "2.11.5",
     crossScalaVersions := Seq("2.10.4", scalaVersion.value),
     scalacOptions ++= Seq("-feature", "-deprecation"),
     parallelExecution in Test := false,

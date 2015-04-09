@@ -1,4 +1,4 @@
-name := "play-slick-computer-database-sample"
+name := "computer-database-sample"
 
 PlayKeys.playOmnidoc := false
 
