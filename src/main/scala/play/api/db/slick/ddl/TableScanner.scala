@@ -77,7 +77,7 @@ object TableScanner {
     try {
       logger.debug("classToDDL for: " + className)
       val classSymbol = mirror.staticClass(className)
-      val constructorSymbol = classSymbol.typeSignature.decl(universe.termNames.CONSTRUCTOR)
+      val constructorSymbol = classSymbol.typeSignature.declaration(universe.nme.CONSTRUCTOR)
       if (subTypeOf(classSymbol, tableSymbol) && constructorSymbol.isMethod) {
         logger.debug("classToDDL for: " + className + " is table and has constructor")
         val constructorMethod = constructorSymbol.asMethod
