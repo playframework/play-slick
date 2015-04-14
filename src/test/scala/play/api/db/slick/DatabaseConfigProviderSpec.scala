@@ -15,14 +15,14 @@ class DatabaseConfigProviderSpec extends Specification {
   implicit val app = {
     val testConfiguration: Configuration = Configuration.from(
       Map(
-        "slick.db.somedb.driver" -> "slick.driver.H2Driver$",
-        "slick.db.somedb.db.driver" -> "org.h2.Driver",
+        "slick.dbs.somedb.driver" -> "slick.driver.H2Driver$",
+        "slick.dbs.somedb.db.driver" -> "org.h2.Driver",
 
-        "slick.db.default.driver" -> "slick.driver.MySQLDriver$",
-        "slick.db.default.db.driver" -> "com.mysql.jdbc.Driver",
+        "slick.dbs.default.driver" -> "slick.driver.MySQLDriver$",
+        "slick.dbs.default.db.driver" -> "com.mysql.jdbc.Driver",
 
-        "slick.db.jdbc-driver-not-recognized.driver" -> "slick.driver.MySQLDriver$",
-        "slick.db.jdbc-driver-not-recognized.db.driver" -> "play.api.db.slick.SomeDummyDriver"))
+        "slick.dbs.jdbc-driver-not-recognized.driver" -> "slick.driver.MySQLDriver$",
+        "slick.dbs.jdbc-driver-not-recognized.db.driver" -> "play.api.db.slick.SomeDummyDriver"))
 
     new GuiceApplicationBuilder()
       .configure(testConfiguration)
