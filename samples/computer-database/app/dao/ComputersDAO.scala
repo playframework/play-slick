@@ -1,8 +1,6 @@
 package dao
 
 import java.util.Date
-
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 import models.Company
@@ -10,6 +8,7 @@ import models.Computer
 import models.Page
 import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.driver.JdbcProfile
 
 class ComputersDAO extends CompaniesComponent {

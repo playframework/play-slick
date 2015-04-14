@@ -1,12 +1,12 @@
 package dao
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 import models.Company
 import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
 import slick.profile.RelationalProfile
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 trait CompaniesComponent {
   protected val driver: RelationalProfile

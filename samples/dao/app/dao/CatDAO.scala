@@ -1,11 +1,11 @@
 package dao
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 import models.Cat
 import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.profile.RelationalProfile
 
 class CatDAO {

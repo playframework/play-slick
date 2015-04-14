@@ -1,9 +1,8 @@
 package controllers
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 import dao.RecordsDAO
 import play.api.libs.Comet
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.iteratee.Enumeratee
 import play.api.libs.json.Json.toJson
 import play.api.mvc.Action
