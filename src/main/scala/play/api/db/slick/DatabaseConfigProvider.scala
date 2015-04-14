@@ -33,3 +33,14 @@ object DatabaseConfigProvider {
   def get[P <: BasicProfile](dbName: String)(implicit app: Application): DatabaseConfig[P] =
     DatabaseConfigLocator(dbName)
 }
+
+trait HasDatabaseConfig[P <: BasicProfile] {
+  protected val dbConfig: DatabaseConfig[P]
+  protected lazy val driver: P = dbConfig.driver
+  protected def db: P#Backend#Database = dbConfig.db
+}
+
+trait HasDatabaseConfigProvider[P <: BasicProfile] extends HasDatabaseConfig[P] {
+  protected val dbConfigProvider: DatabaseConfigProvider
+  override protected val dbConfig: DatabaseConfig[P] = dbConfigProvider.get[P]
+}

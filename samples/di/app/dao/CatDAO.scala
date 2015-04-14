@@ -5,15 +5,11 @@ import scala.concurrent.Future
 import javax.inject.Inject
 import models.Cat
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.profile.RelationalProfile
 
-class CatDAO @Inject()(dbConfigProvider: DatabaseConfigProvider) {
-  protected val (driver, db) = {
-    val config = dbConfigProvider.get[RelationalProfile]
-    (config.driver, config.db)
-  }
-
+class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[RelationalProfile] {
   import driver.api._
 
   private val Cats = TableQuery[CatsTable]

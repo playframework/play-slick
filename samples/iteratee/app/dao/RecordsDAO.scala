@@ -1,6 +1,7 @@
 package dao
 
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfig
 import slick.driver.JdbcProfile
 import play.api.Play
 import models.Record
@@ -10,11 +11,8 @@ import play.api.libs.iteratee.Enumeratee
 import play.api.libs.iteratee.Iteratee
 import scala.concurrent.Future
 
-class RecordsDAO {
-  protected val (driver, db) = {
-    val config = DatabaseConfigProvider.get[JdbcProfile](Play.current)
-    (config.driver, config.db)
-  }
+class RecordsDAO extends HasDatabaseConfig[JdbcProfile] {
+  protected val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   import driver.api._
 

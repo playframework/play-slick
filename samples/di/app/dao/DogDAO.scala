@@ -5,16 +5,12 @@ import scala.concurrent.Future
 import javax.inject.Inject
 import models.Dog
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.db.NamedDatabase
 import slick.profile.RelationalProfile
 
-class DogDAO @Inject()(@NamedDatabase("mydb") dbConfigProvider: DatabaseConfigProvider) {
-  protected val (driver, db) = {
-    val config = dbConfigProvider.get[RelationalProfile]
-    (config.driver, config.db)
-  }
-
+class DogDAO @Inject()(@NamedDatabase("mydb") protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[RelationalProfile] {
   import driver.api._
 
   private val Dogs = TableQuery[DogsTable]

@@ -17,7 +17,7 @@ object Global extends GlobalSettings {
 /** Initial set of data to be imported into the sample application. */
 object InitialData {
 
-  def recordsDao = new RecordsDAO
+  private def recordsDao = new RecordsDAO
   def insert(): Unit = {
     import play.api.libs.concurrent.Execution.Implicits.defaultContext
     val storedRecords = Await.result(recordsDao.count(), Duration.Inf)

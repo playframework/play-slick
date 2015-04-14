@@ -5,6 +5,7 @@ import scala.concurrent.Future
 import models.Cat
 import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfig
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json.toJson
 import play.api.mvc.Action
@@ -12,12 +13,8 @@ import play.api.mvc.Controller
 import slick.profile.RelationalProfile
 import tables.CatTable
 
-class Application extends Controller with CatTable {
-
-  protected val (driver, db) = {
-    val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
-    (dbConfig.driver, dbConfig.db)
-  }
+class Application extends Controller with CatTable with HasDatabaseConfig[RelationalProfile] {
+  val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
 
   import driver.api._
 

@@ -5,11 +5,11 @@ import scala.concurrent.Future
 import models.Company
 import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
-import slick.profile.RelationalProfile
+import play.api.db.slick.HasDatabaseConfig
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import slick.driver.JdbcProfile
 
-trait CompaniesComponent {
-  protected val driver: RelationalProfile
+trait CompaniesComponent { self: HasDatabaseConfig[JdbcProfile] =>
   import driver.api._
 
   class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
@@ -19,12 +19,8 @@ trait CompaniesComponent {
   }
 }
 
-class CompaniesDAO extends CompaniesComponent {
-
-  protected val (driver, db) = {
-    val config = DatabaseConfigProvider.get[RelationalProfile](Play.current)
-    (config.driver, config.db)
-  }
+class CompaniesDAO extends CompaniesComponent with HasDatabaseConfig[JdbcProfile] {
+  protected val dbConfig =  DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   import driver.api._
 

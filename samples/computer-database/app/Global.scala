@@ -18,8 +18,8 @@ object Global extends GlobalSettings {
 
 /** Initial set of data to be imported into the sample application. */
 object InitialData {
-  def companiesDao = new CompaniesDAO
-  def computersDao = new ComputersDAO
+  private def companiesDao = new CompaniesDAO
+  private def computersDao = new ComputersDAO
 
   private val sdf = new SimpleDateFormat("yyyy-MM-dd")
 
