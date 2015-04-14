@@ -7,11 +7,8 @@ import scala.reflect.runtime.universe.newTermName
 import org.reflections.Reflections
 import org.reflections.scanners
 import org.reflections.util
-import play.api.Logger
 
 object ReflectionUtils {
-  private val logger = Logger(getClass)
-
   def getReflections(classloader: ClassLoader, pkg: String): Option[Reflections] = {
     val scanUrls = org.reflections.util.ClasspathHelper.forPackage(pkg, classloader)
     if (!scanUrls.isEmpty)
@@ -56,7 +53,6 @@ object ReflectionUtils {
   }
 
   def reflectModuleOrField(name: String, base: Any, baseSymbol: Symbol)(implicit mirror: JavaMirror): (Symbol, Any) = {
-    logger.info(s"reflecting module of field: $name, $base, $baseSymbol")
     val baseIM = mirror.reflect(base)
     val baseMember = baseSymbol.typeSignature.member(newTermName(name))
     val instance = if (baseMember.isModule) {
@@ -67,12 +63,6 @@ object ReflectionUtils {
       }
     } else {
       assert(baseMember.isTerm, s"Expected '$name' to be something that can be reflected on $base as a field")
-      logger.info(s"baseIM: $baseIM")
-      logger.info(s"baseMember: $baseMember")
-      logger.info(s"baseMember.asTerm: ${baseMember.asTerm}")
-      logger.info(s"baseMember.asTerm.asMethod: ${baseMember.asTerm.asMethod}")
-      logger.info(s"baseIM.reflectMethod(baseMember.asTerm.asMethod): ${baseIM.reflectMethod(baseMember.asTerm.asMethod)}")
-      logger.info(s"baseIM.reflectMethod(baseMember.asTerm.asMethod).apply(): ${baseIM.reflectMethod(baseMember.asTerm.asMethod).symbol.asMethod}")
       baseIM.reflectMethod(baseMember.asTerm.asMethod).apply()
 
     }
