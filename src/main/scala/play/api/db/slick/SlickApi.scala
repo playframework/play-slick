@@ -57,7 +57,7 @@ final class DefaultSlickApi @Inject() (
         dbConfigs += Name(name) -> dbConf
       } catch {
         case NonFatal(t) =>
-          logger.error(s"Provided bad slick database configuration for $name. Hint: Check your application.conf.", t)
+          throw Configuration(config).reportError(name, s"Cannot connect to database [${name}]", Some(t))
       }
     }
     dbConfigs.toMap
