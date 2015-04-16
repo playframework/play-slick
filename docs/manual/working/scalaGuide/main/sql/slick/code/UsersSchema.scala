@@ -3,18 +3,17 @@
  */
 package scalaguide.slick
 
-import play.api.db.slick.Config.driver.simple._
+import slick.driver.H2Driver.api._
 
-object ScalaSlickSchema {
+object UsersSchema {
 
   case class User(name: String, surname: String)
 
   class UsersTable(tag: Tag) extends Table[User](tag, "USER") {
     def name = column[String]("name", O.PrimaryKey)
-    def surname = column[String]("surname", O.NotNull)
+    def surname = column[String]("surname")
     def * = (name, surname) <> (User.tupled, User.unapply _)
   }
 
   val Users = TableQuery[UsersTable]
-
 }
