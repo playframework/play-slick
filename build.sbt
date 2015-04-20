@@ -1,7 +1,8 @@
 name := "play-slick"
 
 lazy val commonSettings = Seq(
-  libraryDependencies += Library.playSpecs2 % "test"
+  libraryDependencies += Library.playSpecs2 % "test",
+  concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
 )
 
 lazy val playSlick = project
