@@ -1,13 +1,14 @@
 package play.api.db.slick.ddl
 
+import scala.reflect.runtime.universe.JavaMirror
+import scala.reflect.runtime.universe.ModuleSymbol
+import scala.reflect.runtime.universe.Symbol
+import scala.reflect.runtime.universe.newTermName
+import org.reflections.Reflections
 import org.reflections.scanners
 import org.reflections.util
-import org.reflections.Reflections
-import scala.reflect.runtime.universe._
 
 object ReflectionUtils {
-  import annotation.tailrec
-
   def getReflections(classloader: ClassLoader, pkg: String): Option[Reflections] = {
     val scanUrls = org.reflections.util.ClasspathHelper.forPackage(pkg, classloader)
     if (!scanUrls.isEmpty)
@@ -28,7 +29,7 @@ object ReflectionUtils {
     def symbolForIdent(ident: String): Option[ModuleSymbol] = {
       try {
         val symbol = mirror.staticModule(ident)
-        mirror.reflectModule(symbol).instance //if we can reflect a module it means we are module 
+        mirror.reflectModule(symbol).instance //if we can reflect a module it means we are module
         Some(symbol)
       } catch {
         case _: ScalaReflectionException => None
@@ -43,14 +44,13 @@ object ReflectionUtils {
     val identifierSeqs: Seq[Seq[String]] = splitIdentifiers(names).scanLeft(Seq.empty[String]) {
       case (prefix, elem) => prefix :+ elem
     }.drop(1)
-    
+
     // Get the first matching module, if any
     identifierSeqs.foldLeft(Option.empty[ModuleSymbol]) {
-      case (found@Some(_), _) => found
+      case (found @ Some(_), _) => found
       case (None, identifier) => symbolForIdent(assembleIdentifiers(identifier))
     }
   }
-  
 
   def reflectModuleOrField(name: String, base: Any, baseSymbol: Symbol)(implicit mirror: JavaMirror): (Symbol, Any) = {
     val baseIM = mirror.reflect(base)
@@ -64,7 +64,7 @@ object ReflectionUtils {
     } else {
       assert(baseMember.isTerm, s"Expected '$name' to be something that can be reflected on $base as a field")
       baseIM.reflectMethod(baseMember.asTerm.asMethod).apply()
-      
+
     }
     baseMember -> instance
   }
@@ -87,7 +87,7 @@ object ReflectionUtils {
       case _ => List.empty
     }
 
-    @tailrec def _scanModuleOrFieldByReflection(found: List[(Symbol, Any)],
+    @annotation.tailrec def _scanModuleOrFieldByReflection(found: List[(Symbol, Any)],
                                                 checked: Set[Symbol],
                                                 instancesNsyms: List[(Symbol, Any)]): List[(Symbol, Any)] = {
       val members = instancesNsyms.flatMap(extractMembers)

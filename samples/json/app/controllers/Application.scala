@@ -1,34 +1,35 @@
 package controllers
 
-import models._
-import play.api._
-import play.api.db.slick._
-import play.api.db.slick.Config.driver.simple._
-import play.api.data._
-import play.api.data.Forms._
-import play.api.mvc._
-import play.api.Play.current
-import play.api.mvc.BodyParsers._
-import play.api.libs.json.Json
-import play.api.libs.json.Json._
+import scala.concurrent.Future
 
-object Application extends Controller{
-  
-  //JSON read/write
-  implicit val catFormat = Json.format[Cat]
+import models.Cat
+import play.api.Play
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfig
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json.Json.toJson
+import play.api.mvc.Action
+import play.api.mvc.Controller
+import slick.profile.RelationalProfile
+import tables.CatTable
+
+class Application extends Controller with CatTable with HasDatabaseConfig[RelationalProfile] {
+  val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
+
+  import driver.api._
 
   //create an instance of the table
-  val Cats = TableQuery[CatsTable] //see a way to architect your app in the computers-database-slick sample
+  val Cats = TableQuery[Cats] //see a way to architect your app in the computers-database-slick sample
 
-  def index = DBAction { implicit rs =>
-    Ok(toJson(Cats.list))
+  def index = Action.async { implicit rs =>
+    db.run(Cats.result).map { cats =>
+      Ok(toJson(cats))
+    }
   }
 
-  def insert = DBAction(parse.json) { implicit rs =>
-    rs.request.body.validate[Cat].map { cat =>
-        Cats.insert(cat)
-        Ok(toJson(cat))
-    }.getOrElse(BadRequest("invalid json"))    
+  def insert = Action.async(parse.json) { implicit request =>
+    request.body.validate[Cat].map { cat =>
+      db.run(Cats += cat).map(_ => Ok(toJson(cat)))
+    }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
-  
 }

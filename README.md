@@ -1,13 +1,30 @@
 # About
 
-This plugin makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play 2.x.
+The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play.
 
-The play-slick plugins consists of 3 features:
- - A wrapper DB object that uses the datasources defined in the Play config files, and pulls them from a connection pool. It is there so it is possible to use Slick sessions in the same fashion as you would Anorm JDBC connections. There are some smart caching and load balancing that makes your connections to your DB more performant.
- - A DDL plugin, that reads Slick tables and automatically creates schema updates on reload. This is useful in particular for demos and to get started.
- - In addition it contains a wrapper to use play enumeratees together with Slick (thanks to Marc)
+The Play Slick module consists of 3 features:
+
+  - Integration of Slick into Play's application lifecycle. Because Slick now creates and manages both a connection pool and a thread pool, integrating Slick with Play boils down to ensure that all resources allocated by Slick are shutted down when a Play application is stopped (or reloaded).
+  - A DDL plugin, that reads Slick tables and automatically creates schema updates on reload. This is useful in particular for demos and to get started.
+  - Support for Play database evolutions.
 
 [![Build Status](https://travis-ci.org/playframework/play-slick.png?branch=master)](https://travis-ci.org/playframework/play-slick)
+
+# Versioning
+
+The Play Slick plugin supports several different versions of Play and Slick.
+
+| Plugin version         | Play version       | Slick version       | Scala version |
+|------------------------|--------------------|---------------------|---------------|
+| 0.4.x                  | 2.1.x              | 1.0.x               | 2.10.x        |
+| 0.5.x                  | 2.2.x              | 1.0.x               | 2.10.x        |
+| 0.6.x                  | 2.2.x              | 2.0.x               | 2.10.x        |
+| 0.7.x                  | 2.3.x              | 2.0.x               | 2.10.x        |
+| 0.8.x                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |
+| 0.9.x (M4 and earlier) | 2.4.x              | 2.1.x               | 2.10.x/2.11.x |
+| 0.9.x (M5 and later)   | 2.4.x              | 3.0.x               | 2.10.x/2.11.x |
+
+The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 
 # Setup
 
@@ -35,20 +52,6 @@ For more information about creating models see the [Slick documentation].
 # Usage
 Please read more about usage on the [wiki](https://github.com/playframework/play-slick/wiki/Usage)
 
-# Versioning
-
-The Play Slick plugin supports several different versions of Play and Slick.
-
-| Plugin version      | Play version       | Slick version       | Scala version |
-|---------------------|--------------------|---------------------|---------------|
-| 0.4.x               | 2.1.x              | 1.0.x               | 2.10.x        |
-| 0.5.x               | 2.2.x              | 1.0.x               | 2.10.x        |
-| 0.6.x               | 2.2.x              | 2.0.x               | 2.10.x        |
-| 0.7.x               | 2.3.x              | 2.0.x               | 2.10.x        |
-| 0.8.x               | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |
-| 0.9.x (milestone)   | 2.4.x              | 2.1.x               | 2.10.x/2.11.x |
-
-The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 
 ## Current Versions
 

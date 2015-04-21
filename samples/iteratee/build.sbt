@@ -1,5 +1,5 @@
-name := "play-slick-iteratee-sample"
+name := "iteratee-sample"
 
 PlayKeys.playOmnidoc := false
 
-libraryDependencies += specs2
+libraryDependencies += "com.typesafe.play" %% "play-streams-experimental" % Version.play
