@@ -26,7 +26,7 @@ class ApplicationSpec extends PlaySpecification {
                   method = "POST",
                   uri = "/insert",
                   headers = FakeHeaders(
-                    Seq("Content-type"->Seq("application/json"))
+                    Seq("Content-type"-> "application/json")
                   ),
                   body =  kitty
                 )
