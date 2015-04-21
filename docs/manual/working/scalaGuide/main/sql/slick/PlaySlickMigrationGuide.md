@@ -60,7 +60,7 @@ Play Slick used to provide a `DBAction` that was useful for:
 * Execute the action's body, and hence any blocking call to the database, in a separate thread pool.
 * Limiting the number of blocking requests queued in the thread pool (useful to limit application's latency)
 
-`DBAction` was indeed handy when using Slick 2.1. However, with the new Slick 3 release, we don't need it anymore. The reason is that Slick 3 comes with a new asynchronous API (a.k.a., Database I/O Actions API) that doesn't need the user to manipulate neither a `Session` nor a `Connection`. This makes `DBAction`, and its close friends `CurrentDBAction` and `PredicatedDBAction`, completely obsolete, which is why they have been removed.
+`DBAction` was indeed handy when using Slick 2.1. However, with the new Slick 3 release, we don't need it anymore. The reason is that Slick 3 comes with a new asynchronous API (a.k.a., Database I/O Actions API) that doesn't need the user to manipulate neither a `Session` nor a `Connection`. This makes `DBSessionRequest` and `DBAction`, together with its close friends `CurrentDBAction` and `PredicatedDBAction`, completely obsolete, which is why they have been removed.
 
 Having said that, migrating your code should be as simple as changing all occurrences of `DBAction` and friends, with the standard Play `Action.async`. Click [[here|PlaySlick#Usage]] for an example.
 
