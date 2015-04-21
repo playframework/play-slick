@@ -8,13 +8,13 @@ The Play Slick module consists of 3 features:
   - A DDL plugin, that reads Slick tables and automatically creates schema updates on reload. This is useful in particular for demos and to get started.
   - Support for Play database evolutions.
 
-If you have been using a previous version of Play Slick, you will immediately notice that things are quite diffrent with this new version. Read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
+If you have been using a previous version of Play Slick, you will immediately notice that things are quite different with this new release. Read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
 
-While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using Play Slick in your project will be straightforward.
+While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using Play Slick in your project should be straightforward.
 
 Play Slick currently supports Slick 3.0 with Play 2.4, for both Scala 2.10 and 2.11. If you need to use an older version of Play or Slick, have a look at the compatibility matrix in the [play-slick README] to know what version you should be using. Mind that the remainder of this guide explains how to use the latest release of the Play Slick, and will not be appropriate if you are using version 0.8 or lower.
 
-This guide assumes you already know both Play 2.4 and Slick 3.0. Also, it assumes you will be using the new Slick Database I/O Actions API (and not the deprecated Invoker/Execution API, which is not supported by this release of Play Slick).
+This guide assumes you already know both Play 2.4 and Slick 3.0. Also, it assumes you will be using the new Slick Database I/O Actions API. Using the deprecated Invoker/Execution API of Slick should be possible, but it might not be as convenient. In fact, notice that the Invoker/Execution API is planned to be removed in the next Slick's major release (i.e., Slick 3.1), which is why we have designed Play Slick for optimal usage with the Slick Database I/O Actions API.
 
 ## Setup
 

@@ -4,7 +4,7 @@ The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class ci
 
 The Play Slick module consists of 3 features:
 
-  - Integration of Slick into Play's application lifecycle. Since Slick is now creating and managing both a connection pool (using HikariCP) and a thread pool, integrating Slick with Play boils down to ensure that all resources allocated by Slick are shutted down when a Play application is stopped (or reloaded).
+  - Integration of Slick into Play's application lifecycle. Because Slick now creates and manages both a connection pool and a thread pool, integrating Slick with Play boils down to ensure that all resources allocated by Slick are shutted down when a Play application is stopped (or reloaded).
   - A DDL plugin, that reads Slick tables and automatically creates schema updates on reload. This is useful in particular for demos and to get started.
   - Support for Play database evolutions.
 

@@ -17,7 +17,7 @@ Update the Play Slick dependency in your sbt build to `0.9.0`:
 
 ## Database configuration
 
-In Slick 2.1 (and earlier) you used to configure Slick datasources exactly like you would configure Play JDBC datasources. This is no longer the case with Slick 3, and the following configuration will in fact be simply ignored by Play Slick:
+With the past releases of Slick Play (which used Slick 2.1 or earlier), you used to configure Slick datasources exactly like you would configure Play JDBC datasources. This is no longer the case, and the following configuration will in fact be ignored by this new release of the Play Slick module:
 
 ```conf
 db.default.driver=org.h2.Driver
@@ -26,7 +26,7 @@ db.default.user=sa
 db.default.password=""
 ```
 
-There are several reasons for this change. First, the above is not a valid Slick configuration. Second, in Slick 3 you configure not just the datasource, but also both a connection pool and a thread pool. Therefore, it makes sense for Play Slick to use an entirely different path for configuring Slick databases. The default path for Slick configuration is now `slick.dbs`.
+There are several reasons for this change. First, the above is (and was) not a valid Slick configuration. Second, in Slick 3 you configure not just the datasource, but also both a connection pool and a thread pool. Therefore, it makes sense for Play Slick to use an entirely different path for configuring Slick databases. The default path for Slick configuration is now `slick.dbs`.
 
 Here is how you would need to migrate the above configuration:
 
@@ -42,9 +42,9 @@ slick.dbs.default.db.password=""
 
 ## Automatic Slick driver detection
 
-Play Slick used to automatically infer the needed Slick driver from the datasource configuration. This feature was removed, hence you must provide the Slick driver to use, for each Slick database configuration, in your `application.conf`.
+Play Slick used to automatically infer the needed Slick driver from the datasource configuration. This feature was removed, hence you must provide the Slick driver to use, for each Slick database configuration, in your **application.conf**.
 
-The rationale for removing this admittedly handy feature is that we want a Play Slick configuration to be a valid Slick configuration. Furthermore, it's not always possible to automatically detect the correct Slick driver from the database configuration (if this was possible, then Slick would already provided such functionality).
+The rationale for removing this admittedly handy feature is that we want a Play Slick configuration to be a valid Slick configuration. Furthermore, it's not always possible to automatically detect the correct Slick driver from the database configuration (if this was possible, then Slick would already provide such functionality).
 
 Therefore, you will need to make the following changes:
 
