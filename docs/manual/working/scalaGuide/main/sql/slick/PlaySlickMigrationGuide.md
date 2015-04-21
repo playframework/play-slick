@@ -1,6 +1,6 @@
-# Play Slick 0.9 Migration Guide
+# Play Slick v0.9 Migration Guide
 
-This is a guide for migrating from Play Slick 0.8 to Play Slick 0.9.
+This is a guide for migrating from Play Slick v0.8 to v0.9.
 
 It assumes you have already migrated your project to use Play 2.4 (see [Play 2.4 Migration Guide]), that you have read the [Slick 3 documentation], and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
 
@@ -52,7 +52,7 @@ Therefore, you will need to make the following changes:
   * Remove all imports to `import play.api.db.slick.Config.driver.simple._`.
   * Read [[here|PlaySlick#Usage]] for how to lookup the Slick driver and database instances (which are needed to use the new Slick 3 Database I/O Actions API).
 
-## DBAction was removed
+## `DBAction` and `DBSessionRequest` were removed
 
 Play Slick used to provide a `DBAction` that was useful for:
 
@@ -78,3 +78,19 @@ The parameter `db.$dbName.maxQueriesPerRequest` was used to limit the number of 
 While the parameter `slick.db.execution.context` was used to name the thread pools created by Play Slick. In Slick 3, each thread pool is named using the Slick database configuration path, i.e., if in your **application.conf** you have provided a Slick configuration for the database named `default`, then Slick will create a thread pool named `default` for executing the database action on the default database. Note that the name used for the thread pool is not configurable.
 
 [Database.forConfig]: http://slick.typesafe.com/doc/3.0.0-RC3/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
+
+## `Profile` was removed
+
+The trait `Profile` was removed and you can use instead `HasDatabaseConfigProvider` or `HasDatabaseConfig` with similar results.
+
+The trait to use depend on what approach you select to retrieve a Slick database and driver (i.e., an instance of `DatabaseConfig`). If you decide to use dependency injection, then `HasDatabaseConfigProvider` will serve you well. Otherwise, use `HasDatabaseConfig`.
+
+Read [[here|PlaySlick#Usage]] for a discussion of how to use dependency injection vs global lookup to retrieve an instance of `DatabaseConfig`.
+
+## `Database` was removed
+
+The object `Database` was removed. To retrieve a Slick database and driver (i.e., an instance of `DatabaseConfig`) read [[here|PlaySlick#Usage]].
+
+## `Config` was removed
+
+The `Config` object, together with `SlickConfig` and `DefaultSlickConfig`, were removed. These abstractions are simply not needed. If you used to call `Config.driver` or `Config.datasource` to retrieve the Slick driver and database, you should now use `DatabaseConfigProvider`. Read [[here|PlaySlick#Usage]] for details.
