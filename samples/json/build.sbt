@@ -2,4 +2,4 @@ name := "json-sample"
 
 PlayKeys.playOmnidoc := false
 
-libraryDependencies += specs2
+routesGenerator := InjectedRoutesGenerator

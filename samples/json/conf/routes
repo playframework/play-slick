@@ -3,10 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                           @controllers.Application.index
+GET     /                           controllers.Application.index
 
 # Home page
-POST    /insert                     @controllers.Application.insert
+POST    /insert                     controllers.Application.insert
 
 
 # Map static resources from the /public folder to the /assets URL path
