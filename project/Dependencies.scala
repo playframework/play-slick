@@ -27,7 +27,7 @@ object Version {
   val javaxServlet = "3.0.1"
   val mockito      = "1.9.5"
   val reflections  = "0.9.9"
-  val slick        = "3.0.0-RC3"
+  val slick        = "3.0.0"
 }
 
 object Library {
