@@ -22,7 +22,6 @@ The Play Slick plugin supports several different versions of Play and Slick.
 | 0.6.x                  | 2.2.x              | 2.0.x               | 2.10.x        |
 | 0.7.x                  | 2.3.x              | 2.0.x               | 2.10.x        |
 | 0.8.x                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |
-| 0.9.x (M4 and earlier) | 2.4.x              | 2.1.x               | 2.10.x/2.11.x |
 | 1.0.0                  | 2.4.x              | 3.0.x               | 2.10.x/2.11.x |
 
 The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
@@ -40,7 +39,9 @@ For Play 2.4 and Slick 3.0 (with Scala 2.10 or Scala 2.11):
 
 # Documentation
 
-Check the project's [wiki](https://github.com/playframework/play-slick/wiki) for details.
+The documentation for the latest release is available [here](https://www.playframework.com/documentation/2.4.x/PlaySlick).
+
+Documentation for v0.8 is available in the project's [wiki](https://github.com/playframework/play-slick/wiki).
 
 # Copyright
 
