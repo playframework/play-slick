@@ -1,6 +1,6 @@
-@import scalaguide.slick.ScalaSlickSchema.User
+@import scalaguide.slick.UsersSchema.User
 
-@(users: List[User])
+@(users: Seq[User])
 
 @for(user <- users) {
   @user.name @user.surname
