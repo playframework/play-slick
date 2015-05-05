@@ -22,14 +22,14 @@ import slick.backend.DatabaseConfig
 import slick.profile.BasicProfile
 
 trait SlickApi {
-  /** Returns all database configs, for all databases defined in the **application.conf**.
-   *  Throws a PlayException if a database config cannot be created.
+  /** Returns all database configs, for all databases defined in the loaded application's configuration.
+   *  @throws PlayException if a database config cannot be created.
    */
   @throws(classOf[PlayException])
   def dbConfigs[P <: BasicProfile](): Seq[(DbName, DatabaseConfig[P])]
 
-  /** Returns a database config instance for the database named `name` in the **application.conf**.
-    * Throws a PlayException if a database config for the passed `name` cannot be created.
+  /** Returns a database config instance for the database named `name` in the loaded application's configuration.
+    * @throws PlayException if a database config for the passed `name` cannot be created.
     */
   @throws(classOf[PlayException])
   def dbConfig[P <: BasicProfile](name: DbName): DatabaseConfig[P]
@@ -39,7 +39,7 @@ final class DefaultSlickApi @Inject() (
   environment: Environment,
   configuration: Configuration,
   lifecycle: ApplicationLifecycle) extends SlickApi {
-  import DefaultSlickApi.{ DatabaseConfigFactory, logger }
+  import DefaultSlickApi.DatabaseConfigFactory
 
   private lazy val dbconfigFactoryByName: Map[DbName, DatabaseConfigFactory] = {
     def configs: Map[String, Config] = {
@@ -69,9 +69,13 @@ final class DefaultSlickApi @Inject() (
 }
 
 object DefaultSlickApi {
-  private val logger = Logger(classOf[DefaultSlickApi])
+  private object DatabaseConfigFactory {
+    private val logger = Logger(classOf[DefaultSlickApi])
+  }
   // This class is useful for delaying the creation of `DatabaseConfig` instances.
   private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle) {
+    import DatabaseConfigFactory.logger
+
     @throws(classOf[PlayException])
     lazy val get: DatabaseConfig[BasicProfile] = {
       val dbConf = create()
