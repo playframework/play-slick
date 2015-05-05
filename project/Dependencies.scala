@@ -7,7 +7,6 @@ object Dependencies {
     Library.slick,
     Library.javaxServlet,
     Library.findbugs,
-    Library.reflections.notTransitive,
     Library.playSpecs2 % "test",
     Library.hsqldb % "test",
     Library.mockito % "test"
@@ -26,7 +25,6 @@ object Version {
   val hsqldb       = "2.3.1"
   val javaxServlet = "3.0.1"
   val mockito      = "1.9.5"
-  val reflections  = "0.9.9"
   val slick        = "3.0.0"
 }
 
@@ -37,6 +35,5 @@ object Library {
   val mockito      = "org.mockito"              %  "mockito-all"       % Version.mockito
   val playJdbc     = "com.typesafe.play"        %% "play-jdbc"         % Version.play
   val playSpecs2   = "com.typesafe.play"        %% "play-specs2"       % Version.play
-  val reflections  = "org.reflections"          %  "reflections"       % Version.reflections
   val slick        = "com.typesafe.slick"       %% "slick"             % Version.slick
 }
