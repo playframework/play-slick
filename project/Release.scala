@@ -1,12 +1,15 @@
 import sbt._
 import sbt.Keys._
+import sbt.complete.Parser
 import sbtrelease._
 import sbtrelease.ReleasePlugin._
 import sbtrelease.ReleaseStateTransformations._
 import com.typesafe.sbt.pgp.PgpKeys
+import xerial.sbt.Sonatype
 
 object Release {
   lazy val settings = releaseSettings ++ Seq(
+    Sonatype.autoImport.sonatypeProfileName := "com.typeasfe",
     ReleaseKeys.crossBuild := true,
     ReleaseKeys.publishArtifactsAction := PgpKeys.publishSigned.value,
     ReleaseKeys.releaseProcess := Seq[ReleaseStep](
@@ -20,6 +23,12 @@ object Release {
       commitReleaseVersion,
       tagRelease,
       publishArtifacts,
+      ReleaseStep(action = { state =>
+        Parser.parse("", Sonatype.SonatypeCommand.sonatypeRelease.parser(state)) match {
+          case Right(command) => command()
+          case Left(msg) => throw sys.error(s"Bad input for release command: $msg")
+        }
+      }),
       setNextVersion,
       commitNextVersion,
       pushChanges
