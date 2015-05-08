@@ -9,7 +9,6 @@ object Dependencies {
   )
 
   val resolvers = DefaultOptions.resolvers(snapshot = true) ++ Seq(
-    Resolver.typesafeRepo("releases"),
     "scalaz-releases" at "http://dl.bintray.com/scalaz/releases" // play-test -> specs2 -> scalaz-stream
   )
 }

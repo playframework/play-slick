@@ -3,11 +3,6 @@ import sbt.Keys._
 
 object Publish {
   val settings = Seq(
-    publishTo := {
-      if (isSnapshot.value) Some(Opts.resolver.sonatypeSnapshots)
-      else Some(Opts.resolver.sonatypeStaging)
-    },
-
     homepage := Some(url("https://github.com/playframework/play-slick")),
     licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.html")),
 
