@@ -9,7 +9,7 @@ import xerial.sbt.Sonatype
 
 object Release {
   lazy val settings = releaseSettings ++ Seq(
-    Sonatype.autoImport.sonatypeProfileName := "com.typeasfe",
+    Sonatype.autoImport.sonatypeProfileName := "com.typesafe",
     ReleaseKeys.crossBuild := true,
     ReleaseKeys.publishArtifactsAction := PgpKeys.publishSigned.value,
     ReleaseKeys.releaseProcess := Seq[ReleaseStep](
