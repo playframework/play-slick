@@ -1,12 +1,9 @@
 package play.api.db.slick
 
+import org.specs2.matcher.ValueCheck.typedValueCheck
 import org.specs2.mutable.Specification
 
-import javax.inject.Singleton
-import play.api.Configuration
-import play.api.db.DBApi
-import play.api.db.evolutions.DynamicEvolutions
-import play.api.db.slick.internal.DBApiAdapter
+import play.api.db.slick.util.WithReferenceConfig
 import play.api.inject.BindingKey
 import play.api.inject.QualifierInstance
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -14,14 +11,15 @@ import play.db.NamedDatabaseImpl
 
 class SlickModuleSpec extends Specification {
   "reference.conf" should {
-    val ref = Configuration.reference
-
-    "provide a database config default path" in {
+    "slick module is enabled" in new WithReferenceConfig {
+      enabledModules(ref) must contain(classOf[SlickModule].getName)
+    }
+    "provide a database config default path" in new WithReferenceConfig {
       val dbsKey = ref.getString(SlickModule.DbKeyConfig, None)
       dbsKey must beSome("slick.dbs")
     }
 
-    "provide a name for the default database" in {
+    "provide a name for the default database" in new WithReferenceConfig {
       val dbsKey = ref.getString(SlickModule.DefaultDbName, None)
       dbsKey must beSome("default")
     }
@@ -38,15 +36,6 @@ class SlickModuleSpec extends Specification {
     "bind SlickApi as a singleton" in {
       val api1 = injector.instanceOf[SlickApi]
       val api2 = injector.instanceOf[SlickApi]
-      api1 mustEqual api2
-    }
-    "bind DBApi to DBApiAdapter" in {
-      val api = injector.instanceOf[DBApi]
-      api must beAnInstanceOf[DBApiAdapter]
-    }
-    "bind DBApi as a singleton" in {
-      val api1 = injector.instanceOf[DBApi]
-      val api2 = injector.instanceOf[DBApi]
       api1 mustEqual api2
     }
     "bind the default database to a DatabaseConfigProvider" in {

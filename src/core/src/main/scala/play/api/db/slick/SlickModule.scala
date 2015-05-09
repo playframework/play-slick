@@ -10,8 +10,6 @@ import play.api.Configuration
 import play.api.Environment
 import play.api.Mode
 import play.api.PlayException
-import play.api.db.DBApi
-import play.api.db.slick.internal.DBApiAdapter
 import play.api.inject.ApplicationLifecycle
 import play.api.inject.Binding
 import play.api.inject.BindingKey
@@ -38,8 +36,7 @@ final class SlickModule extends Module {
     val default = config.getString(SlickModule.DefaultDbName)
     val dbs = configuration.getConfig(dbKey).getOrElse(Configuration.empty).subKeys
     Seq(
-     bind[SlickApi].to[DefaultSlickApi].in[Singleton],
-     bind[DBApi].to[DBApiAdapter].in[Singleton]
+     bind[SlickApi].to[DefaultSlickApi].in[Singleton]
      ) ++ namedDatabaseConfigBindings(dbs) ++ defaultDatabaseConfigBinding(default, dbs)
   }
 

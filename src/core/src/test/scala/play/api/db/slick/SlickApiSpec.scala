@@ -4,19 +4,13 @@ import org.specs2.mutable.Specification
 
 import play.api.Configuration
 import play.api.PlayException
-import play.api.db.evolutions.EvolutionsModule
 import play.api.inject.guice.GuiceApplicationBuilder
 import slick.profile.BasicProfile
 
 class SlickApiSpec extends Specification {
   trait SUT {
     def config: Configuration
-    val appBuilder = {
-      new GuiceApplicationBuilder(configuration = config,
-        // disabling evolution module as I don't want the databases to be eagerly initialized for these tests
-        // (as it would defeat the purpose of the tests)
-        disabled = Seq(classOf[EvolutionsModule]))
-    }
+    val appBuilder = new GuiceApplicationBuilder(configuration = config)
     val injector = appBuilder.injector()
     val api = injector.instanceOf[SlickApi]
   }

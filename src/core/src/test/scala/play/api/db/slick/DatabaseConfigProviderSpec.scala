@@ -3,7 +3,6 @@ package play.api.db.slick
 import org.specs2.mutable.Specification
 
 import play.api.{Application, Mode}
-import play.api.db.evolutions.EvolutionsModule
 import play.api.inject.guice.GuiceApplicationBuilder
 import slick.profile.BasicProfile
 
@@ -12,9 +11,7 @@ class DatabaseConfigProviderSpec extends Specification {
   def withApp[T](block: Application => T): T = {
     val app = new GuiceApplicationBuilder()
       .configure(TestData.configuration)
-      .in(this.getClass.getClassLoader)
       .in(Mode.Test)
-      .disable[EvolutionsModule]
       .build()
 
     try {
@@ -23,7 +20,6 @@ class DatabaseConfigProviderSpec extends Specification {
       app.stop()
     }
   }
-
   "DatabaseConfigProvider" should {
     "return the configured slick driver for the given database" in withApp { implicit app =>
       val config = DatabaseConfigProvider.get[BasicProfile]("somedb")

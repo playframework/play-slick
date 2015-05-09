@@ -119,3 +119,9 @@ That's just like using stock Play and Slick!
 ## Support for Play Evolutions
 
 Play Slick supports [[Play database evolutions|Evolutions]].
+
+To enable evolutions, add the following dependency to your project's build:
+
+```scala
+libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0-RC1"
+```

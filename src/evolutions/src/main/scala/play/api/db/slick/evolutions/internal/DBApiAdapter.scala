@@ -1,11 +1,10 @@
-package play.api.db.slick.internal
+package play.api.db.slick.evolutions.internal
 
 import java.sql.Connection
 
 import javax.inject.Inject
 import javax.sql.DataSource
 import play.api.Logger
-import play.api.PlayException
 import play.api.db.DBApi
 import play.api.db.{Database => PlayDatabase}
 import play.api.db.slick.DbName
@@ -16,7 +15,7 @@ import slick.driver.JdbcProfile
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.HikariCPJdbcDataSource
 
-private[slick] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
+private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
   private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi.dbConfigs[JdbcProfile]().map {
     case (name, dbConfig) => (name, new DBApiAdapter.DatabaseAdapter(name, dbConfig))
   }(collection.breakOut)
@@ -32,7 +31,7 @@ private[slick] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
   }
 }
 
-private[slick] object DBApiAdapter {
+private[evolutions] object DBApiAdapter {
   // I don't really like this adapter as it can be used as a trojan horse. Let's keep things simple for the moment,
   // but in the future we may need to become more defensive and provide custom implementation for `java.sql.Connection`
   // and `java.sql.DataSource` to prevent the ability of closing a database connection or database when using this
