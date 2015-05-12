@@ -1,3 +1,4 @@
 PlaySlick:Using Play Slick
 PlaySlickMigrationGuide:Play Slick migration guide
 PlaySlickAdvancedTopics: Play Slick advanced topics
+PlaySlickFAQ: Play Slick FAQ

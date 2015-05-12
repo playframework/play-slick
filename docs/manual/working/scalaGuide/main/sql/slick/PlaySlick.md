@@ -11,6 +11,14 @@ Play Slick currently supports Slick 3.0 with Play 2.4, for both Scala 2.10 and 2
 
 > Note: This guide assumes you already know both Play 2.4 and Slick 3.0. Also, it assumes you will be using the new Slick Database I/O Actions API. In fact, using the deprecated Invoker/Execution API of Slick should be possible, but it might not be as convenient. Also, be aware that the Invoker/Execution API is planned to be removed in the next major release of Slick.
 
+### Getting Help
+
+If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group] for any question.
+Also, note that if you are seeking help on Slick, the [slick user group] may be a better place to get support.
+
+[play-framework user group]: https://groups.google.com/forum/#!forum/play-framework
+[slick user group]: https://groups.google.com/forum/#!forum/scalaquery
+
 ## About this release
 
 If you have been using a previous version of Play Slick, you will immediately notice that there have been quite a few major changes. It's recommended to read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
@@ -116,6 +124,12 @@ And then you can define a controller's method that will run a database query:
 
 That's just like using stock Play and Slick!
 
-## Support for Play Evolutions
+## Support for Play database evolutions
 
 Play Slick supports [[Play database evolutions|Evolutions]].
+
+To enable evolutions, add the following dependency to your project's build:
+
+```scala
+libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0-RC1"
+```
