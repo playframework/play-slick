@@ -1,30 +1,31 @@
-name := "play-slick"
-
-lazy val root = Project("root",file("."))
+lazy val `play-slick-root` = (project in file("."))
+  .enablePlugins(PlayRootProject)
   .aggregate(
-    core,
-    evolutions
+    `play-slick`,
+    `play-slick-evolutions`
   )
 
-lazy val commonSettings = Seq(
-  libraryDependencies += Library.playSpecs2 % "test",
-  concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
-)
-
-lazy val core = Project("play-slick", file("src/core"))
+lazy val `play-slick` = (project in file("src/core"))
+  .enablePlugins(PlayLibrary, Playdoc)
   .settings(libraryDependencies ++= Dependencies.core)
-  .enablePlugins(Playdoc, Omnidoc)
 
-lazy val evolutions = Project("play-slick-evolutions", file("src/evolutions"))
-  .settings(libraryDependencies ++= Dependencies.evolutions)
-  .dependsOn(core % "compile;test->test")
-  .enablePlugins(Playdoc, Omnidoc)
+lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
+  .enablePlugins(PlayLibrary, Playdoc)
+  .settings(
+    libraryDependencies ++= Dependencies.evolutions,
+    scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings"))
+  ).dependsOn(`play-slick` % "compile;test->test")
 
 lazy val docs = project
   .in(file("docs"))
   .enablePlugins(PlayDocsPlugin)
-  .dependsOn(core)
-  .dependsOn(evolutions)
+  .dependsOn(`play-slick`)
+  .dependsOn(`play-slick-evolutions`)
+
+playBuildRepoName in ThisBuild := "play-slick"
+playBuildExtraTests := {
+  (test in (samples, Test)).value
+}
 
 lazy val samples = project
   .in(file("samples"))
@@ -37,14 +38,15 @@ lazy val samples = project
     diSample
   )
 
-def sampleProject(name: String) = (
+def sampleProject(name: String) =
   Project(s"$name-sample", file("samples") / name)
-  settings(commonSettings: _*)
-  settings(libraryDependencies += "com.h2database" % "h2" % "1.4.187")
-  enablePlugins(PlayScala)
-  dependsOn(core)
-  dependsOn(evolutions) // this is because all samples currently use evolutions
-)
+    .settings(
+      libraryDependencies += Library.playSpecs2 % "test",
+      concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
+    ).settings(libraryDependencies += "com.h2database" % "h2" % "1.4.187")
+    .enablePlugins(PlayScala)
+    .dependsOn(`play-slick`)
+    .dependsOn(`play-slick-evolutions`)
 
 lazy val daoSample = sampleProject("dao")
 
@@ -57,8 +59,3 @@ lazy val jsonSample = sampleProject("json")
 lazy val basicSample = sampleProject("basic")
 
 lazy val diSample = sampleProject("di")
-
-Publish.settings
-Release.settings
-
-OmnidocKeys.githubRepo := "playframework/play-slick"
