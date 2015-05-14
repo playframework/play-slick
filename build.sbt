@@ -7,7 +7,11 @@ lazy val `play-slick-root` = (project in file("."))
 
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc)
-  .settings(libraryDependencies ++= Dependencies.core)
+  .settings(
+    libraryDependencies ++= Dependencies.core,
+    // Work around https://issues.scala-lang.org/browse/SI-9311
+    scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings"))
+  )
 
 lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
   .enablePlugins(PlayLibrary, Playdoc)
