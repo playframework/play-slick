@@ -34,7 +34,7 @@ The plugin has its own release cycle and therefore is not integrated into either
 For Play 2.4 and Slick 3.0 (with Scala 2.10 or Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.0-RC1"
+"com.typesafe.play" %% "play-slick" % "1.0.0-RC2"
 ```
 
 # Documentation

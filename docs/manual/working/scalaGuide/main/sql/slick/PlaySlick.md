@@ -30,7 +30,7 @@ While, if this is the first time you are using Play Slick, you will appreciate t
 Add a library dependency on play-slick:
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.0-RC1"
+"com.typesafe.play" %% "play-slick" % "1.0.0"
 ```
 
 The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick.
