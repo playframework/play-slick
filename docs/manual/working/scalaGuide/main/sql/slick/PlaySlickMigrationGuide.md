@@ -13,11 +13,7 @@ Update the Play Slick dependency in your sbt build to match the version provided
 
 ### Evolutions support in a separate module
 
-Support for [[database evolutions|Evolutions]] used to be included with Play Slick. That's no longer the case. Therefore, if you are using evolutions, you now need to add the following explicit dependency in your build:
-
-```scala
-libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0-RC1"
-```
+Support for [[database evolutions|Evolutions]] used to be included with Play Slick. That's no longer the case. Therefore, if you are using evolutions, you now need to add an additional dependency to `play-slick-evolutions` as explained [[here|PlaySlick#Support-for-Play-database-evolutions]].
 
 While, if you are not using evolutions, you can now safely remove `evolutionplugin=disabled` from your `application.conf`.
 
