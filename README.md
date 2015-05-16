@@ -37,6 +37,12 @@ For Play 2.4 and Slick 3.0 (with Scala 2.10 or Scala 2.11):
 "com.typesafe.play" %% "play-slick" % "1.0.0-RC2"
 ```
 
+If you would like to use Play evolutions with Slick, add also the following module:
+
+```scala
+"com.typesafe.play" %% "play-slick-evolutions" % "1.0.0-RC2"
+```
+
 # Documentation
 
 The documentation for the latest release is available [here](https://www.playframework.com/documentation/2.4.x/PlaySlick).
