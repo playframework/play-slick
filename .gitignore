@@ -16,6 +16,9 @@ project/plugins/project/
 .scala_dependencies
 .project
 .settings
+.cache-main
+.cache-tests
+bin
 
 # IntelliJ IDEA specific
 .idea
