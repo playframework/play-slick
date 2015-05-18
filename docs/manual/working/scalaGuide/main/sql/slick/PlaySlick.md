@@ -13,8 +13,9 @@ Play Slick currently supports Slick 3.0 with Play 2.4, for both Scala 2.10 and 2
 
 ### Getting Help
 
-If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group] for any question.
-Also, note that if you are seeking help on Slick, the [slick user group] may be a better place to get support.
+If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group] for any question. Also, note that if you are seeking help on Slick, the [slick user group] may be a better place to get support.
+
+Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, [get in touch with Typesafe](http://www.typesafe.com/subscription).
 
 [play-framework user group]: https://groups.google.com/forum/#!forum/play-framework
 [slick user group]: https://groups.google.com/forum/#!forum/scalaquery
