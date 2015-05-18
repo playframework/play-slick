@@ -11,13 +11,13 @@ import play.api.mvc._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import slick.profile.RelationalProfile
+import slick.driver.JdbcProfile
 
 import UsersSchema._
 
 object Application extends Controller {
   //#global-lookup-database-config
-  val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
+  val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
   //#global-lookup-database-config
 
   //#driver-import
@@ -34,6 +34,6 @@ object Application extends Controller {
 
 object Application2 extends Controller {
   //#named-global-lookup-database-config
-  val dbConfig = DatabaseConfigProvider.get[RelationalProfile]("<db-name>")(Play.current)
+  val dbConfig = DatabaseConfigProvider.get[JdbcProfile]("<db-name>")(Play.current)
   //#named-global-lookup-database-config
 }

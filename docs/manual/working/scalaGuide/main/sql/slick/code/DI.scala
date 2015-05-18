@@ -12,13 +12,13 @@ import play.api.mvc._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import slick.profile.RelationalProfile
+import slick.driver.JdbcProfile
 
 import UsersSchema._
 
 //#di-database-config
 class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Controller {
-  val dbConfig = dbConfigProvider.get[RelationalProfile]
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
   //#di-database-config
 
   import dbConfig.driver.api._

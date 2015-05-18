@@ -2,14 +2,22 @@
 
 This is a guide for migrating from Play Slick v0.8 to v1.0.
 
-It assumes you have already migrated your project to use Play 2.4 (see [Play 2.4 Migration Guide]), that you have read the [Slick 3 documentation], and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
+It assumes you have already migrated your project to use Play 2.4 (see [Play 2.4 Migration Guide]), that you have read the [Slick 3.0 documentation], and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
 
 [Play 2.4 Migration Guide]: https://www.playframework.com/documentation/2.4.x/Migration24)
-[Slick 3 documentation]: http://slick.typesafe.com/docs/
+[Slick 3.0 documentation]: http://slick.typesafe.com/docs/
 
 ## Build changes
 
 Update the Play Slick dependency in your sbt build to match the version provided in the [[Setup|PlaySlick#Setup]] section.
+
+## Removed H2 database dependency
+
+Previous version of Play Slick module used to bundle the H2 database library. That's no longer the case, hence if you want to use H2 you will need to explicitly add it to your project's dependencies:
+
+```
+libraryDependencies += "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+```
 
 ### Evolutions support in a separate module
 
@@ -19,7 +27,7 @@ While, if you are not using evolutions, you can now safely remove `evolutionplug
 
 ## Database configuration
 
-With the past releases of Slick Play (which used Slick 2.1 or earlier), you used to configure Slick datasources exactly like you would configure Play JDBC datasources. This is no longer the case, and the following configuration will now be ignored by Play Slick:
+With the past releases of Slick Play (which used Slick 2.1 or earlier), you used to configure Slick datasources exactly like you would configure Play JDBC datasources. This is no longer the case, and the following configuration will now be **ignored** by Play Slick:
 
 ```conf
 db.default.driver=org.h2.Driver
@@ -79,7 +87,7 @@ The parameter `db.$dbName.maxQueriesPerRequest` was used to limit the number of 
 
 While the parameter `slick.db.execution.context` was used to name the thread pools created by Play Slick. In Slick 3, each thread pool is named using the Slick database configuration path, i.e., if in your **application.conf** you have provided a Slick configuration for the database named `default`, then Slick will create a thread pool named `default` for executing the database action on the default database. Note that the name used for the thread pool is not configurable.
 
-[Database.forConfig]: http://slick.typesafe.com/doc/3.0.0-RC3/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
+[Database.forConfig]: http://slick.typesafe.com/doc/3.0.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
 
 ## `Profile` was removed
 

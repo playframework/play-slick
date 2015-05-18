@@ -1,10 +1,10 @@
 package tables
 
 import models.Cat
-import slick.profile.RelationalProfile
+import slick.driver.JdbcProfile
 
 trait CatTable {
-  protected val driver: RelationalProfile
+  protected val driver: JdbcProfile
   import driver.api._
   class Cats(tag: Tag) extends Table[Cat](tag, "CAT") {
 
