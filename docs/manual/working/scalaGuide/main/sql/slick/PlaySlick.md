@@ -131,5 +131,5 @@ Play Slick supports [[Play database evolutions|Evolutions]].
 To enable evolutions, add the following dependency to your project's build:
 
 ```scala
-libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0-RC1"
+libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
 ```
