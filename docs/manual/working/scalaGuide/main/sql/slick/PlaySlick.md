@@ -40,18 +40,21 @@ The above dependency will also bring along the Slick library as a transitive dep
 
 Play Slick supports [[Play database evolutions|Evolutions]].
 
-To enable evolutions, also add the following dependency to your project's build:
+To enable evolutions, you will need the following dependencies:
 
 ```scala
-libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
+"com.typesafe.play" %% "play-slick" % "1.0.0"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
 ```
+
+>> Note: Do not add the Play `evolutions` component to your dependencies.
 
 ### JDBC driver dependency
 
-Play Slick module does **not** bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver you want to use to access a database. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it in your project's build:
+Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it in your project's build:
 
 ```
-libraryDependencies += "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+"com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
 ```
 
 ## Database Configuration

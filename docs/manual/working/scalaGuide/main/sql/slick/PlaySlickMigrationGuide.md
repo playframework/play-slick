@@ -13,10 +13,10 @@ Update the Play Slick dependency in your sbt build to match the version provided
 
 ## Removed H2 database dependency
 
-Previous version of Play Slick module used to bundle the H2 database library. That's no longer the case, hence if you want to use H2 you will need to explicitly add it to your project's dependencies:
+Previous releases of Play Slick used to bundle the H2 database library. That's no longer the case. Hence, if you want to use H2 you will need to explicitly add it to your project's dependencies:
 
 ```
-libraryDependencies += "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+"com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
 ```
 
 ### Evolutions support in a separate module
@@ -54,7 +54,7 @@ slick.dbs.default.db.password=""
 
 Play Slick used to automatically infer the needed Slick driver from the datasource configuration. This feature was removed, hence you must provide the Slick driver to use, for each Slick database configuration, in your **application.conf**.
 
-The rationale for removing this admittedly handy feature is that we want a Play Slick configuration to be a valid Slick configuration. Furthermore, it's not always possible to automatically detect the correct Slick driver from the database configuration (if this was possible, then Slick would already provide such functionality).
+The rationale for removing this admittedly handy feature is that we want to accept only valid Slick configurations. Furthermore, it's not always possible to automatically detect the correct Slick driver from the database configuration (if this was possible, then Slick would already provide such functionality).
 
 Therefore, you will need to make the following changes:
 
