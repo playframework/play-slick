@@ -7,10 +7,10 @@ import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfig
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import slick.profile.RelationalProfile
+import slick.driver.JdbcProfile
 
-class CatDAO extends HasDatabaseConfig[RelationalProfile] {
-  protected val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
+class CatDAO extends HasDatabaseConfig[JdbcProfile] {
+  protected val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
   import driver.api._
 

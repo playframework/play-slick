@@ -9,7 +9,7 @@ import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.test.PlaySpecification
 import play.api.test.WithApplication
-import slick.profile.RelationalProfile
+import slick.driver.JdbcProfile
 import tables.CatTable
 
 /**
@@ -19,7 +19,7 @@ class DBSpec extends PlaySpecification {
 
   trait WithDatabaseConfig {
     lazy val (driver, db) = {
-      val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
+      val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
       (dbConfig.driver, dbConfig.db)
     }
   }

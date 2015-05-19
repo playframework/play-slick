@@ -10,11 +10,11 @@ import play.api.db.slick.HasDatabaseConfig
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import slick.profile.RelationalProfile
+import slick.driver.JdbcProfile
 import tables.CatTable
 
-class Application extends Controller with CatTable with HasDatabaseConfig[RelationalProfile]{
-  val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
+class Application extends Controller with CatTable with HasDatabaseConfig[JdbcProfile]{
+  val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
   import driver.api._
 
   //create an instance of the table

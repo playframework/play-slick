@@ -7,24 +7,24 @@ The Play Slick module consists of two features:
   - Integration of Slick into Play's application lifecycle.
   - Support for [[Play database evolutions|Evolutions]].
 
-Play Slick currently supports Slick 3.0 with Play 2.4, for both Scala 2.10 and 2.11. If you need to use an older version of Play or Slick, have a look at the compatibility matrix in the [play-slick README] to know what version you should be using. Mind that the remainder of this guide explains how to use the latest release of Play Slick, and will not be appropriate if you are using version 0.8 or lower.
+Play Slick currently supports Slick 3.0 with Play 2.4, for both Scala 2.10 and 2.11.
 
-> Note: This guide assumes you already know both Play 2.4 and Slick 3.0. Also, it assumes you will be using the new Slick Database I/O Actions API. In fact, using the deprecated Invoker/Execution API of Slick should be possible, but it might not be as convenient. Also, be aware that the Invoker/Execution API is planned to be removed in the next major release of Slick.
+> Note: This guide assumes you already know both Play 2.4 and Slick 3.0. Furthermore, it assumes you will be using the new Slick Database I/O Actions API. In fact, using the deprecated Invoker/Execution API of Slick may be possible, but it's not supported - be aware that the Invoker/Execution API is planned to be removed in the next Slick's major release.
 
 ### Getting Help
 
-If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group] for any question. Also, note that if you are seeking help on Slick, the [slick user group] may be a better place to get support.
+If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group]. Also, note that if you are seeking help on Slick, the [slick user group] may be a better place.
 
-Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, [get in touch with Typesafe](http://www.typesafe.com/subscription).
+Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, you may prefer [to get in touch with Typesafe](http://www.typesafe.com/subscription), as it offers commercial support for these technologies.
 
 [play-framework user group]: https://groups.google.com/forum/#!forum/play-framework
 [slick user group]: https://groups.google.com/forum/#!forum/scalaquery
 
 ## About this release
 
-If you have been using a previous version of Play Slick, you will immediately notice that there have been quite a few major changes. It's recommended to read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
+If you have been using a previous version of Play Slick, you will notice that there have been quite a few major changes. It's recommended to read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
 
-While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using Play Slick in your project should be straightforward.
+While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using Play Slick module should be straightforward.
 
 ## Setup
 
@@ -36,7 +36,23 @@ Add a library dependency on play-slick:
 
 The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick.
 
-Please, double-check in the [play-slick README] that the Play Slick version used here is indeed the latest release of Play Slick (you know it all too well, duplicated information has a tendency to become obsolete).
+### Support for Play database evolutions
+
+Play Slick supports [[Play database evolutions|Evolutions]].
+
+To enable evolutions, also add the following dependency to your project's build:
+
+```scala
+libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
+```
+
+### JDBC driver dependency
+
+Play Slick module does **not** bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver you want to use to access a database. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it in your project's build:
+
+```
+libraryDependencies += "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+```
 
 ## Database Configuration
 
@@ -48,6 +64,17 @@ slick.dbs.default.driver="slick.driver.H2Driver$"
 slick.dbs.default.db.driver="org.h2.Driver"
 slick.dbs.default.db.url="jdbc:h2:mem:play"
 ```
+
+First, note that the above is a valid Slick configuration (for the complete list of configuration parameters that you can use to configure a database see the Slick ScalaDoc for [Database.forConfig]).
+
+Second, the `slick.dbs` prefix before the database's name is configurable. In fact, you may change it by overriding the value of the configuration key `play.slick.db.config`.
+
+Third, in the above configuration `slick.dbs.default.driver` is used to configure the Slick driver, while `slick.dbs.default.db.driver` is the underlying JDBC driver used by Slick's backend. Check the [Slick documentation] for a complete list of supported databases, and to find a matching Slick driver.
+
+>> Note: Failing to provide a valid value for both `slick.dbs.default.driver` and `slick.dbs.default.db.driver` will lead to an exception when trying to run your Play application.
+
+[Slick documentation]: http://slick.typesafe.com/docs
+[Database.forConfig]: http://slick.typesafe.com/doc/3.0.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
 
 To configure several databases:
 
@@ -67,15 +94,7 @@ If something isn't properly configured, you will be notified in your browser:
 
 [[images/database-config-error.png]]
 
-> Note: Play Slick module will only work if you provide a valid Slick configuration.
-
-The examples above are all using H2, but Slick supports several other databases. Have a look at the [Slick documentation] for a complete list of supported databases (and to find the matching Slick driver to use).
-
-Also, for the complete list of configuration parameters that you can use in your project's **application.conf**, see the Slick ScalaDoc for [Database.forConfig].
-
-[play-slick README]: https://github.com/playframework/play-slick#versioning
-[Slick documentation]: http://slick.typesafe.com/docs
-[Database.forConfig]: http://slick.typesafe.com/doc/3.0.0-RC3/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
+> Note: Your application will be started only if you provide a valid Slick configuration.
 
 ## Usage
 
@@ -93,7 +112,7 @@ Injecting a `DatabaseConfig` instance for a different database is also easy. Sim
 
 @[named-di-database-config](code/DI.scala)
 
- Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
+Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
 
 For a full example, have a look at [this sample projet](https://github.com/playframework/play-slick/tree/master/samples/di).
 
@@ -124,13 +143,3 @@ And then you can define a controller's method that will run a database query:
 @[action-with-db](code/GlobalLookup.scala)
 
 That's just like using stock Play and Slick!
-
-## Support for Play database evolutions
-
-Play Slick supports [[Play database evolutions|Evolutions]].
-
-To enable evolutions, add the following dependency to your project's build:
-
-```scala
-libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
-```
