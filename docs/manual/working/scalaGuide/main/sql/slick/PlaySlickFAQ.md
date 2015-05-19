@@ -6,7 +6,7 @@ Have a look at the [compatibility matrix](https://github.com/playframework/play-
 
 ## `play.db.pool` is ignored
 
-It's indeed the case. Changing the value of `play.db.pool` won't affect what connection pool Slick going to use. The reason is simply that Play Slick module currently doesn't support using a different connection pool than [HikariCP].
+It's indeed the case. Changing the value of `play.db.pool` won't affect what connection pool Slick is going to use. The reason is simply that Play Slick module currently doesn't support using a different connection pool than [HikariCP].
 
 ## Changing the connection pool used by Slick
 
@@ -23,7 +23,7 @@ Binding(interface play.api.db.DBApi to ConstructionTarget(class play.api.db.slic
 Binding(interface play.api.db.DBApi to ProviderConstructionTarget(class play.api.db.DBApiProvider))
 ```
 
-It is very likely that you have [[enabled the jdbc plugin|ScalaDatabase]], and that doesn't really make sense if you are using Slick for accessing your databases. To fix the issue simply remove **jdbc** from your project's build `libraryDependencies`.
+It is very likely that you have [[enabled the jdbc plugin|ScalaDatabase]], and that doesn't really make sense if you are using Slick for accessing your databases. To fix the issue simply remove the Play *jdbc* component from your project's build.
 
 Another possibility is that there is another Play module that is binding [[DBApi|api/scala/index.html#play.api.db.DBApi]] to some other concrete implementation. This means that you are still trying to use Play Slick together with another Play module for database access, which is likely not what you want.
 
@@ -38,10 +38,10 @@ java.lang.ClassNotFoundException: org.h2.tools.Server
         ...
 ```
 
-It means you are trying to use a H2 database, but have forgot to add a dependency to it in your project's build. Fixing the problem is simple, just add the missing dependency, e.g.,
+It means you are trying to use a H2 database, but have forgot to add a dependency to it in your project's build. Fixing the problem is simple, just add the missing dependency in your project's build, e.g.,
 
 ```
-libraryDependencies += "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+"com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
 ```
 
 [playframework-dev]: https://groups.google.com/forum/#!forum/play-framework-dev 
