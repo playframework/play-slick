@@ -20,7 +20,7 @@ class CatDAOSpec extends Specification {
       val app2dao = Application.instanceCache[CatDAO]
       val dao: CatDAO = app2dao(app)
 
-      val testKitties = Seq(
+      val testKitties = Set(
         Cat("kit", "black"),
         Cat("garfield", "orange"),
         Cat("creme puff", "grey"))
@@ -28,7 +28,7 @@ class CatDAOSpec extends Specification {
       Await.result(Future.sequence(testKitties.map(dao.insert)), 1 seconds)
       val storedCats = Await.result(dao.all(), 1 seconds)
 
-      storedCats must equalTo(testKitties)
+      storedCats.toSet must equalTo(testKitties)
     }
   }
 }
