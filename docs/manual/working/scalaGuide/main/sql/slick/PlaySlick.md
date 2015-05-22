@@ -47,11 +47,11 @@ To enable evolutions, you will need the following dependencies:
 "com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
 ```
 
->> Note: Do not add the Play `evolutions` component to your dependencies.
+Note there is no need to add the Play `evolutions` component to your dependencies, as it is a transitive dependency of the `play-slick-evolutions` module.
 
 ### JDBC driver dependency
 
-Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it in your project's build:
+Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
 
 ```
 "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
@@ -68,11 +68,11 @@ slick.dbs.default.db.driver="org.h2.Driver"
 slick.dbs.default.db.url="jdbc:h2:mem:play"
 ```
 
-First, note that the above is a valid Slick configuration (for the complete list of configuration parameters that you can use to configure a database see the Slick ScalaDoc for [Database.forConfig]).
+First, note that the above is a valid Slick configuration (for the complete list of configuration parameters that you can use to configure a database see the Slick ScalaDoc for [Database.forConfig] - make sure to expand the `forConfig` row in the doc).
 
 Second, the `slick.dbs` prefix before the database's name is configurable. In fact, you may change it by overriding the value of the configuration key `play.slick.db.config`.
 
-Third, in the above configuration `slick.dbs.default.driver` is used to configure the Slick driver, while `slick.dbs.default.db.driver` is the underlying JDBC driver used by Slick's backend. Check the [Slick documentation] for a complete list of supported databases, and to find a matching Slick driver.
+Third, in the above configuration `slick.dbs.default.driver` is used to configure the Slick driver, while `slick.dbs.default.db.driver` is the underlying JDBC driver used by Slick's backend. In the above configuration we are configuring Slick to use H2 database, but Slick supports several other databases. Check the [Slick documentation] for a complete list of supported databases, and to find a matching Slick driver.
 
 >> Note: Failing to provide a valid value for both `slick.dbs.default.driver` and `slick.dbs.default.db.driver` will lead to an exception when trying to run your Play application.
 
@@ -146,3 +146,7 @@ And then you can define a controller's method that will run a database query:
 @[action-with-db](code/GlobalLookup.scala)
 
 That's just like using stock Play and Slick!
+
+## Configuring the connection pool
+
+Read [[here|PlaySlickAdvancedTopics#Connection-Pool]] to find out how to configure the connection pool.

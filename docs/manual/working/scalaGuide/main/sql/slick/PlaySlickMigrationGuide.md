@@ -11,7 +11,7 @@ It assumes you have already migrated your project to use Play 2.4 (see [Play 2.4
 
 Update the Play Slick dependency in your sbt build to match the version provided in the [[Setup|PlaySlick#Setup]] section.
 
-## Removed H2 database dependency
+### Removed H2 database dependency
 
 Previous releases of Play Slick used to bundle the H2 database library. That's no longer the case. Hence, if you want to use H2 you will need to explicitly add it to your project's dependencies:
 
@@ -48,7 +48,7 @@ slick.dbs.default.db.user=sa
 slick.dbs.default.db.password=""
 ```
 
-> Note: If your database configuration contains settings for the connection pool, be aware that you will need to migrate those settings as well. However, this may be a bit trickier, because Play 2.3 default connection pool used to be BoneCP, while the default Slick 3 connection pool is HikariCP. Read [[here|PlaySlickAdvancedTopics#Connection-Pool]] for more details.
+> Note: If your database configuration contains settings for the connection pool, be aware that you will need to migrate those settings as well. However, this may be a bit trickier, because Play 2.3 default connection pool used to be BoneCP, while the default Slick 3 connection pool is HikariCP. Read [[here|PlaySlickAdvancedTopics#Connection-Pool]] for how to configure the connection pool.
 
 ## Automatic Slick driver detection
 
@@ -83,7 +83,7 @@ db.$dbName.maxQueriesPerRequest
 slick.db.execution.context
 ```
 
-The parameter `db.$dbName.maxQueriesPerRequest` was used to limit the number of tasks queued in the thread pool. In Slick 3 you can reach similar results by tuning the configuration parameters `numThreads` and `queueSize`. Read the Slick ScalaDoc for [Database.forConfig].
+The parameter `db.$dbName.maxQueriesPerRequest` was used to limit the number of tasks queued in the thread pool. In Slick 3 you can reach similar results by tuning the configuration parameters `numThreads` and `queueSize`. Read the Slick ScalaDoc for [Database.forConfig] (make sure to expand the `forConfig` row in the doc).
 
 While the parameter `slick.db.execution.context` was used to name the thread pools created by Play Slick. In Slick 3, each thread pool is named using the Slick database configuration path, i.e., if in your **application.conf** you have provided a Slick configuration for the database named `default`, then Slick will create a thread pool named `default` for executing the database action on the default database. Note that the name used for the thread pool is not configurable.
 
