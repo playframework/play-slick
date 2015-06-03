@@ -111,7 +111,7 @@ If you were using `SlickPlayIteratees.enumerateSlickQuery` to stream data from t
 
 In Slick, you can obtain a reactive stream by calling the method `stream` on a Slick database instance (instead of the eager `run`). To convert the stream into an enumerator simply call `play.api.libs.streams.Streams.publisherToEnumerator`, passing the stream in argument.
 
-For a full example, have a look at [this sample projet](https://github.com/playframework/play-slick/tree/master/samples/iteratee).
+For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/iteratee).
 
 [reactive-streams]: http://www.reactive-streams.org/
 
