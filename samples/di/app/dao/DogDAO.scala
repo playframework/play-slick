@@ -17,7 +17,7 @@ class DogDAO @Inject()(@NamedDatabase("mydb") protected val dbConfigProvider: Da
 
   def all(): Future[Seq[Dog]] = db.run(Dogs.result)
 
-  def insert(cat: Dog): Future[Unit] = db.run(Dogs += cat).map { _ => () }
+  def insert(dog: Dog): Future[Unit] = db.run(Dogs += dog).map { _ => () }
 
   private class DogsTable(tag: Tag) extends Table[Dog](tag, "DOG") {
 
