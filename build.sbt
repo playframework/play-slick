@@ -1,3 +1,6 @@
+import com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
+import com.typesafe.tools.mima.plugin.MimaKeys.previousArtifact
+
 lazy val `play-slick-root` = (project in file("."))
   .enablePlugins(PlayRootProject)
   .aggregate(
@@ -12,13 +15,16 @@ lazy val `play-slick` = (project in file("src/core"))
     // Work around https://issues.scala-lang.org/browse/SI-9311
     scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings"))
   )
+  .settings(mimaSettings)
 
 lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
   .enablePlugins(PlayLibrary, Playdoc)
   .settings(
     libraryDependencies ++= Dependencies.evolutions,
     scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings"))
-  ).dependsOn(`play-slick` % "compile;test->test")
+  )
+  .settings(mimaSettings)
+  .dependsOn(`play-slick` % "compile;test->test")
 
 lazy val docs = project
   .in(file("docs"))
@@ -30,6 +36,16 @@ playBuildRepoName in ThisBuild := "play-slick"
 playBuildExtraTests := {
   (test in (samples, Test)).value
 }
+
+// Binary compatibility is tested against this version
+val previousVersion = "1.0.0"
+
+def mimaSettings = mimaDefaultSettings ++ Seq(
+  previousArtifact := {
+    if (crossPaths.value) Some(organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % previousVersion)
+    else Some(organization.value % moduleName.value % previousVersion)
+  }
+)
 
 lazy val samples = project
   .in(file("samples"))
