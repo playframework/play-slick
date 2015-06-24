@@ -4,7 +4,7 @@ This is a guide for migrating from Play Slick v0.8 to v1.0.
 
 It assumes you have already migrated your project to use Play 2.4 (see [Play 2.4 Migration Guide]), that you have read the [Slick 3.0 documentation], and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
 
-[Play 2.4 Migration Guide]: https://www.playframework.com/documentation/2.4.x/Migration24)
+[Play 2.4 Migration Guide]: https://www.playframework.com/documentation/2.4.x/Migration24
 [Slick 3.0 documentation]: http://slick.typesafe.com/docs/
 
 ## Build changes
