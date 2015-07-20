@@ -86,7 +86,7 @@ object DefaultSlickApi {
 
     @throws(classOf[PlayException])
     private def create(): DatabaseConfig[BasicProfile] = {
-      try DatabaseConfig.forConfig[BasicProfile](path = "", config)
+      try DatabaseConfig.forConfig[BasicProfile](path = "", config = config)
       catch {
         case NonFatal(t) =>
           logger.error(s"Failed to create Slick database config for key $name.", t)
