@@ -1,28 +1,17 @@
 package controllers
 
+import javax.inject.Inject
+import dao.{CompaniesDAO, ComputersDAO}
 import models.Computer
-import play.api.Play
 import play.api.data.Form
-import play.api.data.Forms.date
-import play.api.data.Forms.longNumber
-import play.api.data.Forms.mapping
-import play.api.data.Forms.nonEmptyText
-import play.api.data.Forms.optional
-import play.api.db.slick.DatabaseConfigProvider
+import play.api.data.Forms.{date, longNumber, mapping, nonEmptyText, optional}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.mvc.Action
-import play.api.mvc.Controller
-import slick.driver.JdbcProfile
+import play.api.mvc.{Action, Controller}
 import views.html
-import Play.current
-import play.api.i18n.Messages.Implicits._
-import dao.CompaniesDAO
-import dao.ComputersDAO
 
 /** Manage a database of computers. */
-object Application extends Controller {
-  def companiesDao = new CompaniesDAO
-  def computersDao = new ComputersDAO
+class Application @Inject() (companiesDao: CompaniesDAO, computersDao: ComputersDAO, val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   /** This result directly redirect to the application home.*/
   val Home = Redirect(routes.Application.list(0, 2, ""))

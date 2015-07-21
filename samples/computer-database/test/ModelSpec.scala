@@ -1,5 +1,7 @@
 package test
 
+import play.api.Application
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -7,7 +9,6 @@ import org.specs2.mutable.Specification
 
 import dao.CompaniesDAO
 import dao.ComputersDAO
-import models.Computer
 import play.api.test.WithApplication
 
 class ModelSpec extends Specification {
@@ -22,8 +23,15 @@ class ModelSpec extends Specification {
 
   "Computer model" should {
 
-    def companiesDao = new CompaniesDAO
-    def computersDao = new ComputersDAO
+    def companiesDao(implicit app: Application) = {
+      val app2CompaniesDAO = Application.instanceCache[CompaniesDAO]
+      app2CompaniesDAO(app)
+    }
+
+    def computersDao(implicit app: Application) = {
+      val app2ComputersDAO = Application.instanceCache[ComputersDAO]
+      app2ComputersDAO(app)
+    }
 
     "be retrieved by id" in new WithApplication {
       val macintosh = Await.result(computersDao.findById(21), Duration.Inf).get
