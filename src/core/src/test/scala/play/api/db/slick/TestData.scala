@@ -7,6 +7,7 @@ object TestData {
     Map(
       "slick.dbs.somedb.driver" -> "slick.driver.H2Driver$",
       "slick.dbs.somedb.db.driver" -> "org.h2.Driver",
+      "slick.dbs.somedb.db.url" -> "jdbc:h2:mem:",
 
       "slick.dbs.default.driver" -> "slick.driver.MySQLDriver$",
       "slick.dbs.default.db.driver" -> "com.mysql.jdbc.Driver",

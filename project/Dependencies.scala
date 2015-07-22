@@ -11,6 +11,7 @@ object Dependencies {
 
   val evolutions = Seq(
     Library.playJdbcEvolutions,
+    Library.h2 % "test", // DBApiAdapterSpec requires a database to be available, so that a connection can be made
     Library.playSpecs2 % "test"
   )
 
@@ -24,6 +25,7 @@ object Version {
 
   val slick        = "3.0.0"
   val hikariCP     = "2.3.8"
+  val h2           = "1.4.187"
 }
 
 object Library {
@@ -32,4 +34,5 @@ object Library {
   val playSpecs2          = "com.typesafe.play"        %% "play-specs2"              % Version.play
   val slick               = "com.typesafe.slick"       %% "slick"                    % Version.slick
   val hikariCP            = "com.zaxxer"               %  "HikariCP"                 % Version.hikariCP
+  val h2                  = "com.h2database"           %  "h2"                       % Version.h2
 }
