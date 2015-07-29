@@ -48,7 +48,7 @@ private[evolutions] object DBApiAdapter {
           throw new UnsupportedOperationException
       }
     }
-    def url: String = dbConfig.db.createSession().metaData.getURL
+    def url: String = dbConfig.db.withSession { _.metaData.getURL }
     def getConnection(): Connection = {
       val session = dbConfig.db.createSession()
       session.conn
