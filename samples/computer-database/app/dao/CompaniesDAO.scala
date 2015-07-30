@@ -1,15 +1,13 @@
 package dao
 
+import javax.inject.{Singleton, Inject}
 import scala.concurrent.Future
-
 import models.Company
-import play.api.Play
-import play.api.db.slick.DatabaseConfigProvider
-import play.api.db.slick.HasDatabaseConfig
+import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.driver.JdbcProfile
 
-trait CompaniesComponent { self: HasDatabaseConfig[JdbcProfile] =>
+trait CompaniesComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import driver.api._
 
   class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
@@ -19,8 +17,9 @@ trait CompaniesComponent { self: HasDatabaseConfig[JdbcProfile] =>
   }
 }
 
-class CompaniesDAO extends CompaniesComponent with HasDatabaseConfig[JdbcProfile] {
-  protected val dbConfig =  DatabaseConfigProvider.get[JdbcProfile](Play.current)
+@Singleton()
+class CompaniesDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends CompaniesComponent
+  with HasDatabaseConfigProvider[JdbcProfile] {
 
   import driver.api._
 
