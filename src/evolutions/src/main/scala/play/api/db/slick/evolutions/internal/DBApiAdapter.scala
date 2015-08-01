@@ -50,14 +50,21 @@ private[evolutions] object DBApiAdapter {
     }
     def url: String = dbConfig.db.withSession { _.metaData.getURL }
     def getConnection(): Connection = dbConfig.db.source.createConnection()
-    def getConnection(autocommit: Boolean): Connection = getConnection() // FIXME: auto-commit is ignored (in slick, I believe auto-commit is on by default, but need to double check)
+    def getConnection(autocommit: Boolean): Connection = {
+      val conn = getConnection()
+      conn.setAutoCommit(autocommit)
+      conn
+    }
     def withConnection[A](block: Connection => A): A = {
       dbConfig.db.withSession { session =>
         val conn = session.conn
         block(conn)
       }
     }
-    def withConnection[A](autocommit: Boolean)(block: Connection => A): A = withConnection(block) // FIXME: auto-commit is ignored (in slick, I believe auto-commit is on by default, but need to double check)
+    def withConnection[A](autocommit: Boolean)(block: Connection => A): A = withConnection { conn =>
+      conn.setAutoCommit(autocommit)
+      block(conn)
+    }
     def withTransaction[A](block: Connection => A): A = {
       dbConfig.db.withTransaction { session =>
         val conn = session.conn
