@@ -12,20 +12,22 @@ Because Slick creates and manages both a connection pool and a thread pool, inte
 [Play]: https://www.playframework.com
 [Slick]: http://slick.typesafe.com
 
+The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
+
 # Releases
 
 The Play Slick plugin supports several different versions of Play and Slick.
 
-| Plugin version         | Play version       | Slick version       | Scala version |
-|------------------------|--------------------|---------------------|---------------|
-| 1.0.0                  | 2.4.x              | 3.0.x               | 2.10.x/2.11.x |
-| 0.8.0                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |
+| Plugin version         | Play version       | Slick version       | Scala version | Maintained |
+|------------------------|--------------------|---------------------|---------------|------------|
+| 1.0.0                  | 2.4.x              | 3.0.0               | 2.10.x/2.11.x |     Yes    |     
+| 0.8.0                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |      No    |
 
 # Milestones
 
-| 1.1.0                  | 2.4.x              | 3.1.x               | 2.10.x/2.11.x |
-
-The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
+| Plugin version         | Play version       | Slick version       | Scala version |
+|------------------------|--------------------|---------------------|---------------|
+| 1.1.0                  | 2.4.x              | 3.1.0               | 2.10.x/2.11.x |
 
 ## Current Version
 
