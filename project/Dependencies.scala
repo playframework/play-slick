@@ -24,7 +24,7 @@ object Version {
   val play = _root_.play.core.PlayVersion.current
 
   val slick        = "3.0.1"
-  val hikariCP     = "2.3.8"
+  val hikariCP     = "2.3.7"
   val h2           = "1.4.187"
 }
 
@@ -33,6 +33,6 @@ object Library {
   val playJdbcEvolutions  = "com.typesafe.play"        %% "play-jdbc-evolutions"     % Version.play
   val playSpecs2          = "com.typesafe.play"        %% "play-specs2"              % Version.play
   val slick               = "com.typesafe.slick"       %% "slick"                    % Version.slick
-  val hikariCP            = "com.zaxxer"               %  "HikariCP"                 % Version.hikariCP
+  val hikariCP            = "com.zaxxer"               %  "HikariCP-java6"           % Version.hikariCP
   val h2                  = "com.h2database"           %  "h2"                       % Version.h2
 }
