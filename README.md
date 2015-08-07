@@ -14,36 +14,37 @@ Because Slick creates and manages both a connection pool and a thread pool, inte
 
 The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 
-# Releases
-
-The Play Slick plugin supports several different versions of Play and Slick.
-
-| Plugin version         | Play version       | Slick version       | Scala version | Maintained |
-|------------------------|--------------------|---------------------|---------------|------------|
-| 1.0.0                  | 2.4.x              | 3.0.0               | 2.10.x/2.11.x |     Yes    |     
-| 0.8.0                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |      No    |
-
-# Milestones
-
-| Plugin version         | Play version       | Slick version       | Scala version |
-|------------------------|--------------------|---------------------|---------------|
-| 1.1.0-M1               | 2.4.x              | 3.1.0-M1            | 2.10.x/2.11.x |
-
 ## Current Version
 
 For Play 2.4 and Slick 3.0 (with Scala 2.10 or Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.0"
+"com.typesafe.play" %% "play-slick" % "1.0.1"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.0.1"
 ```
 
-### Play evolutions
+## Milestone
 
-If you would like to use Play evolutions with Slick, add also the following module:
+For Play 2.4 and Slick 3.1-M1 (with Scala 2.10 or Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
+"com.typesafe.play" %% "play-slick" % "1.1.0-M1"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.1.0-M1"
 ```
+
+# All Releases
+
+The Play Slick plugin supports several different versions of Play and Slick.
+
+| Plugin version         | Play version       | Slick version       | Scala version | Maintained |
+|------------------------|--------------------|---------------------|---------------|------------|
+| 1.1.0-M1               | 2.4.x              | 3.1.0-M1            | 2.10.x/2.11.x |     Yes    |     
+| 1.0.1                  | 2.4.x              | 3.0.1               | 2.10.x/2.11.x |     Yes    |
+| 1.0.0                  | 2.4.x              | 3.0.0               | 2.10.x/2.11.x |     No     |
+| 0.8.0                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |     No     |
+| 0.7.0                  | 2.3.x              | 2.0.x               | 2.10.x        |     No     |
+| 0.6.1                  | 2.2.x              | 2.0.x               | 2.10.x        |     No     |
+| 0.5.1                  | 2.2.x              | 1.0.x               | 2.10.x        |     No     |
 
 # Documentation
 
