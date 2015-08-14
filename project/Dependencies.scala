@@ -4,7 +4,7 @@ import sbt.Keys._
 object Dependencies {
   val core = Seq(
     Library.slick,
-    Library.hikariCP,
+    Library.slickHikariCP,
     Library.playJdbcApi,
     Library.playSpecs2 % "test"
   )
@@ -23,9 +23,8 @@ object Dependencies {
 object Version {
   val play = _root_.play.core.PlayVersion.current
 
-  val slick        = "3.1.0-M1"
-  val hikariCP     = "2.3.7"
-  val h2           = "1.4.187"
+  val slick        = "3.1.0-M2"
+  val h2           = "1.3.176"
 }
 
 object Library {
@@ -33,6 +32,6 @@ object Library {
   val playJdbcEvolutions  = "com.typesafe.play"        %% "play-jdbc-evolutions"     % Version.play
   val playSpecs2          = "com.typesafe.play"        %% "play-specs2"              % Version.play
   val slick               = "com.typesafe.slick"       %% "slick"                    % Version.slick
-  val hikariCP            = "com.zaxxer"               %  "HikariCP-java6"           % Version.hikariCP
+  val slickHikariCP       = "com.typesafe.slick"       %% "slick-hikaricp"           % Version.slick
   val h2                  = "com.h2database"           %  "h2"                       % Version.h2
 }
