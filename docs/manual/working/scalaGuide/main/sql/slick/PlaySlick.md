@@ -31,7 +31,7 @@ While, if this is the first time you are using Play Slick, you will appreciate t
 Add a library dependency on play-slick:
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.0"
+"com.typesafe.play" %% "play-slick" % "1.0.1"
 ```
 
 The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick.
@@ -43,8 +43,8 @@ Play Slick supports [[Play database evolutions|Evolutions]].
 To enable evolutions, you will need the following dependencies:
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.0"
-"com.typesafe.play" %% "play-slick-evolutions" % "1.0.0"
+"com.typesafe.play" %% "play-slick" % "1.0.1"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.0.1"
 ```
 
 Note there is no need to add the Play `evolutions` component to your dependencies, as it is a transitive dependency of the `play-slick-evolutions` module.
