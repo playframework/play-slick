@@ -64,6 +64,7 @@ def sampleProject(name: String) =
       libraryDependencies += Library.playSpecs2 % "test",
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
     ).settings(libraryDependencies += "com.h2database" % "h2" % "1.4.187")
+    .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
     .enablePlugins(PlayScala)
     .dependsOn(`play-slick`)
     .dependsOn(`play-slick-evolutions`)
