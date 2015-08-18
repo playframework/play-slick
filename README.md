@@ -16,7 +16,7 @@ The plugin has its own release cycle and therefore is not integrated into either
 
 ## Current Version
 
-For Play 2.4 and Slick 3.0 (with Scala 2.10 or Scala 2.11):
+For Play 2.4 and Slick 3.0.1+ (with Scala 2.10 or Scala 2.11):
 
 ```scala
 "com.typesafe.play" %% "play-slick" % "1.0.1"
@@ -25,11 +25,11 @@ For Play 2.4 and Slick 3.0 (with Scala 2.10 or Scala 2.11):
 
 ## Milestone
 
-For Play 2.4 and Slick 3.1-M1 (with Scala 2.10 or Scala 2.11):
+For Play 2.4 and Slick 3.1-M2 (with Scala 2.10 or Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.1.0-M1"
-"com.typesafe.play" %% "play-slick-evolutions" % "1.1.0-M1"
+"com.typesafe.play" %% "play-slick" % "1.1.0-M2"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.1.0-M2"
 ```
 
 # All Releases
@@ -38,13 +38,17 @@ The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version         | Play version       | Slick version       | Scala version | Maintained |
 |------------------------|--------------------|---------------------|---------------|------------|
-| 1.1.0-M1               | 2.4.x              | 3.1.0-M1            | 2.10.x/2.11.x |     Yes    |     
-| 1.0.1                  | 2.4.x              | 3.0.1               | 2.10.x/2.11.x |     Yes    |
+| 1.1.0-M2               | 2.4.x              | 3.1.0-M2            | 2.10.x/2.11.x |     Yes    |
+| 1.1.0-M1               | 2.4.x              | 3.1.0-M1            | 2.10.x/2.11.x |     No     |     
+| 1.0.1                  | 2.4.x              | 3.0.1+              | 2.10.x/2.11.x |     Yes    |
 | 1.0.0                  | 2.4.x              | 3.0.0               | 2.10.x/2.11.x |     No     |
 | 0.8.0                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |     No     |
 | 0.7.0                  | 2.3.x              | 2.0.x               | 2.10.x        |     No     |
 | 0.6.1                  | 2.2.x              | 2.0.x               | 2.10.x        |     No     |
 | 0.5.1                  | 2.2.x              | 1.0.x               | 2.10.x        |     No     |
+
+Note that the `+` next to a version means that the specified version and later trailing point releases are supported by 
+the same version of the play-slick plugin. 
 
 # Documentation
 
