@@ -6,14 +6,14 @@ import javax.inject.Inject
 import javax.sql.DataSource
 import play.api.Logger
 import play.api.db.DBApi
-import play.api.db.{Database => PlayDatabase}
+import play.api.db.{ Database => PlayDatabase }
 import play.api.db.slick.DbName
 import play.api.db.slick.IssueTracker
 import play.api.db.slick.SlickApi
 import slick.backend.DatabaseConfig
 import slick.driver.JdbcProfile
 import slick.jdbc.DataSourceJdbcDataSource
-import slick.jdbc.HikariCPJdbcDataSource
+import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
   private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi.dbConfigs[JdbcProfile]().map {
@@ -38,7 +38,9 @@ private[evolutions] object DBApiAdapter {
   // adapter class.
   private class DatabaseAdapter(_name: DbName, dbConfig: DatabaseConfig[JdbcProfile]) extends PlayDatabase {
     private val logger = Logger(classOf[DatabaseAdapter])
+
     def name: String = _name.value
+
     def dataSource: DataSource = {
       dbConfig.db.source match {
         case ds: DataSourceJdbcDataSource => ds.ds
@@ -48,29 +50,41 @@ private[evolutions] object DBApiAdapter {
           throw new UnsupportedOperationException
       }
     }
-    def url: String = dbConfig.db.withSession { _.metaData.getURL }
+
+    lazy val url: String = dbConfig.config.getString("db.url")
+
     def getConnection(): Connection = dbConfig.db.source.createConnection()
+
     def getConnection(autocommit: Boolean): Connection = {
       val conn = getConnection()
       conn.setAutoCommit(autocommit)
       conn
     }
+
     def withConnection[A](block: Connection => A): A = {
-      dbConfig.db.withSession { session =>
-        val conn = session.conn
-        block(conn)
+      val conn = getConnection()
+      try block(conn)
+      finally {
+        try conn.close() catch { case _: java.sql.SQLException => }
       }
     }
+
     def withConnection[A](autocommit: Boolean)(block: Connection => A): A = withConnection { conn =>
       conn.setAutoCommit(autocommit)
       block(conn)
     }
+
     def withTransaction[A](block: Connection => A): A = {
-      dbConfig.db.withTransaction { session =>
-        val conn = session.conn
-        block(conn)
-      }
+      val conn = getConnection()
+      var done = false
+      try {
+        val res = block(conn)
+        conn.commit()
+        done = true
+        res
+      } finally if (!done) conn.rollback()
     }
+
     def shutdown(): Unit = {
       // no-op. The rationale is that play-slick already takes care of closing the database on application shutdown
       ()
