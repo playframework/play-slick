@@ -74,6 +74,22 @@ Second, the `slick.dbs` prefix before the database's name is configurable. In fa
 
 Third, in the above configuration `slick.dbs.default.driver` is used to configure the Slick driver, while `slick.dbs.default.db.driver` is the underlying JDBC driver used by Slick's backend. In the above configuration we are configuring Slick to use H2 database, but Slick supports several other databases. Check the [Slick documentation] for a complete list of supported databases, and to find a matching Slick driver.
 
+Slick does not support the `DATABASE_URL` environment variable in the same way as the default Play JBDC connection pool. But starting in version 3.0.3, Slick provides a `DatabaseUrlDataSource` specifically for parsing the environment variable.
+
+```conf
+slick.dbs.default.driver="slick.driver.PostgresDriver$"
+slick.dbs.default.db.dataSourceClass = "slick.jdbc.DatabaseUrlDataSource"
+slick.dbs.default.db.properties.driver = "org.postgresql.Driver"
+```
+
+On some platforms, such as Heroku, you may substitue the `JDBC_DATABASE_URL`, which is in the format `jdbc:vendor://host:port/db?args`, if it is available. For example:
+
+```conf
+slick.dbs.default.driver="slick.driver.PostgresDriver$"
+slick.dbs.default.db.driver="org.postgresql.Driver"
+slick.dbs.default.db.url=${JDBC_DATABASE_URL}
+```
+
 >> Note: Failing to provide a valid value for both `slick.dbs.default.driver` and `slick.dbs.default.db.driver` will lead to an exception when trying to run your Play application.
 
 [Slick documentation]: http://slick.typesafe.com/docs
