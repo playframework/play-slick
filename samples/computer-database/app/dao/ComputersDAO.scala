@@ -35,12 +35,19 @@ class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProv
     db.run(computers.filter(_.id === id).result.headOption)
 
   /** Count all computers. */
-  def count(): Future[Int] =
-    db.run(computers.length.result)
-
+  def count(): Future[Int] = {
+    // this should be changed to
+    // db.run(computers.length.result)
+    // when https://github.com/slick/slick/issues/1237 is fixed
+    db.run(computers.map(_.id).length.result)
+  }
   /** Count computers with a filter. */
-  def count(filter: String): Future[Int] =
-    db.run(computers.filter { computer => computer.name.toLowerCase like filter.toLowerCase }.length.result)
+  def count(filter: String): Future[Int] = {
+    // this should be changed to
+    // db.run(computers.filter { computer => computer.name.toLowerCase like filter.toLowerCase }.length.result)
+    // when https://github.com/slick/slick/issues/1237 is fixed
+    db.run(computers.filter { computer => computer.name.toLowerCase like filter.toLowerCase }.map(_.id).length.result)
+  }
 
   /** Return a page of (Computer,Company) */
   def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[(Computer, Company)]] = {

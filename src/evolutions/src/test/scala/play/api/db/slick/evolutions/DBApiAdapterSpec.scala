@@ -12,7 +12,8 @@ class DBApiAdapterSpec extends Specification {
     val injector = appBuilder.injector()
 
     val api = injector.instanceOf[DBApi]
-    val db = api.database("somedb")
+    val dbName = "somedb"
+    val db = api.database(dbName)
 
     "getConnection" should {
       "respect autocommit parameter" in {
@@ -49,6 +50,12 @@ class DBApiAdapterSpec extends Specification {
           called = true
         }
         called must_== true
+      }
+    }
+    
+    "url" should {
+      "return the value set in the config" in {
+        db.url must_== TestData.configuration.getString(s"slick.dbs.${dbName}.db.url").get
       }
     }
   }
