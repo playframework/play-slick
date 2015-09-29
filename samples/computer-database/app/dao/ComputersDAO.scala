@@ -43,10 +43,7 @@ class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProv
   }
   /** Count computers with a filter. */
   def count(filter: String): Future[Int] = {
-    // this should be changed to
-    // db.run(computers.filter { computer => computer.name.toLowerCase like filter.toLowerCase }.length.result)
-    // when https://github.com/slick/slick/issues/1237 is fixed
-    db.run(computers.filter { computer => computer.name.toLowerCase like filter.toLowerCase }.map(_.id).length.result)
+    db.run(computers.filter { computer => computer.name.toLowerCase like filter.toLowerCase }.length.result)
   }
 
   /** Return a page of (Computer,Company) */
