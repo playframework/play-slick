@@ -41,7 +41,7 @@ There are several reasons for this change. First, the above is not a valid Slick
 Here is how you would need to migrate the above configuration:
 
 ```conf
-slick.dbs.default.driver=slick.driver.H2Driver$ # You must provide the required Slick driver! 
+slick.dbs.default.driver="slick.driver.H2Driver$" # You must provide the required Slick driver! 
 slick.dbs.default.db.driver=org.h2.Driver
 slick.dbs.default.db.url="jdbc:h2:mem:play"
 slick.dbs.default.db.user=sa
