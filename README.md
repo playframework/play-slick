@@ -25,11 +25,11 @@ For Play 2.4 and Slick 3.0.1+ (with Scala 2.10 or Scala 2.11):
 
 ## Release Candidate
 
-For Play 2.4 and Slick 3.1.0-RC2 (with Scala 2.10 or Scala 2.11):
+For Play 2.4 and Slick 3.1.0-RC3 (with Scala 2.10 or Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.1.0-RC2"
-"com.typesafe.play" %% "play-slick-evolutions" % "1.1.0-RC2"
+"com.typesafe.play" %% "play-slick" % "1.1.0-RC3"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.1.0-RC3"
 ```
 
 # All Releases
@@ -38,7 +38,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version         | Play version       | Slick version       | Scala version | Maintained |
 |------------------------|--------------------|---------------------|---------------|------------|
-| 1.1.0-RC2              | 2.4.x              | 3.1.0-RC2           | 2.10.x/2.11.x |     Yes    |
+| 1.1.0-RC2              | 2.4.x              | 3.1.0-RC3           | 2.10.x/2.11.x |     Yes    |
 | 1.0.1                  | 2.4.x              | 3.0.1+              | 2.10.x/2.11.x |     Yes    |
 | 1.0.0                  | 2.4.x              | 3.0.0               | 2.10.x/2.11.x |     No     |
 | 0.8.0                  | 2.3.x              | 2.1.x               | 2.10.x/2.11.x |     No     |
