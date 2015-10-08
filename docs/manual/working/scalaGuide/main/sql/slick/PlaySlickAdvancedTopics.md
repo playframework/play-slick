@@ -2,9 +2,9 @@
 
 ## Connection Pool
 
-With Slick 3.0 release, Slick starts and controls both a connection pool and a thread pool for optimal asynchronous execution of your database actions.
+With Slick 3 release, Slick starts and controls both a connection pool and a thread pool for optimal asynchronous execution of your database actions.
 
-In Play Slick we have decided to let Slick be in control of creating and managing the connection pool (the default connection pool used by Slick 3.0 is [HikariCP]), which means that to tune the connection pool you will need to look at the Slick ScalaDoc for [Database.forConfig] (make sure to expand the `forConfig` row in the doc). In fact, be aware that any value you may pass for setting the Play connection pool (e.g., under the key `play.db.default.hikaricp`) is simply not picked up by Slick, and hence effectively ignored.
+In Play Slick we have decided to let Slick be in control of creating and managing the connection pool (the default connection pool used by Slick 3 is [HikariCP]), which means that to tune the connection pool you will need to look at the Slick ScalaDoc for [Database.forConfig](make sure to expand the `forConfig` row in the doc). In fact, be aware that any value you may pass for setting the Play connection pool (e.g., under the key `play.db.default.hikaricp`) is simply not picked up by Slick, and hence effectively ignored.
 
 Also, note that as stated in the [Slick documentation], a reasonable default for the connection pool size is calculated from the thread pool size. In fact, you should only need to tune `numThreads` and `queueSize` in most cases, for each of your database configuration.
 
@@ -21,5 +21,5 @@ For optimal execution, you may need to tune the `numThreads` and `queueSize` par
 
 [Slick documentation]: http://slick.typesafe.com/docs
 [HikariCP]: http://brettwooldridge.github.io/HikariCP/
-[JdbcDataSourceFactory]: http://slick.typesafe.com/doc/3.0.0/api/index.html#slick.jdbc.JdbcDataSourceFactory
-[Database.forConfig]: http://slick.typesafe.com/doc/3.0.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
+[JdbcDataSourceFactory]: http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcDataSourceFactory
+[Database.forConfig]: http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver,ClassLoader):Database
