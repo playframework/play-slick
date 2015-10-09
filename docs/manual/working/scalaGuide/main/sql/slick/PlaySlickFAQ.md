@@ -46,4 +46,4 @@ It means you are trying to use a H2 database, but have forgot to add a dependenc
 
 [playframework-dev]: https://groups.google.com/forum/#!forum/play-framework-dev 
 [HikariCP]: http://brettwooldridge.github.io/HikariCP/
-[JdbcDataSourceFactory]: http://slick.typesafe.com/doc/3.0.0/api/index.html#slick.jdbc.JdbcDataSourceFactory
+[JdbcDataSourceFactory]: http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcDataSourceFactory

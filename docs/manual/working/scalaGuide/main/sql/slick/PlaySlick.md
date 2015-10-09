@@ -7,9 +7,9 @@ The Play Slick module consists of two features:
   - Integration of Slick into Play's application lifecycle.
   - Support for [[Play database evolutions|Evolutions]].
 
-Play Slick currently supports Slick 3.0 with Play 2.4, for both Scala 2.10 and 2.11.
+Play Slick currently supports Slick 3.1 with Play 2.4, for both Scala 2.10 and 2.11.
 
-> Note: This guide assumes you already know both Play 2.4 and Slick 3.0. Furthermore, it assumes you will be using the new Slick Database I/O Actions API. In fact, using the deprecated Invoker/Execution API of Slick may be possible, but it's not supported - be aware that the Invoker/Execution API is planned to be removed in the next Slick's major release.
+> Note: This guide assumes you already know both Play 2.4 and Slick 3.1.
 
 ### Getting Help
 
@@ -31,10 +31,10 @@ While, if this is the first time you are using Play Slick, you will appreciate t
 Add a library dependency on play-slick:
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.1"
+"com.typesafe.play" %% "play-slick" % "1.1.0"
 ```
 
-The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick.
+The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick, but you might still do so if needed. A likely reason for wanting to explicitly define a dependency to Slick is if you want to use a newer version than the one bundled with play-slick. Because Slick trailing dot releases are binary compatible, you won't incur any risk in using a different Slick trailing point release than the one that was used to build play-slick.
 
 ### Support for Play database evolutions
 
@@ -43,8 +43,8 @@ Play Slick supports [[Play database evolutions|Evolutions]].
 To enable evolutions, you will need the following dependencies:
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.0.1"
-"com.typesafe.play" %% "play-slick-evolutions" % "1.0.1"
+"com.typesafe.play" %% "play-slick" % "1.1.0"
+"com.typesafe.play" %% "play-slick-evolutions" % "1.1.0"
 ```
 
 Note there is no need to add the Play `evolutions` component to your dependencies, as it is a transitive dependency of the `play-slick-evolutions` module.
@@ -93,7 +93,7 @@ slick.dbs.default.db.url=${JDBC_DATABASE_URL}
 >> Note: Failing to provide a valid value for both `slick.dbs.default.driver` and `slick.dbs.default.db.driver` will lead to an exception when trying to run your Play application.
 
 [Slick documentation]: http://slick.typesafe.com/docs
-[Database.forConfig]: http://slick.typesafe.com/doc/3.0.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver):Database
+[Database.forConfig]: http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver,ClassLoader):Database
 
 To configure several databases:
 
