@@ -38,10 +38,10 @@ playBuildExtraTests := {
 }
 
 // Binary compatibility is tested against this version
-val previousVersion = "1.0.0"
+val previousVersion: Option[String] = None
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
-  previousArtifact := {
+  previousArtifact := previousVersion flatMap { previousVersion =>
     if (crossPaths.value) Some(organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % previousVersion)
     else Some(organization.value % moduleName.value % previousVersion)
   }
