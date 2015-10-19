@@ -54,8 +54,12 @@ class DBApiAdapterSpec extends Specification {
     }
     
     "url" should {
-      "return the value set in the config" in {
+      "return the value set in the config for the jdbc url" in {
         db.url must_== TestData.configuration.getString(s"slick.dbs.${dbName}.db.url").get
+      }
+      "return the value set in the config for the datasource url" in {
+        val h2DatasourceDb = api.database("h2datasource")
+        h2DatasourceDb.url must_== TestData.configuration.getString(s"slick.dbs.h2datasource.db.properties.url").get
       }
     }
   }
