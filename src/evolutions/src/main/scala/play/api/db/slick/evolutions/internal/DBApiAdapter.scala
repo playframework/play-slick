@@ -1,6 +1,7 @@
 package play.api.db.slick.evolutions.internal
 
 import java.sql.Connection
+import java.sql.SQLException
 
 import javax.inject.Inject
 import javax.sql.DataSource
@@ -51,7 +52,7 @@ private[evolutions] object DBApiAdapter {
       }
     }
 
-    lazy val url: String = dbConfig.config.getString("db.url")
+    lazy val url: String = withConnection(_.getMetaData().getURL())
 
     def getConnection(): Connection = dbConfig.db.source.createConnection()
 
@@ -65,7 +66,7 @@ private[evolutions] object DBApiAdapter {
       val conn = getConnection()
       try block(conn)
       finally {
-        try conn.close() catch { case _: java.sql.SQLException => }
+        try conn.close() catch { case _: SQLException => }
       }
     }
 
