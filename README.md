@@ -29,6 +29,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version         | Play version       | Slick version       | Scala version | Maintained |
 |------------------------|--------------------|---------------------|---------------|------------|
+| 2.0.0-M1               | 2.5.0-M1           | 3.1.x               | 2.11.x        |     No     |
 | 1.1.0                  | 2.4.x              | 3.1.x               | 2.10.x/2.11.x |     Yes    |
 | 1.0.1                  | 2.4.x              | 3.0.1+              | 2.10.x/2.11.x |     No     |
 | 1.0.0                  | 2.4.x              | 3.0.0               | 2.10.x/2.11.x |     No     |
