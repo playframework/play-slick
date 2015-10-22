@@ -7,6 +7,7 @@ lazy val `play-slick-root` = (project in file("."))
     `play-slick`,
     `play-slick-evolutions`
   )
+  .settings(scalaVersion := "2.11.7")
 
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc)
@@ -38,7 +39,7 @@ playBuildExtraTests := {
 }
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = Some("1.1.0")
+val previousVersion: Option[String] = None
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
   previousArtifact := previousVersion flatMap { previousVersion =>
