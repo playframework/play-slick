@@ -56,7 +56,8 @@ lazy val samples = project
     iterateeSample,
     jsonSample,
     basicSample,
-    diSample
+    diSample,
+    compileTimeDiSample
   )
 
 def sampleProject(name: String) =
@@ -82,3 +83,5 @@ lazy val jsonSample = sampleProject("json")
 lazy val basicSample = sampleProject("basic")
 
 lazy val diSample = sampleProject("di")
+
+lazy val compileTimeDiSample = sampleProject("compiletime-di")

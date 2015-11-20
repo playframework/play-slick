@@ -1,0 +1,41 @@
+@(cats: Seq[Cat], dogs: Seq[Dog])
+
+@main("Cat & Dog database") {
+<div>
+  <div id="cats">
+    <h2>Insert a kitty cat here:</h2>
+
+    <form action="/insert/cat" method="POST">
+      <input name="name" type="text" placeholder="name your feline friend"/>
+      <input name="color" type="text" placeholder="enter the color of this kitty cat"/>
+      <input type="submit"/>
+    </form>
+
+    <h2>Previously inserted cats:</h2>
+    <table>
+      <tr><th>Name</th><th>Color</th></tr>
+      @for(c <- cats){ 
+      <tr><td>@c.name</td><td>@c.color</td></tr>
+      }
+    </table>
+  </div>
+
+  <div id="dogs">
+    <h2>Insert a kitty dog here:</h2>
+
+    <form action="/insert/dog" method="POST">
+      <input name="name" type="text" placeholder="name your canine friend"/>
+      <input name="color" type="text" placeholder="enter the color of this kitty dog"/>
+      <input type="submit"/>
+    </form>
+
+    <h2>Previously inserted dogs:</h2>
+    <table>
+      <tr><th>Name</th><th>Color</th></tr>
+      @for(d <- dogs){ 
+      <tr><td>@d.name</td><td>@d.color</td></tr>
+      }
+    </table>
+  </div>
+</div>
+}
