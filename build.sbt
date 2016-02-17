@@ -32,6 +32,7 @@ lazy val docs = project
   .enablePlugins(PlayDocsPlugin)
   .dependsOn(`play-slick`)
   .dependsOn(`play-slick-evolutions`)
+  .settings(scalaVersion := "2.11.7")
 
 playBuildRepoName in ThisBuild := "play-slick"
 playBuildExtraTests := {
@@ -51,12 +52,9 @@ def mimaSettings = mimaDefaultSettings ++ Seq(
 lazy val samples = project
   .in(file("samples"))
   .aggregate(
-    daoSample,
-    computerDatabaseSample,
-    iterateeSample,
-    jsonSample,
     basicSample,
-    diSample
+    // computerDatabaseSample,
+    iterateeSample
   )
 
 def sampleProject(name: String) =
@@ -71,14 +69,8 @@ def sampleProject(name: String) =
     .dependsOn(`play-slick`)
     .dependsOn(`play-slick-evolutions`)
 
-lazy val daoSample = sampleProject("dao")
-
 lazy val computerDatabaseSample = sampleProject("computer-database")
 
 lazy val iterateeSample = sampleProject("iteratee")
 
-lazy val jsonSample = sampleProject("json")
-
 lazy val basicSample = sampleProject("basic")
-
-lazy val diSample = sampleProject("di")

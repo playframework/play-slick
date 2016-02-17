@@ -6,7 +6,8 @@
 GET     /                           controllers.Application.index
 
 # Home page
-POST    /insert                     controllers.Application.insert
+POST    /insert/cat                 controllers.Application.insertCat
+POST    /insert/dog                 controllers.Application.insertDog
 
 
 # Map static resources from the /public folder to the /assets URL path

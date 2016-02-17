@@ -8,7 +8,7 @@ import play.api.libs.json.Json.toJson
 import play.api.mvc.Action
 import play.api.mvc.Controller
 
-object Application extends Controller {
+class Application extends Controller {
   def recordsDAO = new RecordsDAO
 
   def index = Action { request =>
