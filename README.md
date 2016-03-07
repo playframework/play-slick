@@ -44,11 +44,12 @@ the same version of the play-slick plugin. While a `x` means that any trailing p
 
 # Documentation
 
-The documentation for the latest release is available [here](https://www.playframework.com/documentation/2.4.x/PlaySlick).
+The documentation for the latest release is available [here](https://www.playframework.com/documentation/2.5.x/PlaySlick).
 
 Documentation for v0.8 is available in the project's [wiki](https://github.com/playframework/play-slick/wiki).
 
 # Copyright
 
-Copyright: Lightbend 2013-2015
+Copyright (C) 2009-2016 Lightbend Inc. (https://www.lightbend.com).
+
 License: Apache License 2.0, http://www.apache.org/licenses/LICENSE-2.0.html
