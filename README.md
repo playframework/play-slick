@@ -16,11 +16,11 @@ The plugin has its own release cycle and therefore is not integrated into either
 
 ## Current Version
 
-For Play 2.4 and Slick 3.1 (with Scala 2.10 or Scala 2.11):
+For Play 2.5.x and Slick 3.1.x (Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.1.1"
-"com.typesafe.play" %% "play-slick-evolutions" % "1.1.1"
+"com.typesafe.play" %% "play-slick" % "2.0.0"
+"com.typesafe.play" %% "play-slick-evolutions" % "2.0.0"
 ```
 
 # All Releases
@@ -29,7 +29,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version         | Play version       | Slick version       | Scala version | Maintained |
 |------------------------|--------------------|---------------------|---------------|------------|
-| 2.0.0-M1               | 2.5.0-M1           | 3.1.x               | 2.11.x        |     No     |
+| 2.0.0                  | 2.5.x              | 3.1.x               | 2.11.x        |     Yes    |
 | 1.1.1                  | 2.4.x              | 3.1.x               | 2.10.x/2.11.x |     Yes    |
 | 1.1.0                  | 2.4.x              | 3.1.x               | 2.10.x/2.11.x |     No     |
 | 1.0.1                  | 2.4.x              | 3.0.1+              | 2.10.x/2.11.x |     No     |
@@ -50,5 +50,5 @@ Documentation for v0.8 is available in the project's [wiki](https://github.com/p
 
 # Copyright
 
-Copyright: Typesafe 2013-2015
+Copyright: Lightbend 2013-2015
 License: Apache License 2.0, http://www.apache.org/licenses/LICENSE-2.0.html
