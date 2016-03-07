@@ -7,9 +7,9 @@ The Play Slick module consists of two features:
   - Integration of Slick into Play's application lifecycle.
   - Support for [[Play database evolutions|Evolutions]].
 
-Play Slick currently supports Slick 3.1 with Play 2.4, for both Scala 2.10 and 2.11.
+Play Slick currently supports Slick 3.1 with Play 2.5, for Scala 2.11.
 
-> Note: This guide assumes you already know both Play 2.4 and Slick 3.1.
+> Note: This guide assumes you already know both Play 2.5 and Slick 3.1.
 
 ### Getting Help
 
@@ -31,7 +31,7 @@ While, if this is the first time you are using Play Slick, you will appreciate t
 Add a library dependency on play-slick:
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "1.1.1"
+"com.typesafe.play" %% "play-slick" % "2.0.0"
 ```
 
 The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick, but you might still do so if needed. A likely reason for wanting to explicitly define a dependency to Slick is if you want to use a newer version than the one bundled with play-slick. Because Slick trailing dot releases are binary compatible, you won't incur any risk in using a different Slick trailing point release than the one that was used to build play-slick.

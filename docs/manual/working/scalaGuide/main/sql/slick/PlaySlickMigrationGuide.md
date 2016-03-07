@@ -2,9 +2,9 @@
 
 This is a guide for migrating from Play Slick v0.8 to v1.0 or v1.1.
 
-It assumes you have already migrated your project to use Play 2.4 (see [Play 2.4 Migration Guide]), that you have read the [Slick 3.1 documentation], and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
+It assumes you have already migrated your project to use Play 2.5 (see [Play 2.5 Migration Guide]), that you have read the [Slick 3.1 documentation], and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
 
-[Play 2.4 Migration Guide]: https://www.playframework.com/documentation/2.4.x/Migration24
+[Play 2.5 Migration Guide]: https://www.playframework.com/documentation/2.5.x/Migration24
 [Slick 3.1 documentation]: http://slick.typesafe.com/docs/
 
 ## Build changes
@@ -107,7 +107,7 @@ The `Config` object, together with `SlickConfig` and `DefaultSlickConfig`, were 
 
 ## `SlickPlayIteratees` was removed
 
-If you were using `SlickPlayIteratees.enumerateSlickQuery` to stream data from the database, you will be happy to know that doing so became a lot easier. Slick 3 implements the [reactive-streams] [SPI] (Service Provider Interface), and Play 2.4 provides a utility class to handily convert a reactive stream into a Play enumerator.
+If you were using `SlickPlayIteratees.enumerateSlickQuery` to stream data from the database, you will be happy to know that doing so became a lot easier. Slick 3 implements the [reactive-streams] [SPI] (Service Provider Interface), and Play 2.5 provides a utility class to handily convert a reactive stream into a Play enumerator.
 
 In Slick, you can obtain a reactive stream by calling the method `stream` on a Slick database instance (instead of the eager `run`). To convert the stream into an enumerator simply call `play.api.libs.streams.Streams.publisherToEnumerator`, passing the stream in argument.
 
