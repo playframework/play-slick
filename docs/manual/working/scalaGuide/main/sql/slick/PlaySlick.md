@@ -15,7 +15,7 @@ Play Slick currently supports Slick 3.1 with Play 2.5, for Scala 2.11.
 
 If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group]. Also, note that if you are seeking help on Slick, the [slick user group] may be a better place.
 
-Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, you may prefer [to get in touch with Typesafe](http://www.typesafe.com/subscription), as it offers commercial support for these technologies.
+Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, you may prefer [to get in touch with Lightbend](http://www.lightbend.com/subscription), as it offers commercial support for these technologies.
 
 [play-framework user group]: https://groups.google.com/forum/#!forum/play-framework
 [slick user group]: https://groups.google.com/forum/#!forum/scalaquery
@@ -24,7 +24,7 @@ Finally, if you prefer to get an answer for your Play and Slick questions in a t
 
 If you have been using a previous version of Play Slick, you will notice that there have been quite a few major changes. It's recommended to read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
 
-While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using Play Slick module should be straightforward.
+While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using the Play Slick module should be straightforward.
 
 ## Setup
 
@@ -51,7 +51,7 @@ Note there is no need to add the Play `evolutions` component to your dependencie
 
 ### JDBC driver dependency
 
-Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
+The Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
 
 ```
 "com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
@@ -59,7 +59,7 @@ Play Slick module does not bundle any JDBC driver. Hence, you will need to expli
 
 ## Database Configuration
 
-To have Play Slick module handling the lifecycle of Slick databases, it is important that you never create database's instances explicitly in your code. Rather, you should provide a valid Slick driver and database configuration in your **application.conf** (by convention the default Slick database must be called `default`):
+To have the Play Slick module handling the lifecycle of Slick databases, it is important that you never create database's instances explicitly in your code. Rather, you should provide a valid Slick driver and database configuration in your **application.conf** (by convention the default Slick database must be called `default`):
 
 ```conf
 # Default database configuration
@@ -133,7 +133,7 @@ Injecting a `DatabaseConfig` instance for a different database is also easy. Sim
 
 Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
 
-For a full example, have a look at [this sample projet](https://github.com/playframework/play-slick/tree/master/samples/di).
+For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/basic).
 
 ### DatabaseConfig via Global Lookup
 
@@ -147,7 +147,7 @@ Looking up a `DatabaseConfig` instance for a different database is also easy. Si
 
 Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
 
-For a full example, have a look at [this sample projet](https://github.com/playframework/play-slick/tree/master/samples/basic).
+For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/basic).
 
 ### Running a database query in a Controller
 

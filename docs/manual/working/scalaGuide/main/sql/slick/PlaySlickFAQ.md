@@ -6,7 +6,7 @@ Have a look at the [compatibility matrix](https://github.com/playframework/play-
 
 ## `play.db.pool` is ignored
 
-It's indeed the case. Changing the value of `play.db.pool` won't affect what connection pool Slick is going to use. The reason is simply that Play Slick module currently doesn't support using a different connection pool than [HikariCP].
+It's indeed the case. Changing the value of `play.db.pool` won't affect what connection pool Slick is going to use. The reason is simply that the Play Slick module currently doesn't support using a different connection pool than [HikariCP].
 
 ## Changing the connection pool used by Slick
 
