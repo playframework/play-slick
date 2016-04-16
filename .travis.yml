@@ -2,7 +2,9 @@ language: scala
 jdk: oraclejdk8
 sudo: false
 script:
-  - sbt +test +mimaReportBinaryIssues +docs/test +samples/test docs/validateDocs
+  - sbt coverage test docs/test samples/test coverageReport
+  - sbt docs/validateDocs
+  - sbt +mimaReportBinaryIssues
 cache:
   directories:
     - $HOME/.ivy2/cache
@@ -17,3 +19,5 @@ notifications:
       - https://webhooks.gitter.im/e/d2c8a242a2615f659595
     on_success: always
     on_failure: always
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
