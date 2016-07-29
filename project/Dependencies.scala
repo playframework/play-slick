@@ -23,7 +23,7 @@ object Dependencies {
 object Version {
   val play = _root_.play.core.PlayVersion.current
 
-  val slick        = "3.1.0"
+  val slick        = "3.2.0-M1"
   val h2           = "1.3.176"
 }
 

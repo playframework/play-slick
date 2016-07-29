@@ -5,14 +5,14 @@ import javax.inject.{Inject, Singleton}
 import models.{Company, Computer, Page}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Future
 
 @Singleton()
 class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends CompaniesComponent
   with HasDatabaseConfigProvider[JdbcProfile] {
-  import driver.api._
+  import profile.api._
 
   class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
 

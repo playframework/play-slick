@@ -11,8 +11,8 @@ import play.api.db.{ Database => PlayDatabase }
 import play.api.db.slick.DbName
 import play.api.db.slick.IssueTracker
 import play.api.db.slick.SlickApi
-import slick.backend.DatabaseConfig
-import slick.driver.JdbcProfile
+import slick.basic.DatabaseConfig
+import slick.jdbc.JdbcProfile
 import slick.jdbc.DataSourceJdbcDataSource
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 

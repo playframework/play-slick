@@ -5,10 +5,10 @@ import scala.concurrent.Future
 import models.Company
 import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 trait CompaniesComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
-  import driver.api._
+  import profile.api._
 
   class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
     def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
@@ -21,7 +21,7 @@ trait CompaniesComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 class CompaniesDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends CompaniesComponent
   with HasDatabaseConfigProvider[JdbcProfile] {
 
-  import driver.api._
+  import profile.api._
 
   val companies = TableQuery[Companies]
 
