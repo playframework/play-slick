@@ -12,7 +12,7 @@ import play.api.mvc._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 import UsersSchema._
 
@@ -21,7 +21,7 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   //#di-database-config
 
-  import dbConfig.driver.api._
+  import dbConfig.profile.api._
 
   def index(name: String) = Action.async { implicit request =>
     val resultingUsers: Future[Seq[User]] = dbConfig.db.run(Users.filter(_.name === name).result)
