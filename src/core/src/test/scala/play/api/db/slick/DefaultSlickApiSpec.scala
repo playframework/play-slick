@@ -1,9 +1,9 @@
 package play.api.db.slick
 
+import java.util.concurrent.ConcurrentLinkedDeque
+
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
-
-import play.api.PlayException
 import play.api.inject.ApplicationLifecycle
 import play.api.inject.DefaultApplicationLifecycle
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -13,10 +13,10 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
   // A new injector should be created to ensure each test is independent of each other
   def injector = new GuiceApplicationBuilder(configuration = TestData.configuration).injector()
 
-  def hooks(lifecycle: DefaultApplicationLifecycle): List[_] = {
+  def hooks(lifecycle: DefaultApplicationLifecycle): Array[_] = {
     val hooksField = lifecycle.getClass.getDeclaredField("hooks")
     hooksField.setAccessible(true)
-    hooksField.get(lifecycle).asInstanceOf[List[_]]
+    hooksField.get(lifecycle).asInstanceOf[ConcurrentLinkedDeque[_]].toArray
   }
 
   "DefaultSlickApi" should {

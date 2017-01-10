@@ -8,7 +8,6 @@ object CommonSettings extends AutoPlugin {
 
   override def projectSettings = Seq(
     parallelExecution in Test := false,
-    resolvers ++= Dependencies.resolvers,
     fork in Test := true
   )
 }
