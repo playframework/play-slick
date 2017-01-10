@@ -3,7 +3,7 @@
  */
 package scalaguide.slick
 
-import slick.driver.H2Driver.api._
+import slick.jdbc.H2Profile.api._
 
 object UsersSchema {
 
@@ -12,7 +12,7 @@ object UsersSchema {
   class UsersTable(tag: Tag) extends Table[User](tag, "USER") {
     def name = column[String]("name", O.PrimaryKey)
     def surname = column[String]("surname")
-    def * = (name, surname) <> (User.tupled, User.unapply _)
+    def * = (name, surname) <> (User.tupled, User.unapply)
   }
 
   val Users = TableQuery[UsersTable]

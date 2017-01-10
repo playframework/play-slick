@@ -11,7 +11,7 @@ import play.api.mvc._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 import UsersSchema._
 
@@ -21,7 +21,7 @@ object Application extends Controller {
   //#global-lookup-database-config
 
   //#driver-import
-  import dbConfig.driver.api._
+  import dbConfig.profile.api._
   //#driver-import
 
   //#action-with-db
