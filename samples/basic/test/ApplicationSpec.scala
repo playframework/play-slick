@@ -14,12 +14,12 @@ class ApplicationSpec extends PlaySpecification {
   "Application" should {
 
     "send 404 on a bad request" in new WithApplication {
-      val result = route(FakeRequest(GET, "/boum")).get
+      val result = route(app, FakeRequest(GET, "/boum")).get
       status(result) mustEqual NOT_FOUND
     }
 
     "render the index page" in new WithApplication {
-      val home = route(FakeRequest(GET, "/")).get
+      val home = route(app, FakeRequest(GET, "/")).get
 
       status(home) mustEqual OK
       contentType(home) must beSome.which(_ == "text/html")
