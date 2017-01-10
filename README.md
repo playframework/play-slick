@@ -19,8 +19,8 @@ The plugin has its own release cycle and therefore is not integrated into either
 For Play 2.5.x and Slick 3.1.x (Scala 2.11):
 
 ```scala
-"com.typesafe.play" %% "play-slick" % "2.0.0"
-"com.typesafe.play" %% "play-slick-evolutions" % "2.0.0"
+"com.typesafe.play" %% "play-slick" % "2.0.2"
+"com.typesafe.play" %% "play-slick-evolutions" % "2.0.2"
 ```
 
 # All Releases
@@ -29,7 +29,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version         | Play version       | Slick version       | Scala version | Maintained |
 |------------------------|--------------------|---------------------|---------------|------------|
-| 2.0.0                  | 2.5.x              | 3.1.x               | 2.11.x        |     Yes    |
+| 2.0.x                  | 2.5.x              | 3.1.x               | 2.11.x        |     Yes    |
 | 1.1.1                  | 2.4.x              | 3.1.x               | 2.10.x/2.11.x |     Yes    |
 | 1.1.0                  | 2.4.x              | 3.1.x               | 2.10.x/2.11.x |     No     |
 | 1.0.1                  | 2.4.x              | 3.0.1+              | 2.10.x/2.11.x |     No     |
@@ -44,7 +44,7 @@ the same version of the play-slick plugin. While a `x` means that any trailing p
 
 # Documentation
 
-The documentation for the latest release is available [here](https://www.playframework.com/documentation/2.5.x/PlaySlick).
+The documentation for the latest release is available [here](https://www.playframework.com/documentation/latest/PlaySlick).
 
 Documentation for v0.8 is available in the project's [wiki](https://github.com/playframework/play-slick/wiki).
 
