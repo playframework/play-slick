@@ -52,7 +52,7 @@ lazy val samples = project
   .in(file("samples"))
   .aggregate(
     basicSample,
-    // computerDatabaseSample,
+    computerDatabaseSample,
     iterateeSample
   )
 
