@@ -1,5 +1,4 @@
-import com.typesafe.tools.mima.plugin.MimaPlugin.mimaDefaultSettings
-import com.typesafe.tools.mima.plugin.MimaKeys.previousArtifact
+import com.typesafe.tools.mima.plugin.MimaPlugin._
 
 lazy val `play-slick-root` = (project in file("."))
   .enablePlugins(PlayRootProject)
@@ -43,10 +42,10 @@ playBuildExtraTests := {
 val previousVersion: Option[String] = None
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
-  previousArtifact := previousVersion flatMap { previousVersion =>
+  mimaPreviousArtifacts := Set(previousVersion flatMap { previousVersion =>
     if (crossPaths.value) Some(organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % previousVersion)
     else Some(organization.value % moduleName.value % previousVersion)
-  }
+  }).flatten
 )
 
 lazy val samples = project
