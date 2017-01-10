@@ -1,10 +1,10 @@
 package play.api.db.slick
 
-import slick.profile.BasicProfile
-import slick.backend.DatabaseConfig
+import slick.basic.BasicProfile
+import slick.basic.DatabaseConfig
 
 /** Generic interface for a provider of a `DatabaseConfig` instance. A `DatabaseConfig` is Slick type
-  * that bundles a database and driver.
+  * that bundles a database and profile.
   *
   * Usually, you shouldn't need to create instances of `DatabaseConfigProvider` explicitly. Rather, you
   * should rely on dependency injection. If you don't want to use dependency injection, then use the
@@ -33,7 +33,7 @@ trait DatabaseConfigProvider {
   def get[P <: BasicProfile]: DatabaseConfig[P]
 }
 
-/** Look up a `DatabaseConfig` (which is Slick type that bundles a database and driver) for the passed
+/** Look up a `DatabaseConfig` (which is Slick type that bundles a database and profile) for the passed
   * database name. The `DatabaseConfig` instance is created using the database's configuration you have
   * provided in your **application.conf**, for the passed database name.
   *
@@ -103,7 +103,7 @@ object DatabaseConfigProvider {
     DatabaseConfigLocator(dbName)
 }
 
-/** Mix-in this trait if you need a Slick database and driver. This is useful if you need to define a Slick
+/** Mix-in this trait if you need a Slick database and profile. This is useful if you need to define a Slick
   * table or need to execute some operation in the database.
   *
   * There is only one abstract field, `dbConfig`, which you can implement by calling `DatabaseConfigProvider.get`.
@@ -118,7 +118,7 @@ object DatabaseConfigProvider {
   * // DAO definition
   * class CatDAO extends HasDatabaseConfig[RelationalProfile] {
   * protected val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
-  * import driver.api._
+  * import profile.api._
   *
   * private val Cats = TableQuery[CatsTable]
   * def all() = db.run(Cats.result)
@@ -138,13 +138,15 @@ object DatabaseConfigProvider {
 trait HasDatabaseConfig[P <: BasicProfile] {
   /** The Slick database configuration. */
   protected val dbConfig: DatabaseConfig[P] // field is declared as a val because we want a stable identifier.
-  /** The Slick driver extracted from `dbConfig`. */
-  protected final lazy val driver: P = dbConfig.driver // field is lazy to avoid early initializer problems.
+  /** The Slick profile extracted from `dbConfig`. */
+  protected final lazy val profile: P = dbConfig.profile // field is lazy to avoid early initializer problems.
+  @deprecated("Use `profile` instead of `driver`", "2.1")
+  protected final lazy val driver: P = dbConfig.profile // field is lazy to avoid early initializer problems.
   /** The Slick database extracted from `dbConfig`. */
   protected final def db: P#Backend#Database = dbConfig.db
 }
 
-/** Mix-in this trait if you need a Slick database and driver, and you are using dependency injection for obtaining
+/** Mix-in this trait if you need a Slick database and profile, and you are using dependency injection for obtaining
   * an instance of `DatabaseConfigProvider`. If you are not using dependency injection, then prefer mixing
   * `HasDatabaseConfig` instead.
   *
@@ -157,7 +159,7 @@ trait HasDatabaseConfig[P <: BasicProfile] {
   * class Cat(name: String, color: String)
   * // DAO definition
   * class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[RelationalProfile] {
-  * import driver.api._
+  * import profile.api._
   *
   * private val Cats = TableQuery[CatsTable]
   * def all() = db.run(Cats.result)

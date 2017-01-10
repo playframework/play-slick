@@ -2,7 +2,7 @@ package dao
 
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfig
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 import play.api.Play
 import models.Record
 import play.api.libs.streams.Streams
@@ -14,7 +14,7 @@ import scala.concurrent.Future
 class RecordsDAO extends HasDatabaseConfig[JdbcProfile] {
   protected val dbConfig = DatabaseConfigProvider.get[JdbcProfile](Play.current)
 
-  import driver.api._
+  import profile.api._
 
   /** Mapping of columns to the row object */
   class Records(tag: Tag) extends Table[Record](tag, "RECORDS") {

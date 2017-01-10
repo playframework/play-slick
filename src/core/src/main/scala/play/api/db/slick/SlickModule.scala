@@ -17,9 +17,8 @@ import play.api.inject.Module
 import play.api.libs.Files
 import play.db.NamedDatabaseImpl
 
-import slick.backend.DatabaseConfig
-import slick.driver.JdbcProfile
-import slick.profile.BasicProfile
+import slick.basic.DatabaseConfig
+import slick.basic.BasicProfile
 
 object SlickModule {
   /** path in the **reference.conf** to obtain the path under which databases are configured.*/

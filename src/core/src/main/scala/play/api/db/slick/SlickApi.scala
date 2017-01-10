@@ -18,8 +18,8 @@ import play.api.PlayConfig
 import play.api.PlayException
 import play.api.inject.ApplicationLifecycle
 
-import slick.backend.DatabaseConfig
-import slick.profile.BasicProfile
+import slick.basic.DatabaseConfig
+import slick.basic.BasicProfile
 
 trait SlickApi {
   /** Returns all database configs, for all databases defined in the loaded application's configuration.

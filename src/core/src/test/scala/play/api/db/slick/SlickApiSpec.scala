@@ -5,7 +5,7 @@ import org.specs2.mutable.Specification
 import play.api.Configuration
 import play.api.PlayException
 import play.api.inject.guice.GuiceApplicationBuilder
-import slick.profile.BasicProfile
+import slick.basic.BasicProfile
 
 class SlickApiSpec extends Specification {
   trait SUT {
@@ -39,9 +39,9 @@ class SlickApiSpec extends Specification {
       import SUTWithBadConfig._
       api.dbConfig[BasicProfile](DbName("not-existing")) must throwA[PlayException]
     }
-    "throw if a database config doesn't define a Slick driver" in {
+    "throw if a database config doesn't define a Slick profile" in {
       import SUTWithBadConfig._
-      api.dbConfig[BasicProfile](DbName("missing-slick-driver")) must throwA[PlayException]
+      api.dbConfig[BasicProfile](DbName("missing-slick-profile")) must throwA[PlayException]
     }
   }
 
@@ -54,7 +54,7 @@ class SlickApiSpec extends Specification {
       import SUTWithBadConfig._
       api.dbConfigs[BasicProfile] must throwA[PlayException]
     }
-    "throw if a database config doesn't define a Slick driver" in {
+    "throw if a database config doesn't define a Slick profile" in {
       import SUTWithBadConfig._
       api.dbConfigs[BasicProfile] must throwA[PlayException]
     }
