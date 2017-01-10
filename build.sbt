@@ -3,7 +3,8 @@ import com.typesafe.tools.mima.plugin.MimaPlugin._
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion := "2.11.8"
+  scalaVersion := "2.11.8",
+  crossScalaVersions := Seq(scalaVersion.value)
 )
 
 lazy val `play-slick-root` = (project in file("."))
