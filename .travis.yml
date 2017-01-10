@@ -5,7 +5,7 @@ script:
   - sbt validateCode
   - sbt coverage test docs/test samples/test coverageReport
   - sbt docs/validateDocs
-  - sbt +mimaReportBinaryIssues
+  - sbt mimaReportBinaryIssues
 cache:
   directories:
     - $HOME/.ivy2/cache
