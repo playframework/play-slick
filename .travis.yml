@@ -2,6 +2,7 @@ language: scala
 jdk: oraclejdk8
 sudo: false
 script:
+  - sbt validateCode
   - sbt coverage test docs/test samples/test coverageReport
   - sbt docs/validateDocs
   - sbt +mimaReportBinaryIssues

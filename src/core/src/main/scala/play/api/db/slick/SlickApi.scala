@@ -22,23 +22,26 @@ import slick.basic.DatabaseConfig
 import slick.basic.BasicProfile
 
 trait SlickApi {
-  /** Returns all database configs, for all databases defined in the loaded application's configuration.
+  /**
+   * Returns all database configs, for all databases defined in the loaded application's configuration.
    *  @throws PlayException if a database config cannot be created.
    */
   @throws(classOf[PlayException])
   def dbConfigs[P <: BasicProfile](): Seq[(DbName, DatabaseConfig[P])]
 
-  /** Returns a database config instance for the database named `name` in the loaded application's configuration.
-    * @throws PlayException if a database config for the passed `name` cannot be created.
-    */
+  /**
+   * Returns a database config instance for the database named `name` in the loaded application's configuration.
+   * @throws PlayException if a database config for the passed `name` cannot be created.
+   */
   @throws(classOf[PlayException])
   def dbConfig[P <: BasicProfile](name: DbName): DatabaseConfig[P]
 }
 
 final class DefaultSlickApi @Inject() (
-  environment: Environment,
-  configuration: Configuration,
-  lifecycle: ApplicationLifecycle) extends SlickApi {
+    environment: Environment,
+    configuration: Configuration,
+    lifecycle: ApplicationLifecycle
+) extends SlickApi {
   import DefaultSlickApi.DatabaseConfigFactory
 
   private lazy val dbconfigFactoryByName: Map[DbName, DatabaseConfigFactory] = {
@@ -50,8 +53,7 @@ final class DefaultSlickApi @Inject() (
         playConfig.get[Map[String, Config]](slickDbKey)
       } else Map.empty[String, Config]
     }
-    (for ((name, config) <- configs) yield
-      (DbName(name), new DatabaseConfigFactory(name, config, lifecycle)))(collection.breakOut)
+    (for ((name, config) <- configs) yield (DbName(name), new DatabaseConfigFactory(name, config, lifecycle)))(collection.breakOut)
   }
 
   // Be careful that accessing this field will trigger initialization of ALL database configs!
