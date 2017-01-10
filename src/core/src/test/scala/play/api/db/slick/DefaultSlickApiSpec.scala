@@ -45,7 +45,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
       val api = injector.instanceOf[SlickApi]
       val defaultDb = api.dbConfig[BasicProfile](DbName("default"))
 
-      hooks(lifecycle) must have size(1)
+      hooks(lifecycle) must have size (1)
     }
   }
 }

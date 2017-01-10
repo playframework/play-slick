@@ -2,7 +2,7 @@ package play.api.db.slick
 
 import org.specs2.mutable.Specification
 
-import play.api.{Application, Mode}
+import play.api.{ Application, Mode }
 import play.api.inject.guice.GuiceApplicationBuilder
 import slick.basic.BasicProfile
 

@@ -35,8 +35,8 @@ final class SlickModule extends Module {
     val default = config.getString(SlickModule.DefaultDbName)
     val dbs = configuration.getConfig(dbKey).getOrElse(Configuration.empty).subKeys
     Seq(
-     bind[SlickApi].to[DefaultSlickApi].in[Singleton]
-     ) ++ namedDatabaseConfigBindings(dbs) ++ defaultDatabaseConfigBinding(default, dbs)
+      bind[SlickApi].to[DefaultSlickApi].in[Singleton]
+    ) ++ namedDatabaseConfigBindings(dbs) ++ defaultDatabaseConfigBinding(default, dbs)
   }
 
   def namedDatabaseConfigBindings(dbs: Set[String]): Seq[Binding[_]] = dbs.toList.map { db =>

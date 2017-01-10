@@ -23,9 +23,11 @@ object TestData {
 
       "slick.dbs.jdbc-driver-not-recognized.profile" -> "slick.jdbc.MySQLProfile$",
       "slick.dbs.jdbc-driver-not-recognized.db.driver" -> "play.api.db.slick.SomeDummyDriver"
-  )) ++ h2DatasourceConfig
+    )
+  ) ++ h2DatasourceConfig
 
   val badConfiguration: Configuration = configuration ++ Configuration.from(
-    Map("slick.dbs.missing-slick-profile.db.driver" -> "play.api.db.slick.SomeDummyDriver"))
+    Map("slick.dbs.missing-slick-profile.db.driver" -> "play.api.db.slick.SomeDummyDriver")
+  )
 
 }

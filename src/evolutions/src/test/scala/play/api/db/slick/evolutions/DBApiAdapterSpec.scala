@@ -52,7 +52,7 @@ class DBApiAdapterSpec extends Specification {
         called must_== true
       }
     }
-    
+
     "url" should {
       "return the value set in the config for the jdbc url" in {
         db.url must_== TestData.configuration.getString(s"slick.dbs.${dbName}.db.url").get
