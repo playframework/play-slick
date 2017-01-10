@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/playframework/play-slick.png?branch=master)](https://travis-ci.org/playframework/play-slick)
-
 # Play Slick
+
+[![Build Status](https://travis-ci.org/playframework/play-slick.png?branch=master)](https://travis-ci.org/playframework/play-slick) [![codecov.io](https://codecov.io/github/playframework/play-slick/coverage.svg?branch=master)](https://codecov.io/github/playframework/play-slick?branch=master)
 
 The Play Slick module makes [Slick] a first-class citizen of [Play]. It consists of two features:
 
