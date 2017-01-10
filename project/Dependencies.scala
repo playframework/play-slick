@@ -1,5 +1,4 @@
 import sbt._
-import sbt.Keys._
 
 object Dependencies {
   val core = Seq(
@@ -14,17 +13,13 @@ object Dependencies {
     Library.h2 % "test", // DBApiAdapterSpec requires a database to be available, so that a connection can be made
     Library.playSpecs2 % "test"
   )
-
-  val resolvers = DefaultOptions.resolvers(snapshot = true) ++ Seq(
-    "scalaz-releases" at "http://dl.bintray.com/scalaz/releases" // play-test -> specs2 -> scalaz-stream
-  )
 }
 
 object Version {
   val play = _root_.play.core.PlayVersion.current
 
   val slick        = "3.2.0-M1"
-  val h2           = "1.3.176"
+  val h2           = "1.4.193"
 }
 
 object Library {

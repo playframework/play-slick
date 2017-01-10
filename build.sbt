@@ -6,14 +6,15 @@ lazy val `play-slick-root` = (project in file("."))
     `play-slick`,
     `play-slick-evolutions`
   )
-  .settings(scalaVersion := "2.11.7")
+  .settings(scalaVersion := "2.11.8")
 
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc)
   .settings(
     libraryDependencies ++= Dependencies.core,
     // Work around https://issues.scala-lang.org/browse/SI-9311
-    scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings"))
+    scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
+    scalaVersion := "2.11.8"
   )
   .settings(mimaSettings)
 
@@ -31,7 +32,7 @@ lazy val docs = project
   .enablePlugins(PlayDocsPlugin)
   .dependsOn(`play-slick`)
   .dependsOn(`play-slick-evolutions`)
-  .settings(scalaVersion := "2.11.7")
+  .settings(scalaVersion := "2.11.8")
 
 playBuildRepoName in ThisBuild := "play-slick"
 playBuildExtraTests := {
@@ -61,9 +62,9 @@ def sampleProject(name: String) =
     .settings(
       libraryDependencies += Library.playSpecs2 % "test",
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
-    ).settings(libraryDependencies += "com.h2database" % "h2" % "1.4.187")
+    ).settings(libraryDependencies += Library.h2)
     .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
-    .settings(scalaVersion := "2.11.7")
+    .settings(scalaVersion := "2.11.8")
     .enablePlugins(PlayScala)
     .dependsOn(`play-slick`)
     .dependsOn(`play-slick-evolutions`)
