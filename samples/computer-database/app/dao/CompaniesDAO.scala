@@ -1,9 +1,9 @@
 package dao
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{ Singleton, Inject }
 import scala.concurrent.Future
 import models.Company
-import play.api.db.slick.{HasDatabaseConfigProvider, DatabaseConfigProvider}
+import play.api.db.slick.{ HasDatabaseConfigProvider, DatabaseConfigProvider }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.jdbc.JdbcProfile
 
@@ -18,8 +18,8 @@ trait CompaniesComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 }
 
 @Singleton()
-class CompaniesDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends CompaniesComponent
-  with HasDatabaseConfigProvider[JdbcProfile] {
+class CompaniesDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends CompaniesComponent
+    with HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
 
@@ -29,7 +29,7 @@ class CompaniesDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvi
   def options(): Future[Seq[(String, String)]] = {
     val query = (for {
       company <- companies
-    } yield (company.id, company.name)).sortBy(/*name*/_._2)
+    } yield (company.id, company.name)).sortBy( /*name*/ _._2)
 
     db.run(query.result).map(rows => rows.map { case (id, name) => (id.toString, name) })
   }

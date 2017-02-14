@@ -17,7 +17,7 @@ import slick.jdbc.JdbcProfile
 import UsersSchema._
 
 //#di-database-config
-class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Controller {
+class Application @Inject() (dbConfigProvider: DatabaseConfigProvider) extends Controller {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
   //#di-database-config
 
@@ -31,6 +31,6 @@ class Application @Inject()(dbConfigProvider: DatabaseConfigProvider) extends Co
 
 import play.db.NamedDatabase
 //#named-di-database-config
-class Application2 @Inject()(@NamedDatabase("<db-name>") dbConfigProvider: DatabaseConfigProvider) extends Controller {
+class Application2 @Inject() (@NamedDatabase("<db-name>") dbConfigProvider: DatabaseConfigProvider) extends Controller {
   //#named-di-database-config
 }

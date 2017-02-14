@@ -23,7 +23,7 @@ class ApplicationSpec extends PlaySpecification {
 
       status(home) mustEqual OK
       contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain ("kitty cat")
+      contentAsString(home) must contain("kitty cat")
     }
   }
 }
