@@ -26,12 +26,13 @@ class RecordsDAO extends HasDatabaseConfig[JdbcProfile] {
   /** Base query for the table */
   object records extends TableQuery(new Records(_))
 
-  /** Unexecuted Slick queries which may be composed by chaining.
-    *
-    * Only place methods here which return a not-yet executed Query or
-    * (individually meaningful) Column. Methods placed here can be
-    * chained/combined.
-    */
+  /**
+   * Unexecuted Slick queries which may be composed by chaining.
+   *
+   * Only place methods here which return a not-yet executed Query or
+   * (individually meaningful) Column. Methods placed here can be
+   * chained/combined.
+   */
   implicit class QueryExtensions(val q: Query[Records, Record, Seq]) {
     def names = q.map(_.name)
     def byId(id: Rep[Int]) = q.filter(_.id === id)

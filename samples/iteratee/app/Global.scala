@@ -27,7 +27,8 @@ object InitialData {
         Record(2, "Beta"),
         Record(3, "Gamma"),
         Record(4, "Delta"),
-        Record(5, "Epsilon"))
+        Record(5, "Epsilon")
+      )
 
       Await.result(recordsDao.insert(rows), Duration.Inf)
     }
