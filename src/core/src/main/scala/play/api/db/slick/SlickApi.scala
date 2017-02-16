@@ -1,23 +1,19 @@
 package play.api.db.slick
 
 import scala.collection.immutable.Seq
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
 import scala.util.control.NonFatal
-
 import com.typesafe.config.Config
-
 import javax.inject.Inject
 
 import play.api.Configuration
 import play.api.Environment
 import play.api.Logger
-import play.api.PlayConfig
 import play.api.PlayException
 import play.api.inject.ApplicationLifecycle
-
 import slick.basic.DatabaseConfig
 import slick.basic.BasicProfile
 
@@ -41,7 +37,7 @@ final class DefaultSlickApi @Inject() (
     environment: Environment,
     configuration: Configuration,
     lifecycle: ApplicationLifecycle
-) extends SlickApi {
+)(implicit executionContext: ExecutionContext) extends SlickApi {
   import DefaultSlickApi.DatabaseConfigFactory
 
   private lazy val dbconfigFactoryByName: Map[DbName, DatabaseConfigFactory] = {
@@ -49,7 +45,7 @@ final class DefaultSlickApi @Inject() (
       val config = configuration.underlying
       val slickDbKey = config.getString(SlickModule.DbKeyConfig)
       if (config.hasPath(slickDbKey)) {
-        val playConfig = PlayConfig(config)
+        val playConfig = Configuration(config)
         playConfig.get[Map[String, Config]](slickDbKey)
       } else Map.empty[String, Config]
     }
@@ -75,7 +71,7 @@ object DefaultSlickApi {
     private val logger = Logger(classOf[DefaultSlickApi])
   }
   // This class is useful for delaying the creation of `DatabaseConfig` instances.
-  private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle) {
+  private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle)(implicit executionContext: ExecutionContext) {
     import DatabaseConfigFactory.logger
 
     @throws(classOf[PlayException])
@@ -92,14 +88,13 @@ object DefaultSlickApi {
       catch {
         case NonFatal(t) =>
           logger.error(s"Failed to create Slick database config for key $name.", t)
-          throw Configuration(config).reportError(name, s"Cannot connect to database [${name}]", Some(t))
+          throw Configuration(config).reportError(name, s"Cannot connect to database [$name]", Some(t))
       }
     }
 
     private def registerDatabaseShutdownHook(dbConf: DatabaseConfig[_]): Unit = {
       // clean-up when the application is stopped.
       lifecycle.addStopHook { () =>
-        import play.api.libs.concurrent.Execution.Implicits.defaultContext
         Future {
           Try(dbConf.db.close()) match {
             case Success(_) => logger.debug(s"Database $name was successfully closed.")

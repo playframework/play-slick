@@ -15,18 +15,18 @@ class SlickModuleSpec extends Specification {
       enabledModules(ref) must contain(classOf[SlickModule].getName)
     }
     "provide a database config default path" in new WithReferenceConfig {
-      val dbsKey = ref.getString(SlickModule.DbKeyConfig, None)
+      val dbsKey = ref.getOptional[String](SlickModule.DbKeyConfig)
       dbsKey must beSome("slick.dbs")
     }
 
     "provide a name for the default database" in new WithReferenceConfig {
-      val dbsKey = ref.getString(SlickModule.DefaultDbName, None)
+      val dbsKey = ref.getOptional[String](SlickModule.DefaultDbName)
       dbsKey must beSome("default")
     }
   }
 
   "SlickModule" should {
-    val appBuilder = new GuiceApplicationBuilder(configuration = TestData.configuration)
+    val appBuilder = GuiceApplicationBuilder(configuration = TestData.configuration)
     val injector = appBuilder.injector()
 
     "bind SlickApi to DefaultSlickApi" in {
@@ -40,11 +40,11 @@ class SlickModuleSpec extends Specification {
     }
     "bind the default database to a DatabaseConfigProvider" in {
       val dbConfProvider = injector.instanceOf[DatabaseConfigProvider]
-      dbConfProvider must not beNull
+      dbConfProvider must not(beNull)
     }
     "return a DatabaseConfigProvider with a DatabaseConfig instance for the default database" in {
       val dbConfProvider = injector.instanceOf[DatabaseConfigProvider]
-      dbConfProvider.get must not beNull
+      dbConfProvider.get must not(beNull)
     }
     "return the same DatabaseConfig instance for the default database" in {
       val dbConfProvider1 = injector.instanceOf[DatabaseConfigProvider]
@@ -54,7 +54,7 @@ class SlickModuleSpec extends Specification {
     "return a DatabaseConfigProvider with a DatabaseConfig instance for the database named default" in {
       val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("default"))))
       val dbConfProvider = injector.instanceOf(binding)
-      dbConfProvider.get must not beNull
+      dbConfProvider.get must not(beNull)
     }
     "return the same DatabaseConfig instance for the database named default" in {
       val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("default"))))
@@ -65,7 +65,7 @@ class SlickModuleSpec extends Specification {
     "return a DatabaseConfigProvider with a DatabaseConfig instance for a named (not default) database" in {
       val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("somedb"))))
       val dbConfProvider = injector.instanceOf(binding)
-      dbConfProvider.get must not beNull
+      dbConfProvider.get must not(beNull)
     }
     "return the same DatabaseConfig instance for a named database" in {
       val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("somedb"))))

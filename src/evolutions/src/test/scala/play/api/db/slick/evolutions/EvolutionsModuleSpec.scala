@@ -12,6 +12,8 @@ import play.api.inject.DefaultApplicationLifecycle
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.db.slick.util.WithReferenceConfig
 
+import scala.concurrent.ExecutionContext
+
 class EvolutionsModuleSpec extends Specification {
 
   "reference.conf" should {
@@ -21,7 +23,7 @@ class EvolutionsModuleSpec extends Specification {
   }
 
   "EvolutionsModule" should {
-    val appBuilder = new GuiceApplicationBuilder(configuration = (TestData.configuration))
+    val appBuilder = GuiceApplicationBuilder(configuration = TestData.configuration)
     val injector = appBuilder.injector()
 
     "bind DBApi to DBApiAdapter" in {
@@ -42,6 +44,8 @@ class EvolutionsModuleSpec extends Specification {
       override def applicationLifecycle: ApplicationLifecycle = new DefaultApplicationLifecycle
 
       override def configuration: Configuration = TestData.configuration
+
+      override def executionContext: ExecutionContext = ExecutionContext.Implicits.global // using the global EC since this is test code
     }
 
     "bind DBApi to DBApiAdapter" in {

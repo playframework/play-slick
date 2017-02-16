@@ -1,17 +1,21 @@
 package controllers
 
+import javax.inject.Inject
+
+import akka.stream.Materializer
+import akka.stream.scaladsl.Source
 import dao.RecordsDAO
+import play.api.http.ContentTypes
 import play.api.libs.Comet
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.iteratee.Enumeratee
+import play.api.libs.iteratee.streams.IterateeStreams
 import play.api.libs.json.Json.toJson
-import play.api.mvc.Action
-import play.api.mvc.Controller
+import play.api.mvc.{ AbstractController, ControllerComponents }
 
-class Application extends Controller {
-  def recordsDAO = new RecordsDAO
+import scala.concurrent.ExecutionContext
 
-  def index = Action { request =>
+class Application @Inject() (recordsDAO: RecordsDAO, components: ControllerComponents)(implicit materializer: Materializer, executionContext: ExecutionContext) extends AbstractController(components) {
+
+  def index = Action {
     Ok(views.html.index())
   }
 
@@ -23,11 +27,11 @@ class Application extends Controller {
     // Records fetched in chunks of 2, and asynchronously piped out to
     // browser in chunked http responses, to be handled by comet callback.
     //
-    // see http://www.playframework.com/documentation/2.2.x/ScalaComet
-    val pipeline = recordsDAO.enumerateAllInChunksOfTwo &>
-      Enumeratee.map(toJson(_)) &>
-      Comet(callback = "parent.cometMessage")
+    // see https://www.playframework.com/documentation/2.5.x/ScalaComet#Legacy-Comet-with-Enumerator
+    val pipeline = recordsDAO.enumerateAllInChunksOfTwo
+    val publisher = IterateeStreams.enumeratorToPublisher(pipeline)
+    val source = Source.fromPublisher(publisher).map(records => toJson(records))
 
-    Ok.chunked(pipeline)
+    Ok.chunked(source via Comet.json("parent.cometMessage")).as(ContentTypes.HTML)
   }
 }

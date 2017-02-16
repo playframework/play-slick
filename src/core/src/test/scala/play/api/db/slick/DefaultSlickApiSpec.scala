@@ -10,8 +10,11 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import slick.basic.BasicProfile
 
 class DefaultSlickApiSpec extends Specification with Mockito { self =>
+
+  sequential
+
   // A new injector should be created to ensure each test is independent of each other
-  def injector = new GuiceApplicationBuilder(configuration = TestData.configuration).injector()
+  def injector = GuiceApplicationBuilder(configuration = TestData.configuration).injector()
 
   def hooks(lifecycle: DefaultApplicationLifecycle): Array[_] = {
     val hooksField = lifecycle.getClass.getDeclaredField("hooks")
@@ -22,7 +25,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
   "DefaultSlickApi" should {
     "check the assumption that the ApplicationLifecycle isn't null" in {
       val lifecycle = injector.instanceOf[ApplicationLifecycle]
-      lifecycle must not beNull
+      lifecycle must not(beNull)
     }
     "check the assumption that the ApplicationLifecycle is a singleton" in {
       val injector = self.injector
@@ -37,15 +40,17 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
     "check that no stop hook is registered in the ApplicationLifecycle at application start" in {
       val lifecycle = injector.instanceOf[ApplicationLifecycle].asInstanceOf[DefaultApplicationLifecycle]
 
-      hooks(lifecycle) must be empty
+      // Play register its own stop hooks. This is why we won't have an empty array here.
+      // For example, DBModule registers a hook to close the database pool.
+      hooks(lifecycle) must have size (1)
     }
     "check that a stop hook is registered in the ApplicationLifecycle when a database is created" in {
       val injector = self.injector
       val lifecycle = injector.instanceOf[ApplicationLifecycle].asInstanceOf[DefaultApplicationLifecycle]
       val api = injector.instanceOf[SlickApi]
-      val defaultDb = api.dbConfig[BasicProfile](DbName("default"))
+      api.dbConfig[BasicProfile](DbName("default"))
 
-      hooks(lifecycle) must have size (1)
+      hooks(lifecycle) must have size (2)
     }
   }
 }
