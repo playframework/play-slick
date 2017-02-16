@@ -8,20 +8,12 @@
     </encoder>
   </appender>
 
-  <!--
-    The logger name is typically the Java/Scala package name.
-    This configures the log level to log at for a package and its children packages.
-  -->
   <logger name="play" level="WARN" />
   <logger name="application" level="DEBUG" />
+  <logger name="modules" level="DEBUG" />
+  <logger name="slick.jdbc.JdbcBackend" level="DEBUG" />
 
   <logger name="play.api.db.slick" level="WARN" />
-
-  <!-- Off these ones as they are annoying, and anyway we manage configuration ourself -->
-  <logger name="com.avaje.ebean.config.PropertyMapLoader" level="OFF" />
-  <logger name="com.avaje.ebeaninternal.server.core.XmlConfigLoader" level="OFF" />
-  <logger name="com.avaje.ebeaninternal.server.lib.BackgroundThread" level="OFF" />
-  <logger name="com.gargoylesoftware.htmlunit.javascript" level="OFF" />
 
   <root level="ERROR">
     <appender-ref ref="STDOUT" />

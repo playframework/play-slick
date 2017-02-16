@@ -16,8 +16,8 @@ class IntegrationSpec extends Specification {
       running(TestServer(port), HTMLUNIT) { browser =>
 
         // verify that comet handler received records in chunks
-        browser.goTo("http://localhost:"+port)
-        browser.await().atMost(2, TimeUnit.SECONDS).until("#items-list ul li").isPresent()
+        browser.goTo("http://localhost:" + port)
+        browser.await().atMost(2, TimeUnit.SECONDS).until(browser.el("#items-list ul li")).present()
         browser.pageSource must contain("""{"id":1,"name":"Alpha"}""")
         browser.pageSource must contain("""{"id":2,"name":"Beta"}""")
         browser.pageSource must contain("""{"id":3,"name":"Gamma"}""")

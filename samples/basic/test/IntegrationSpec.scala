@@ -10,20 +10,20 @@ import play.api.test.Helpers._
  * An integration test will fire up a whole play application in a real (or headless) browser
  */
 class IntegrationSpec extends Specification {
-  
+
   "Application" should {
-    
+
     "work from within a browser" in {
       val port = 3333
       running(TestServer(port), HTMLUNIT) { browser =>
 
-        browser.goTo("http://localhost:"+port)
+        browser.goTo("http://localhost:" + port)
 
         browser.pageSource must contain("kitty cat")
-       
+
       }
     }
-    
+
   }
-  
+
 }

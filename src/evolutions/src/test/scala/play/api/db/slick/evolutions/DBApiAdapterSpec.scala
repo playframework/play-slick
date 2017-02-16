@@ -8,7 +8,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 class DBApiAdapterSpec extends Specification {
 
   "DBApiAdapter" >> {
-    val appBuilder = new GuiceApplicationBuilder(configuration = TestData.configuration)
+    val appBuilder = GuiceApplicationBuilder(configuration = TestData.configuration)
     val injector = appBuilder.injector()
 
     val api = injector.instanceOf[DBApi]
@@ -55,11 +55,11 @@ class DBApiAdapterSpec extends Specification {
 
     "url" should {
       "return the value set in the config for the jdbc url" in {
-        db.url must_== TestData.configuration.getString(s"slick.dbs.${dbName}.db.url").get
+        db.url must_== TestData.configuration.get[String](s"slick.dbs.$dbName.db.url")
       }
       "return the value set in the config for the datasource url" in {
         val h2DatasourceDb = api.database("h2datasource")
-        h2DatasourceDb.url must_== TestData.configuration.getString(s"slick.dbs.h2datasource.db.properties.url").get
+        h2DatasourceDb.url must_== TestData.configuration.get[String](s"slick.dbs.h2datasource.db.properties.url")
       }
     }
   }

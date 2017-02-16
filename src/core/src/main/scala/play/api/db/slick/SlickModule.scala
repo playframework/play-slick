@@ -1,7 +1,6 @@
 package play.api.db.slick
 
 import scala.collection.immutable.Seq
-
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
@@ -16,9 +15,10 @@ import play.api.inject.BindingKey
 import play.api.inject.Module
 import play.api.libs.Files
 import play.db.NamedDatabaseImpl
-
 import slick.basic.DatabaseConfig
 import slick.basic.BasicProfile
+
+import scala.concurrent.ExecutionContext
 
 object SlickModule {
   /** path in the **reference.conf** to obtain the path under which databases are configured.*/
@@ -33,7 +33,7 @@ final class SlickModule extends Module {
     val config = configuration.underlying
     val dbKey = config.getString(SlickModule.DbKeyConfig)
     val default = config.getString(SlickModule.DefaultDbName)
-    val dbs = configuration.getConfig(dbKey).getOrElse(Configuration.empty).subKeys
+    val dbs = configuration.getOptional[Configuration](dbKey).getOrElse(Configuration.empty).subKeys
     Seq(
       bind[SlickApi].to[DefaultSlickApi].in[Singleton]
     ) ++ namedDatabaseConfigBindings(dbs) ++ defaultDatabaseConfigBinding(default, dbs)
@@ -63,6 +63,7 @@ trait SlickComponents {
   def environment: Environment
   def configuration: Configuration
   def applicationLifecycle: ApplicationLifecycle
+  def executionContext: ExecutionContext
 
-  lazy val api: SlickApi = new DefaultSlickApi(environment, configuration, applicationLifecycle)
+  lazy val api: SlickApi = new DefaultSlickApi(environment, configuration, applicationLifecycle)(executionContext)
 }
