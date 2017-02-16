@@ -19,7 +19,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
   def hooks(lifecycle: DefaultApplicationLifecycle): Array[_] = {
     val hooksField = lifecycle.getClass.getDeclaredField("hooks")
     hooksField.setAccessible(true)
-    hooksField.get(lifecycle).asInstanceOf[ConcurrentLinkedDeque[_]].toArray
+    hooksField.get(lifecycle).asInstanceOf[ConcurrentLinkedDeque[_]].toArray()
   }
 
   "DefaultSlickApi" should {

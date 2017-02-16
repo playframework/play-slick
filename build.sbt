@@ -4,8 +4,8 @@ import interplay.ScalaVersions._
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion := scala211,
-  crossScalaVersions := Seq(scala211)
+  scalaVersion := scala212,
+  crossScalaVersions := Seq(scala212, scala211)
 )
 
 lazy val `play-slick-root` = (project in file("."))
