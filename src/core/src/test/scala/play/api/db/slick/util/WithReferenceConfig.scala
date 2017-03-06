@@ -7,10 +7,6 @@ import play.api.Configuration
 trait WithReferenceConfig extends Scope {
   val ref = Configuration.reference
   def enabledModules(c: Configuration): List[String] = {
-    import scala.collection.JavaConverters._
-    ref.getStringList("play.modules.enabled") match {
-      case None => Nil
-      case Some(jlist) => jlist.asScala.toList
-    }
+    ref.get[Seq[String]]("play.modules.enabled").toList
   }
 }
