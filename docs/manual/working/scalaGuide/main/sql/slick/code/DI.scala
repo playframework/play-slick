@@ -9,10 +9,10 @@ import javax.inject.Inject
 import scala.concurrent.Future
 
 import play.api.mvc._
-import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import slick.jdbc.JdbcProfile
+import slick.driver.JdbcProfile
 
 import UsersSchema._
 
