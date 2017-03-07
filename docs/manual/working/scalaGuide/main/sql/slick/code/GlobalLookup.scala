@@ -22,7 +22,7 @@ class Application1 @Inject()(application: Application) extends Controller {
   //#global-lookup-database-config
 
   //#driver-import
-  import dbConfig.driver.api._
+  import dbConfig.profile.api._
   //#driver-import
 
   //#action-with-db
