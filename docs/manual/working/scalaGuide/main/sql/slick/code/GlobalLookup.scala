@@ -12,7 +12,7 @@ import play.api.mvc._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import slick.jdbc.JdbcProfile
+import slick.driver.JdbcProfile
 
 import UsersSchema._
 
