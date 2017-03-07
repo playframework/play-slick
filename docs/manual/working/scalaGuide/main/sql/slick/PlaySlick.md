@@ -106,7 +106,7 @@ If something isn't properly configured, you will be notified in your browser:
 
 ## Usage
 
-After having properly configured a Slick database, you can obtain a `DatabaseConfig` (which is a Slick type bundling a database and driver) in two different ways. Either by using dependency injection, or through a global lookup via the `DatabaseConfigProvider` singleton.
+After having properly configured a Slick database, you can obtain a `DatabaseConfig` (which is a Slick type bundling a database and driver) in two different ways: either by using dependency injection and extending the trait `HasDatabaseConfigProvider[JdbcProfile]`, or through a global lookup via the `DatabaseConfigProvider` singleton and a reference to the application via `Application` using dependency injection.
 
 > Note: A Slick database instance manages a thread pool and a connection pool. In general, you should not need to shut down a database explicitly in your code (by calling its `close` method), as the Play Slick module takes care of this already.
 
@@ -122,11 +122,13 @@ Injecting a `DatabaseConfig` instance for a different database is also easy. Sim
 
 Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
 
+> Note: To access the database object, you need only call the function `db` with this method, as it is passed from the trait. You do not need to reference the dbConfigProvider constructor parameter.
+
 For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/basic).
 
 ### DatabaseConfig via Global Lookup
 
-Here is an example of how to lookup a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration):
+Here is an example of how to lookup a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration) from the `DatabaseConfigProvider` singleton and an `application: Application` reference:
 
 @[global-lookup-database-config](code/GlobalLookup.scala)
 
