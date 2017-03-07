@@ -106,7 +106,7 @@ If something isn't properly configured, you will be notified in your browser:
 
 ## Usage
 
-After having properly configured a Slick database, you can obtain a `DatabaseConfig` (which is a Slick type bundling a database and driver) in two different ways: either by using dependency injection and extending the trait `HasDatabaseConfigProvider[JdbcProfile]`, or through a global lookup via the `DatabaseConfigProvider` singleton and a reference to the application provider via `Provider[Application]` using dependency injection.
+After having properly configured a Slick database, you can obtain a `DatabaseConfig` (which is a Slick type bundling a database and driver) in two different ways: either by using dependency injection and extending the trait `HasDatabaseConfigProvider[JdbcProfile]`, or through a global lookup via the `DatabaseConfigProvider` singleton and a reference to the application via `Application` using dependency injection.
 
 > Note: A Slick database instance manages a thread pool and a connection pool. In general, you should not need to shut down a database explicitly in your code (by calling its `close` method), as the Play Slick module takes care of this already.
 
@@ -128,7 +128,7 @@ For a full example, have a look at [this sample project](https://github.com/play
 
 ### DatabaseConfig via Global Lookup
 
-Here is an example of how to lookup a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration) from the `DatabaseConfigProvider` singleton and a `provider: Provider[Application]` reference:
+Here is an example of how to lookup a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration) from the `DatabaseConfigProvider` singleton and an `application: Application` reference:
 
 @[global-lookup-database-config](code/GlobalLookup.scala)
 
