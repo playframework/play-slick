@@ -5,24 +5,24 @@ package scalaguide.slick
 package global
 
 import scala.concurrent.Future
-
 import javax.inject.Inject
+
 import play.api.Application
 import play.api.mvc._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
-import slick.driver.JdbcProfile
+import slick.basic.DatabaseConfig
+import slick.jdbc.JdbcProfile
 
 import UsersSchema._
 
 class Application1 @Inject()(application: Application) extends Controller {
   //#global-lookup-database-config
-  val dbConfig = DatabaseConfigProvider.get[JdbcProfile](application)
+  val dbConfig: DatabaseConfig[JdbcProfile] = DatabaseConfigProvider.get[JdbcProfile](application)
   //#global-lookup-database-config
 
   //#driver-import
-  import dbConfig.driver.api._
+  import dbConfig.profile.api._
   //#driver-import
 
   //#action-with-db
@@ -35,6 +35,6 @@ class Application1 @Inject()(application: Application) extends Controller {
 
 class Application2 @Inject()(application: Application) extends Controller {
   //#named-global-lookup-database-config
-  val dbConfig = DatabaseConfigProvider.get[JdbcProfile]("<db-name>")(application)
+  val dbConfig: DatabaseConfig[JdbcProfile] = DatabaseConfigProvider.get[JdbcProfile]("<db-name>")(application)
   //#named-global-lookup-database-config
 }
