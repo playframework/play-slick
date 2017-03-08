@@ -22,5 +22,5 @@ class EvolutionsModule extends Module {
 trait SlickEvolutionsComponents {
   def slickApi: SlickApi
 
-  lazy val dbApi: DBApi = SlickDBApi(api)
+  lazy val dbApi: DBApi = SlickDBApi(slickApi)
 }
