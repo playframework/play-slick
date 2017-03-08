@@ -20,7 +20,7 @@ class EvolutionsModule extends Module {
  * Helper to provide Slick implementation of DBApi.
  */
 trait SlickEvolutionsComponents {
-  def api: SlickApi
+  def slickApi: SlickApi
 
   lazy val dbApi: DBApi = SlickDBApi(api)
 }
