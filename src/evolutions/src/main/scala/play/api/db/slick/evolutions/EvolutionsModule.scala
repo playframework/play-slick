@@ -21,7 +21,7 @@ class EvolutionsModule extends Module {
  */
 trait SlickEvolutionsComponents {
   @deprecated("Use slickApi instead", "3.0.0")
-  def api: SlickApi = slickApi
+  def api: SlickApi
   def slickApi: SlickApi
 
   lazy val dbApi: DBApi = SlickDBApi(slickApi)
