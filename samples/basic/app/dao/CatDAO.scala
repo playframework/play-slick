@@ -1,15 +1,14 @@
 package dao
 
-import scala.concurrent.Future
-
+import scala.concurrent.{ ExecutionContext, Future }
 import javax.inject.Inject
+
 import models.Cat
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.jdbc.JdbcProfile
 
-class CatDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
+class CatDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
   private val Cats = TableQuery[CatsTable]
@@ -23,6 +22,6 @@ class CatDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) 
     def name = column[String]("NAME", O.PrimaryKey)
     def color = column[String]("COLOR")
 
-    def * = (name, color) <> (Cat.tupled, Cat.unapply _)
+    def * = (name, color) <> (Cat.tupled, Cat.unapply)
   }
 }
