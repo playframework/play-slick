@@ -62,6 +62,7 @@ lazy val samples = project
 def sampleProject(name: String) =
   Project(s"$name-sample", file("samples") / name)
     .enablePlugins(PlayScala)
+    .disablePlugins(PlayFilters)
     .dependsOn(`play-slick`)
     .dependsOn(`play-slick-evolutions`)
     .settings(
