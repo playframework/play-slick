@@ -2,18 +2,21 @@ package bootstrap
 
 import java.text.SimpleDateFormat
 import javax.inject.Inject
+
 import dao.{ CompaniesDAO, ComputersDAO }
 import models.{ Company, Computer }
-import scala.concurrent.Await
+
+import scala.concurrent.{ Await, ExecutionContext }
 import scala.concurrent.duration.Duration
 import scala.util.Try
 
 /** Initial set of data to be imported into the sample application. */
-private[bootstrap] class InitialData @Inject() (companiesDao: CompaniesDAO, computersDao: ComputersDAO) {
+private[bootstrap] class InitialData @Inject() (
+    companiesDao: CompaniesDAO,
+    computersDao: ComputersDAO
+)(implicit executionContext: ExecutionContext) {
 
   def insert(): Unit = {
-    import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
     val insertInitialDataFuture = for {
       count <- computersDao.count() if count == 0
       _ <- companiesDao.insert(InitialData.companies)

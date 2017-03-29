@@ -41,6 +41,8 @@ To enable evolutions, you will need the following dependencies:
 
 Note there is no need to add the Play `evolutions` component to your dependencies, as it is a transitive dependency of the `play-slick-evolutions` module.
 
+> **Note**: You can see th
+
 ### JDBC driver dependency
 
 The Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:

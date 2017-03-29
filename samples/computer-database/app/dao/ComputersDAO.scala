@@ -2,15 +2,15 @@ package dao
 
 import java.util.Date
 import javax.inject.{ Inject, Singleton }
+
 import models.{ Company, Computer, Page }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton()
-class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider) extends CompaniesComponent
+class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends CompaniesComponent
     with HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
