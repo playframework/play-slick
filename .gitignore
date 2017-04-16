@@ -23,6 +23,11 @@ bin
 # IntelliJ IDEA specific
 .idea
 
+# Jetbrains IDEA specific
+.idea/
+.iml
+out/
+
 # samples
 samples/*/logs
 samples/*/project/project
