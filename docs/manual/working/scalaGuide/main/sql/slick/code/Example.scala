@@ -2,38 +2,31 @@
  * Copyright (C) 2011-2015 Typesafe Inc. <http://www.typesafe.com>
  */
 package scalaguide.slick
-package di
+package global
 
 import javax.inject.Inject
 
-import scala.concurrent.{ ExecutionContext, Future }
-import play.api.mvc._
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
-
+import play.api.mvc._
 import slick.jdbc.JdbcProfile
-import scala.concurrent.ExecutionContext
-import UsersSchema._
 
-//#di-database-config
-class Application @Inject() (
+import scala.concurrent.{ ExecutionContext, Future }
+import scalaguide.slick.UsersSchema._
+
+class Application1 @Inject() (
   protected val dbConfigProvider: DatabaseConfigProvider,
   cc: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
-  //#di-database-config
 
-  import profile.api._
+  //#driver-import
+  import dbConfig.profile.api._
+  //#driver-import
 
+  //#action-with-db
   def index(name: String) = Action.async { implicit request =>
     val resultingUsers: Future[Seq[User]] = db.run(Users.filter(_.name === name).result)
     resultingUsers.map(users => Ok(views.html.index(users)))
   }
-}
-
-import play.db.NamedDatabase
-//#named-di-database-config
-class Application2 @Inject() (
-    @NamedDatabase("<db-name>") protected val dbConfigProvider: DatabaseConfigProvider
-)(implicit ec: ExecutionContext) extends Controller with HasDatabaseConfigProvider[JdbcProfile] {
-  //#named-di-database-config
+  //#action-with-db
 }
