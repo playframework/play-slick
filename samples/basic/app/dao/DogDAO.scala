@@ -1,16 +1,15 @@
 package dao
 
-import scala.concurrent.Future
-
+import scala.concurrent.{ ExecutionContext, Future }
 import javax.inject.Inject
+
 import models.Dog
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.db.NamedDatabase
 import slick.jdbc.JdbcProfile
 
-class DogDAO @Inject() (@NamedDatabase("mydb") protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
+class DogDAO @Inject() (@NamedDatabase("mydb") protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
   private val Dogs = TableQuery[DogsTable]
@@ -24,6 +23,6 @@ class DogDAO @Inject() (@NamedDatabase("mydb") protected val dbConfigProvider: D
     def name = column[String]("NAME", O.PrimaryKey)
     def color = column[String]("COLOR")
 
-    def * = (name, color) <> (Dog.tupled, Dog.unapply _)
+    def * = (name, color) <> (Dog.tupled, Dog.unapply)
   }
 }

@@ -66,7 +66,11 @@ def sampleProject(name: String) =
     .dependsOn(`play-slick`)
     .dependsOn(`play-slick-evolutions`)
     .settings(
-      libraryDependencies += Library.playSpecs2 % "test",
+      libraryDependencies ++= Seq(
+        Library.playSpecs2 % "test",
+        // This could be removed after releasing https://github.com/playframework/playframework/pull/7266
+        "org.fluentlenium" % "fluentlenium-core" % "3.2.0"
+      ),
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
     ).settings(libraryDependencies += Library.h2)
     .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
