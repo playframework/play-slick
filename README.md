@@ -18,10 +18,6 @@ The plugin has its own release cycle and therefore is not integrated into either
 
 To use play-slick, you need to add the following dependencies:
 
-## Current Version
-
-Too use play-slick, add the following dependencies:
-
 ```scala
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "3.0.0-M3",
@@ -52,8 +48,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 | 0.6.1          | 2.2.x        | 2.0.x         | 2.10.x        |
 | 0.5.1           |2.2.x        | 1.0.x         | 2.10.x        |
 
-Note that the `+` next to a version means that the specified version and later trailing point releases are supported by 
-the same version of the play-slick plugin. While a `x` means that any trailing point release is supported by the same version of play-slick.
+Note that the `+` next to a version means that the specified version and later trailing point releases are supported by the same version of the play-slick plugin. While a `x` means that any trailing point release is supported by the same version of play-slick.
 
 # Documentation
 
@@ -63,6 +58,6 @@ Documentation for v0.8 is available in the project's [wiki](https://github.com/p
 
 # Copyright
 
-Copyright (C) 2009-2016 Lightbend Inc. (https://www.lightbend.com).
+Copyright (C) 2009-2017 Lightbend Inc. (https://www.lightbend.com).
 
 License: Apache License 2.0, http://www.apache.org/licenses/LICENSE-2.0.html

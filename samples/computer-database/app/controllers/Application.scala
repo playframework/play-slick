@@ -1,17 +1,23 @@
 package controllers
 
 import javax.inject.Inject
+
 import dao.{ CompaniesDAO, ComputersDAO }
 import models.Computer
 import play.api.data.Form
 import play.api.data.Forms.{ date, longNumber, mapping, nonEmptyText, optional }
-import play.api.i18n.{ MessagesApi, I18nSupport }
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.mvc.{ Action, Controller }
+import play.api.i18n.I18nSupport
+import play.api.mvc.{ AbstractController, ControllerComponents, Flash, RequestHeader }
 import views.html
 
+import scala.concurrent.ExecutionContext
+
 /** Manage a database of computers. */
-class Application @Inject() (companiesDao: CompaniesDAO, computersDao: ComputersDAO, val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class Application @Inject() (
+    companiesDao: CompaniesDAO,
+    computersDao: ComputersDAO,
+    controllerComponents: ControllerComponents
+)(implicit executionContext: ExecutionContext) extends AbstractController(controllerComponents) with I18nSupport {
 
   /** This result directly redirect to the application home.*/
   val Home = Redirect(routes.Application.list(0, 2, ""))
