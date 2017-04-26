@@ -108,39 +108,33 @@ If something isn't properly configured, you will be notified in your browser:
 
 ## Usage
 
-After having properly configured a Slick database, you can obtain a `DatabaseConfig` (which is a Slick type bundling a database and driver) in two different ways: either by using dependency injection and extending the trait `HasDatabaseConfigProvider[JdbcProfile]`, or through a global lookup via the `DatabaseConfigProvider` singleton and a reference to the application via `Application` using dependency injection.
+After having properly configured a Slick database, you can obtain a `DatabaseConfig` (which is a Slick type bundling a database and driver) by using dependency injection.
 
 > Note: A Slick database instance manages a thread pool and a connection pool. In general, you should not need to shut down a database explicitly in your code (by calling its `close` method), as the Play Slick module takes care of this already.
 
-### DatabaseConfig via Dependency Injection
+### DatabaseConfig via runtime dependency injection
+
+While you can get the `DatabaseConfig` instance manually by accessing the `SlickApi`, we've provided some helpers for runtime DI users (Guice, Scaldi, Spring, etc.) for obtaining specific instances within your controller. 
 
 Here is an example of how to inject a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration):
 
 @[di-database-config](code/DI.scala)
 
-Injecting a `DatabaseConfig` instance for a different database is also easy. Simply prepend the annotation `@NamedDatabase("<db-name>")` to the `dbConfigProvider` constructor parameter:
+In this example we're also injecting Play's default `ExecutionContext`, which will be used implicitly in the future transformations below.
+
+Injecting a `DatabaseConfig` instance for a different database is also easy. You can simply prepend the annotation `@NamedDatabase("<db-name>")` to the `dbConfigProvider` constructor parameter:
 
 @[named-di-database-config](code/DI.scala)
 
 Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
 
-> Note: To access the database object, you need only call the function `db` with this method, as it is passed from the trait. You do not need to reference the dbConfigProvider constructor parameter.
+> Note: To access the database object, you need only call the function `db` on the `HasDatabaseConfig` trait. You do not need to reference the dbConfigProvider constructor parameter.
 
 For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/basic).
 
-### DatabaseConfig via Global Lookup
+### Compile-time dependency injection
 
-Here is an example of how to lookup a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration) from the `DatabaseConfigProvider` singleton and an `application: Application` reference:
-
-@[global-lookup-database-config](code/GlobalLookup.scala)
-
-Looking up a `DatabaseConfig` instance for a different database is also easy. Simply pass the database name:
-
-@[named-global-lookup-database-config](code/GlobalLookup.scala)
-
-Of course, you should replace the string `"<db-name>"` with the name of the database's configuration you want to use.
-
-For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/basic).
+If you're using compile-time DI, you can query the database config directly from the `SlickApi` using the `slickApi.dbConfig(DbName(name))` method. The `play.api.db.slick.SlickComponents` provide access to the `slickApi`.
 
 ### Running a database query in a Controller
 
@@ -148,11 +142,11 @@ To run a database query in your controller, you will need both a Slick database 
 
 You will need to import some types and implicits from the driver:
 
-@[driver-import](code/GlobalLookup.scala)
+@[driver-import](code/Example.scala)
 
 And then you can define a controller's method that will run a database query:
 
-@[action-with-db](code/GlobalLookup.scala)
+@[action-with-db](code/Example.scala)
 
 That's just like using stock Play and Slick!
 
