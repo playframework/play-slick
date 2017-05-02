@@ -7,7 +7,7 @@ The Play Slick module makes [Slick] a first-class citizen of [Play]. It consists
   - Integration of Slick into Play's application lifecycle.
   - Support for Play database evolutions.
 
-Because Slick creates and manages both a connection pool and a thread pool, integrating Slick with Play boils down to ensure that all resources allocated by Slick are shutted down when a Play application is stopped (or reloaded).
+Because Slick creates and manages both a connection pool and a thread pool, integrating Slick with Play boils down to ensuring that all resources allocated by Slick are shutdown when a Play application is stopped (or reloaded).
 
 [Play]: https://www.playframework.com
 [Slick]: http://slick.typesafe.com
