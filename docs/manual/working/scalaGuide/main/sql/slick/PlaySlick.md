@@ -1,8 +1,6 @@
 # Using Play Slick
 
-The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play.
-
-The Play Slick module consists of two features:
+The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play, and consists of two primary features:
 
   - Integration of Slick into Play's application lifecycle.
   - Support for [[Play database evolutions|Evolutions]].
@@ -19,9 +17,9 @@ Finally, if you prefer to get an answer for your Play and Slick questions in a t
 
 ## About this release
 
-If you have been using a previous version of Play Slick, you will notice that there have been quite a few major changes. It's recommended to read the [[migration guide|PlaySlickMigrationGuide]] for a smooth upgrade.
+Users of previous versions of Play Slick will notice a number of major changes. Read the [[migration guide|PlaySlickMigrationGuide]] for details on upgrading from older versions of Play Slick.
 
-While, if this is the first time you are using Play Slick, you will appreciate that the integration of Slick in Play is quite austere. Meaning that if you know both Play and Slick, using the Play Slick module should be straightforward.
+First time users of Play Slick will appreciate the painless integration of Slick into Play. If you're familiar with Play and Slick, configuring and interacting with the Play Slick module will be straightforward.
 
 ## Setup
 
@@ -29,7 +27,7 @@ Add a library dependency on play-slick:
 
 @[add-library-dependencies](code/slick.sbt)
 
-The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick, but you might still do so if want. A likely reason for wanting to explicitly define a dependency to Slick is if you want to use a newer version than the one bundled with play-slick. Because Slick trailing dot releases are binary compatible, you won't incur any risk in using a different Slick trailing point release than the one that was used to build play-slick.
+The above dependency will also bring along the Slick library as a transitive dependency. This implies you don't need to add an explicit dependency on Slick, but you may if desired. You may explicitly define a dependency to Slick if you need to use a newer version than the one bundled with play-slick. Because Slick trailing dot releases are binary compatible, you won't incur any risk in using a different Slick trailing point release than the one that was used to build play-slick.
 
 ### Support for Play database evolutions
 
@@ -53,7 +51,7 @@ The Play Slick module does not bundle any JDBC driver. Hence, you will need to e
 
 ## Database Configuration
 
-To have the Play Slick module handling the lifecycle of Slick databases, it is important that you never create database's instances explicitly in your code. Rather, you should provide a valid Slick driver and database configuration in your **application.conf** (by convention the default Slick database must be called `default`):
+To have the Play Slick module handling the lifecycle of Slick databases, it is important that you never create database instances explicitly in your code. Rather, you should provide a valid Slick driver and database configuration in your **application.conf** (by convention the default Slick database must be called `default`):
 
 ```conf
 # Default database configuration
