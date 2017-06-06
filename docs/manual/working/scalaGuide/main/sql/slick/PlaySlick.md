@@ -41,6 +41,9 @@ Note there is no need to add the Play `evolutions` component to your dependencie
 
 > **Note**: You can see th
 
+#### Running evolutions with Slick using compile-time DI
+If you are using Slick, you will also need to mix in the `SlickEvolutionsComponents` trait in addition to the `EvolutionsComponents` trait to `ApplicationComponents`. Else evolutions will not recognize the Slick database configurations in the configuration files.
+
 ### JDBC driver dependency
 
 The Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
