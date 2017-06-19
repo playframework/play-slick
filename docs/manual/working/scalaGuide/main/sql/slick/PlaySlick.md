@@ -39,8 +39,6 @@ To enable evolutions, you will need the following dependencies:
 
 Note there is no need to add the Play `evolutions` component to your dependencies, as it is a transitive dependency of the `play-slick-evolutions` module.
 
-> **Note**: You can see th
-
 ### JDBC driver dependency
 
 The Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
@@ -112,7 +110,7 @@ After having properly configured a Slick database, you can obtain a `DatabaseCon
 
 ### DatabaseConfig via runtime dependency injection
 
-While you can get the `DatabaseConfig` instance manually by accessing the `SlickApi`, we've provided some helpers for runtime DI users (Guice, Scaldi, Spring, etc.) for obtaining specific instances within your controller. 
+While you can get the `DatabaseConfig` instance manually by accessing the `SlickApi`, we've provided some helpers for runtime DI users (Guice, Scaldi, Spring, etc.) for obtaining specific instances within your controller.
 
 Here is an example of how to inject a `DatabaseConfig` instance for the default database (i.e., the database named `default` in your configuration):
 
