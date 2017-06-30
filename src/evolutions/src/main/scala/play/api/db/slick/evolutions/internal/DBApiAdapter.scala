@@ -47,12 +47,12 @@ private[evolutions] object DBApiAdapter {
         case ds: DataSourceJdbcDataSource => ds.ds
         case hds: HikariCPJdbcDataSource => hds.ds
         case other =>
-          logger.error(s"Unexpected data source type ${other.getClass}. Please, file a ticket ${IssueTracker}.")
+          logger.error(s"Unexpected data source type ${other.getClass}. Please, file a ticket $IssueTracker.")
           throw new UnsupportedOperationException
       }
     }
 
-    lazy val url: String = withConnection(_.getMetaData().getURL())
+    lazy val url: String = withConnection(_.getMetaData.getURL())
 
     def getConnection(): Connection = dbConfig.db.source.createConnection()
 
