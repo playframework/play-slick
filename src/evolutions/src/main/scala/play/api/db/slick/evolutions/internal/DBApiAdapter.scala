@@ -83,7 +83,10 @@ private[evolutions] object DBApiAdapter {
         conn.commit()
         done = true
         res
-      } finally if (!done) conn.rollback()
+      } finally {
+        if (!done) conn.rollback()
+        conn.close()
+      }
     }
 
     def shutdown(): Unit = {
