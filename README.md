@@ -20,8 +20,8 @@ For Play 2.5.x and Slick 3.2.x (Scala 2.11):
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "2.1.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "2.1.0"
+  "com.typesafe.play" %% "play-slick" % "2.1.1",
+  "com.typesafe.play" %% "play-slick-evolutions" % "2.1.1"
 )
 ```
 
