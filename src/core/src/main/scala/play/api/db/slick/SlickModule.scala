@@ -65,7 +65,5 @@ trait SlickComponents {
   def applicationLifecycle: ApplicationLifecycle
   def executionContext: ExecutionContext
 
-  @deprecated("Use slickApi instead", "3.0.0")
-  lazy val api: SlickApi = slickApi
   lazy val slickApi: SlickApi = new DefaultSlickApi(environment, configuration, applicationLifecycle)(executionContext)
 }
