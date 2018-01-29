@@ -38,7 +38,7 @@ lazy val docs = project
 
 playBuildRepoName in ThisBuild := "play-slick"
 playBuildExtraTests := {
-  (test in (samples, Test)).value
+  (test in (Test)).value
 }
 
 // Binary compatibility is tested against this version
@@ -50,37 +50,6 @@ def mimaSettings = mimaDefaultSettings ++ Seq(
     else Some(organization.value % moduleName.value % previousVersion)
   }).flatten
 )
-
-lazy val samples = project
-  .in(file("samples"))
-  .aggregate(
-    basicSample,
-    computerDatabaseSample,
-    iterateeSample
-  )
-
-def sampleProject(name: String) =
-  Project(s"$name-sample", file("samples") / name)
-    .enablePlugins(PlayScala)
-    .disablePlugins(PlayFilters)
-    .dependsOn(`play-slick`)
-    .dependsOn(`play-slick-evolutions`)
-    .settings(
-      libraryDependencies ++= Seq(
-        Library.playSpecs2 % "test",
-        // This could be removed after releasing https://github.com/playframework/playframework/pull/7266
-        "org.fluentlenium" % "fluentlenium-core" % "3.2.0"
-      ),
-      concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
-    ).settings(libraryDependencies += Library.h2)
-    .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
-    .settings(commonSettings: _*)
-
-lazy val computerDatabaseSample = sampleProject("computer-database")
-
-lazy val iterateeSample = sampleProject("iteratee")
-
-lazy val basicSample = sampleProject("basic")
 
 lazy val checkCodeFormat = taskKey[Unit]("Check that code format is following Scalariform rules")
 
