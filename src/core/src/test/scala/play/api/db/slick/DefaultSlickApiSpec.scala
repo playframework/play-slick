@@ -4,6 +4,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
 
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
+import play.api.inject.Injector
 import play.api.inject.ApplicationLifecycle
 import play.api.inject.DefaultApplicationLifecycle
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -14,7 +15,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
   sequential
 
   // A new injector should be created to ensure each test is independent of each other
-  def injector = GuiceApplicationBuilder(configuration = TestData.configuration).injector()
+  def injector: Injector = GuiceApplicationBuilder(configuration = TestData.configuration).injector()
 
   def hooks(lifecycle: DefaultApplicationLifecycle): Array[_] = {
     val hooksField = lifecycle.getClass.getDeclaredField("hooks")
@@ -39,10 +40,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
     }
     "check that no stop hook is registered in the ApplicationLifecycle at application start" in {
       val lifecycle = injector.instanceOf[ApplicationLifecycle].asInstanceOf[DefaultApplicationLifecycle]
-
-      // Play register its own stop hooks. This is why we won't have an empty array here.
-      // For example, DBModule registers a hook to close the database pool.
-      hooks(lifecycle) must have size (1)
+      hooks(lifecycle) must have size (0)
     }
     "check that a stop hook is registered in the ApplicationLifecycle when a database is created" in {
       val injector = self.injector
@@ -50,7 +48,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
       val api = injector.instanceOf[SlickApi]
       api.dbConfig[BasicProfile](DbName("default"))
 
-      hooks(lifecycle) must have size (2)
+      hooks(lifecycle) must have size (1)
     }
   }
 }
