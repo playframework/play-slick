@@ -5,7 +5,9 @@ object Dependencies {
     Library.slick,
     Library.slickHikariCP,
     Library.playJdbcApi,
-    Library.playSpecs2 % "test"
+    Library.playLogback % "test",
+    Library.playSpecs2 % "test",
+    Library.h2 % "test"
   )
 
   val evolutions = Seq(
@@ -23,6 +25,7 @@ object Version {
 }
 
 object Library {
+  val playLogback         = "com.typesafe.play"        %% "play-logback"             % Version.play
   val playJdbcApi         = "com.typesafe.play"        %% "play-jdbc-api"            % Version.play
   val playJdbcEvolutions  = "com.typesafe.play"        %% "play-jdbc-evolutions"     % Version.play
   val playSpecs2          = "com.typesafe.play"        %% "play-specs2"              % Version.play
