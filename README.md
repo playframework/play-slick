@@ -50,7 +50,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 | 0.5.1          | 2.2.x        | 1.0.x         | 2.10.x        |
 
 
-> * Release Candidate: these releases are not stable and should not used in be production.
+> * Release Candidate: these releases are not stable and should not be used in production.
 
 Note that the `+` next to a version means that the specified version and later trailing point releases are supported by the same version of the play-slick plugin. While a `x` means that any trailing point release is supported by the same version of play-slick.
 
