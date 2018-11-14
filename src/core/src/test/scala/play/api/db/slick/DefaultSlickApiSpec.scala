@@ -42,7 +42,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
       lifecycle must beAnInstanceOf[DefaultApplicationLifecycle]
     }
 
-    "check that a stop hook is registered in the ApplicationLifecycle when a database is created" in {
+    "check that a stop hook is registered by SlickApi in the ApplicationLifecycle when a database is created" in {
       val injector = self.injector
       val lifecycle = injector.instanceOf[ApplicationLifecycle].asInstanceOf[DefaultApplicationLifecycle]
 
