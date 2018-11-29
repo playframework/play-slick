@@ -47,7 +47,7 @@ final class SlickModule extends Module {
     if (dbs.contains(default)) Seq(bind[DatabaseConfigProvider].to(bindNamed(default))) else Nil
 
   def bindNamed(name: String): BindingKey[DatabaseConfigProvider] =
-    bind(classOf[DatabaseConfigProvider]).qualifiedWith(new NamedDatabaseImpl(name))
+    bind[DatabaseConfigProvider].qualifiedWith(new NamedDatabaseImpl(name))
 }
 
 /** Inject provider for named databases. */
