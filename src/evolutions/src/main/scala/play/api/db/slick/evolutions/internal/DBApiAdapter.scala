@@ -1,20 +1,17 @@
 package play.api.db.slick.evolutions.internal
 
 import java.sql.Connection
-import java.sql.SQLException
 
 import javax.inject.Inject
 import javax.sql.DataSource
 import play.api.Logger
-import play.api.db.DBApi
-import play.api.db.{ Database => PlayDatabase }
-import play.api.db.slick.DbName
-import play.api.db.slick.IssueTracker
-import play.api.db.slick.SlickApi
+import play.api.db.slick.{ DbName, IssueTracker, SlickApi }
+import play.api.db.{ DBApi, TransactionIsolationLevel, Database => PlayDatabase }
 import slick.basic.DatabaseConfig
-import slick.jdbc.JdbcProfile
-import slick.jdbc.DataSourceJdbcDataSource
+import slick.jdbc.{ DataSourceJdbcDataSource, JdbcProfile }
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
+
+import scala.util.control.ControlThrowable
 
 private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
   private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi.dbConfigs[JdbcProfile]().map {
@@ -54,38 +51,71 @@ private[evolutions] object DBApiAdapter {
 
     lazy val url: String = withConnection(_.getMetaData.getURL())
 
-    def getConnection(): Connection = dbConfig.db.source.createConnection()
+    override def getConnection(): Connection = getConnection(autocommit = true)
 
-    def getConnection(autocommit: Boolean): Connection = {
-      val conn = getConnection()
-      conn.setAutoCommit(autocommit)
-      conn
+    override def getConnection(autocommit: Boolean): Connection = {
+      val connection = dbConfig.db.source.createConnection()
+      try {
+        connection.setAutoCommit(autocommit)
+      } catch {
+        case e: Throwable =>
+          // setAutoCommit can fail, so we need to close the connection
+          // which usually means we are returning it back to the pool and
+          // avoiding a leak.
+          connection.close()
+          throw e
+      }
+      connection
     }
 
     def withConnection[A](block: Connection => A): A = {
-      val conn = getConnection()
-      try block(conn)
-      finally {
-        try conn.close() catch { case _: SQLException => }
+      withConnection(autocommit = true)(block)
+    }
+
+    def withConnection[A](autocommit: Boolean)(block: Connection => A): A = {
+      val connection = getConnection(autocommit)
+      try {
+        block(connection)
+      } finally {
+        connection.close()
       }
     }
 
-    def withConnection[A](autocommit: Boolean)(block: Connection => A): A = withConnection { conn =>
-      conn.setAutoCommit(autocommit)
-      block(conn)
+    def withTransaction[A](block: Connection => A): A = {
+      withConnection(autocommit = false) { connection =>
+        try {
+          val r = block(connection)
+          connection.commit()
+          r
+        } catch {
+          case e: ControlThrowable =>
+            connection.commit()
+            throw e
+          case e: Throwable =>
+            connection.rollback()
+            throw e
+        }
+      }
     }
 
-    def withTransaction[A](block: Connection => A): A = {
-      val conn = getConnection()
-      var done = false
-      try {
-        val res = block(conn)
-        conn.commit()
-        done = true
-        res
-      } finally {
-        if (!done) conn.rollback()
-        conn.close()
+    override def withTransaction[A](isolationLevel: TransactionIsolationLevel)(block: Connection => A): A = {
+      withConnection(autocommit = false) { connection =>
+        val oldIsolationLevel = connection.getTransactionIsolation
+        try {
+          connection.setTransactionIsolation(isolationLevel.id)
+          val r = block(connection)
+          connection.commit()
+          r
+        } catch {
+          case e: ControlThrowable =>
+            connection.commit()
+            throw e
+          case e: Throwable =>
+            connection.rollback()
+            throw e
+        } finally {
+          connection.setTransactionIsolation(oldIsolationLevel)
+        }
       }
     }
 
