@@ -91,7 +91,7 @@ slick.dbs.orders.db.driver="org.h2.Driver"
 slick.dbs.orders.db.url="jdbc:h2:mem:play"
 
 # Customers database
-slick.dbs.customers.profile="slick.jdbc.H2Profile$
+slick.dbs.customers.profile="slick.jdbc.H2Profile$"
 slick.dbs.customers.db.driver="org.h2.Driver"
 slick.dbs.customers.db.url="jdbc:h2:mem:play"
 ```
