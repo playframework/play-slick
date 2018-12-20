@@ -23,7 +23,8 @@ Since `3.2.2` of Slick, there is a requirement that `maxConnections = maxThreads
  > [warn] s.u.AsyncExecutor - Having maxConnection > maxThreads can result in deadlocks if transactions or database locks are used.
  
 To fix this, simply set them in your config. For example,
- ```
+
+```
 slick.dbs.default.driver="slick.driver.PostgresDriver$"
 slick.dbs.default.db.dataSourceClass="slick.jdbc.DatabaseUrlDataSource"
 slick.dbs.default.db.numThreads=20
