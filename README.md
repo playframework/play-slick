@@ -4,8 +4,8 @@
 
 The Play Slick module makes [Slick] a first-class citizen of [Play]. It consists of two features:
 
-  - Integration of Slick into Play's application lifecycle.
-  - Support for Play database evolutions.
+- Integration of Slick into Play's application lifecycle.
+- Support for Play database evolutions.
 
 Because Slick creates and manages both a connection pool and a thread pool, integrating Slick with Play boils down to ensuring that all resources allocated by Slick are shutdown when a Play application is stopped (or reloaded).
 
@@ -20,19 +20,21 @@ To use play-slick, you need to add the following dependencies:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "3.0.1",
-  "com.typesafe.play" %% "play-slick-evolutions" % "3.0.1"
+  "com.typesafe.play" %% "play-slick" % "3.0.3",
+  "com.typesafe.play" %% "play-slick-evolutions" % "3.0.3"
 )
 ```
 
 Or use a version that is compatible with the Play version you are using. See all available versions below.
 
-# All Releases
+## All Releases
 
 The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version | Play version | Slick version | Scala version |
 |----------------|--------------|---------------|---------------|
+| 4.0.0-RC2*     | 2.7.0-RC8    | 3.2.x         | 2.11.x/2.12.x |
+| 3.0.3          | 2.6.x        | 3.2.x         | 2.11.x/2.12.x |
 | 3.0.1          | 2.6.x        | 3.2.x         | 2.11.x/2.12.x |
 | 2.1.0          | 2.5.x        | 3.2.0         | 2.11.x        |
 | 2.0.2          | 2.5.x        | 3.1.0         | 2.11.x        |
@@ -48,15 +50,17 @@ The Play Slick plugin supports several different versions of Play and Slick.
 | 0.6.1          | 2.2.x        | 2.0.x         | 2.10.x        |
 | 0.5.1          | 2.2.x        | 1.0.x         | 2.10.x        |
 
+> * Release Candidate: these releases are not stable and should not be used in production.
+
 Note that the `+` next to a version means that the specified version and later trailing point releases are supported by the same version of the play-slick plugin. While a `x` means that any trailing point release is supported by the same version of play-slick.
 
-# Documentation
+## Documentation
 
 The documentation for the latest release is available [here](https://www.playframework.com/documentation/latest/PlaySlick).
 
 Documentation for v0.8 is available in the project's [wiki](https://github.com/playframework/play-slick/wiki).
 
-# Copyright
+## Copyright
 
 Copyright (C) 2009-2017 Lightbend Inc. (https://www.lightbend.com).
 
