@@ -17,3 +17,16 @@ Finally, it's worth mentioning that while Slick allows using a different connect
 With Slick 3.0 release, Slick starts and controls both a thread pool and a connection pool for optimal asynchronous execution of your database actions.
 
 For optimal execution, you may need to tune the `numThreads` and `queueSize` parameters, for each of your database configuration. Refer to the [Slick documentation](http://slick.typesafe.com/doc/3.1.0/database.html#database-thread-pool) for details.
+
+Since `3.2.2` of Slick, there is a requirement that `maxConnections = maxThreads` otherwise you might see these messages in your logs:
+
+ > [warn] s.u.AsyncExecutor - Having maxConnection > maxThreads can result in deadlocks if transactions or database locks are used.
+ 
+To fix this, simply set them in your config. For example,
+
+```
+slick.dbs.default.driver="slick.driver.PostgresDriver$"
+slick.dbs.default.db.dataSourceClass="slick.jdbc.DatabaseUrlDataSource"
+slick.dbs.default.db.numThreads=20
+slick.dbs.default.db.maxConnections=20
+```
