@@ -3,7 +3,7 @@ scala:
 - 2.12.7
 - 2.11.12
 jdk: oraclejdk8
-sudo: false
+sudo: required
 script:
   - sbt ++$TRAVIS_SCALA_VERSION validateCode
   - sbt ++$TRAVIS_SCALA_VERSION coverage test docs/test samples/test coverageReport
