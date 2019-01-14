@@ -1,28 +1,48 @@
 language: scala
+
 scala:
-- 2.12.7
+- 2.12.8
 - 2.11.12
-jdk: oraclejdk8
-sudo: false
+
+env:
+  - TRAVIS_JDK=adopt@1.8.192-12
+  - TRAVIS_JDK=adopt@1.11.0-1
+
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: TRAVIS_JDK=adopt@1.11.0-1 # not fully supported but allows problem discovery
+
+before_install:
+  - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+
+install:
+  - $JABBA_HOME/bin/jabba install $TRAVIS_JDK
+  - export JAVA_HOME="$JABBA_HOME/jdk/$TRAVIS_JDK" && export PATH="$JAVA_HOME/bin:$PATH" && java -Xmx32m -version
+
 script:
   - sbt ++$TRAVIS_SCALA_VERSION validateCode
   - sbt ++$TRAVIS_SCALA_VERSION coverage test docs/test samples/test coverageReport
   - sbt ++$TRAVIS_SCALA_VERSION docs/validateDocs
   - sbt ++$TRAVIS_SCALA_VERSION mimaReportBinaryIssues
+
+after_success: bash <(curl -s https://codecov.io/bash)
+
 cache:
   directories:
     - $HOME/.ivy2/cache
+    - $HOME/.jabba/jdk
     - $HOME/.sbt
+
 before_cache:
   # Ensure changes to the cache aren't persisted
   - rm -rf $HOME/.ivy2/cache/com.typesafe.play/play-slick*
   # Delete all ivydata files since ivy touches them on each build
   - find $HOME/.ivy2/cache -name "ivydata-*.properties" | xargs rm
+
 notifications:
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/d2c8a242a2615f659595
     on_success: always
     on_failure: always
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
