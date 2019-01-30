@@ -2,14 +2,14 @@
 
 The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play, and consists of two primary features:
 
-  - Integration of Slick into Play's application lifecycle.
-  - Support for [[Play database evolutions|Evolutions]].
+- Integration of Slick into Play's application lifecycle.
+- Support for [[Play database evolutions|Evolutions]].
 
-Play Slick currently supports Slick 3.2 with Play 2.6, for Scala 2.12 and Scala 2.11.
+Play Slick currently supports Slick 3.2 with Play 2.7, for Scala 2.12 and Scala 2.11.
 
-> **Note**: This guide assumes you already know both Play 2.6 and Slick 3.2.
+> **Note**: This guide assumes you already know both Play 2.7 and Slick 3.2.
 
-### Getting Help
+## Getting Help
 
 If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group](https://groups.google.com/forum/#!forum/play-framework). Also, note that if you are seeking help on Slick, the [slick user group](https://groups.google.com/forum/#!forum/scalaquery) may be a better place.
 
