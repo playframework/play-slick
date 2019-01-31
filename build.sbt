@@ -42,7 +42,7 @@ playBuildExtraTests := {
 }
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = None
+val previousVersion: Option[String] = Some("4.0.0")
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
   mimaPreviousArtifacts := Set(previousVersion flatMap { previousVersion =>
