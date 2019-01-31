@@ -35,7 +35,7 @@ class DatabaseConfigProviderSpec extends Specification {
 
     "throw when accessing the db if an invalid jdbc driver is configured" in withApp { implicit app =>
       val config = DatabaseConfigProvider.get[BasicProfile]("jdbc-driver-not-recognized")
-      config.db must throwA[Throwable]("""Failed to load class of driverClassName play.api.db.slick.SomeDummyDriver""")
+      config.db must throwA[Throwable]("""Failed to load driver class play.api.db.slick.SomeDummyDriver""")
     }
   }
 }
