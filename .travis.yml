@@ -5,13 +5,8 @@ scala:
 - 2.11.12
 
 env:
-  - TRAVIS_JDK=adopt@1.8.192-12
-  - TRAVIS_JDK=adopt@1.11.0-1
-
-matrix:
-  fast_finish: true
-  allow_failures:
-    - env: TRAVIS_JDK=adopt@1.11.0-1 # not fully supported but allows problem discovery
+  - TRAVIS_JDK=adopt@1.8.202-08
+  - TRAVIS_JDK=adopt@1.11.0-2
 
 before_install:
   - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
