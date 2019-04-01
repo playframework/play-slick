@@ -16,7 +16,7 @@ import slick.basic.DatabaseConfig
 import scala.concurrent.{ ExecutionContext, Future }
 
 class RecordsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
-    extends HasDatabaseConfig[JdbcProfile] {
+  extends HasDatabaseConfig[JdbcProfile] {
 
   import profile.api._
 
