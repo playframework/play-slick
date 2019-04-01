@@ -1,3 +1,4 @@
+import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
