@@ -34,10 +34,9 @@ trait SlickApi {
 }
 
 final class DefaultSlickApi @Inject() (
-    environment: Environment,
-    configuration: Configuration,
-    lifecycle: ApplicationLifecycle
-)(implicit executionContext: ExecutionContext) extends SlickApi {
+  environment: Environment,
+  configuration: Configuration,
+  lifecycle: ApplicationLifecycle)(implicit executionContext: ExecutionContext) extends SlickApi {
   import DefaultSlickApi.DatabaseConfigFactory
 
   private lazy val dbconfigFactoryByName: Map[DbName, DatabaseConfigFactory] = {
