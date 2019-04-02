@@ -19,8 +19,8 @@ trait CompaniesComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
 
 @Singleton()
 class CompaniesDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
-    extends CompaniesComponent
-    with HasDatabaseConfigProvider[JdbcProfile] {
+  extends CompaniesComponent
+  with HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
 

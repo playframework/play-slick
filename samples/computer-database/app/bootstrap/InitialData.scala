@@ -12,9 +12,8 @@ import scala.util.Try
 
 /** Initial set of data to be imported into the sample application. */
 private[bootstrap] class InitialData @Inject() (
-    companiesDao: CompaniesDAO,
-    computersDao: ComputersDAO
-)(implicit executionContext: ExecutionContext) {
+  companiesDao: CompaniesDAO,
+  computersDao: ComputersDAO)(implicit executionContext: ExecutionContext) {
 
   def insert(): Unit = {
     val insertInitialDataFuture = for {
@@ -74,8 +73,7 @@ private[bootstrap] object InitialData {
     Company(Option(40L), "Texas Instruments"),
     Company(Option(41L), "HTC Corporation"),
     Company(Option(42L), "Research In Motion"),
-    Company(Option(43L), "Samsung Electronics")
-  )
+    Company(Option(43L), "Samsung Electronics"))
 
   def computers = Seq(
     Computer(Option(1L), "MacBook Pro 15.4 inch", None, None, Option(1L)),
@@ -651,6 +649,5 @@ private[bootstrap] object InitialData {
     Computer(Option(571L), "Lenovo Thinkpad Edge 11", None, None, Option(36L)),
     Computer(Option(572L), "Dell Vostro", None, None, None),
     Computer(Option(573L), "Gateway LT3103U", Option(sdf.parse("2008-01-01")), None, None),
-    Computer(Option(574L), "iPhone 4S", Option(sdf.parse("2011-10-14")), None, Option(1L))
-  )
+    Computer(Option(574L), "iPhone 4S", Option(sdf.parse("2011-10-14")), None, Option(1L)))
 }

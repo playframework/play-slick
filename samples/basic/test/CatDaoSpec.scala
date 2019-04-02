@@ -23,8 +23,7 @@ class CatDAOSpec extends Specification {
       val testKitties = Set(
         Cat("kit", "black"),
         Cat("garfield", "orange"),
-        Cat("creme puff", "grey")
-      )
+        Cat("creme puff", "grey"))
 
       Await.result(Future.sequence(testKitties.map(dao.insert)), 1 seconds)
       val storedCats = Await.result(dao.all(), 1 seconds)
