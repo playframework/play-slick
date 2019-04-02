@@ -16,9 +16,8 @@ import UsersSchema._
 //#di-database-config
 class Application @Inject() (
   protected val dbConfigProvider: DatabaseConfigProvider,
-  cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
+  cc: ControllerComponents)(implicit ec: ExecutionContext)
+  extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
   //#di-database-config
 
   import profile.api._
@@ -32,8 +31,7 @@ class Application @Inject() (
 import play.db.NamedDatabase
 //#named-di-database-config
 class Application2 @Inject() (
-    @NamedDatabase("<db-name>") protected val dbConfigProvider: DatabaseConfigProvider,
-    cc: ControllerComponents
-)(implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
+  @NamedDatabase("<db-name>") protected val dbConfigProvider: DatabaseConfigProvider,
+  cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
   //#named-di-database-config
 }

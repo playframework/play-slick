@@ -93,8 +93,7 @@ object DatabaseConfigProvider {
   @throws(classOf[IllegalArgumentException])
   @deprecated(
     """Use DatabaseConfigProvider#get[P] or SlickApi#dbConfig[P]("default") on injected instances""".stripMargin,
-    "3.0.0"
-  )
+    "3.0.0")
   def get[P <: BasicProfile](implicit app: Application): DatabaseConfig[P] =
     DatabaseConfigLocator(app)
 
@@ -109,8 +108,7 @@ object DatabaseConfigProvider {
   @throws(classOf[IllegalArgumentException])
   @deprecated(
     """Inject DatabaseConfigProvider using @Named("dbName") and call get[P] or use SlickApi#dbConfig[P](name)""",
-    "3.0.0"
-  )
+    "3.0.0")
   def get[P <: BasicProfile](dbName: String)(implicit app: Application): DatabaseConfig[P] =
     DatabaseConfigLocator(dbName)
 }
