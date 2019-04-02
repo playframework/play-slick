@@ -1,3 +1,4 @@
+import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
@@ -5,7 +6,7 @@ lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion := scala212,
-  crossScalaVersions := Seq(scala211, scala212)
+  crossScalaVersions := Seq(scala212, scala211)
 )
 
 lazy val `play-slick-root` = (project in file("."))
@@ -14,27 +15,30 @@ lazy val `play-slick-root` = (project in file("."))
     `play-slick`,
     `play-slick-evolutions`
   )
-  .settings(commonSettings: _*)
+  .settings(commonSettings)
 
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc)
+  .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.core)
   .settings(mimaSettings)
-  .settings(commonSettings: _*)
+  .settings(commonSettings)
 
 lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
   .enablePlugins(PlayLibrary, Playdoc)
+  .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.evolutions)
   .settings(mimaSettings)
-  .settings(commonSettings: _*)
+  .settings(commonSettings)
   .dependsOn(`play-slick` % "compile;test->test")
 
 lazy val docs = project
   .in(file("docs"))
   .enablePlugins(PlayDocsPlugin)
+  .configs(Docs)
   .dependsOn(`play-slick`)
   .dependsOn(`play-slick-evolutions`)
-  .settings(commonSettings: _*)
+  .settings(commonSettings)
 
 playBuildRepoName in ThisBuild := "play-slick"
 playBuildExtraTests := {
@@ -74,7 +78,7 @@ def sampleProject(name: String) =
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
     ).settings(libraryDependencies += Library.h2)
     .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
-    .settings(commonSettings: _*)
+    .settings(commonSettings)
 
 lazy val computerDatabaseSample = sampleProject("computer-database")
 

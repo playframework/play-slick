@@ -31,14 +31,12 @@ class InitialData @Inject() (recordsDAO: RecordsDAO)(implicit executionContext: 
           Record(2, "Beta"),
           Record(3, "Gamma"),
           Record(4, "Delta"),
-          Record(5, "Epsilon")
-        )
+          Record(5, "Epsilon"))
         recordsDAO.insert(rows)
       } else {
         logger.debug("Already found some data. No need to insert any records")
         Future.successful(Option(0))
       } // zero records inserted
     },
-    Duration.Inf
-  )
+    Duration.Inf)
 }

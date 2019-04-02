@@ -15,9 +15,8 @@ import scalaguide.slick.UsersSchema._
 
 class Application1 @Inject() (
   protected val dbConfigProvider: DatabaseConfigProvider,
-  cc: ControllerComponents
-)(implicit ec: ExecutionContext)
-    extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
+  cc: ControllerComponents)(implicit ec: ExecutionContext)
+  extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
   //#driver-import
   import dbConfig.profile.api._

@@ -14,10 +14,9 @@ import scala.concurrent.ExecutionContext
 
 /** Manage a database of computers. */
 class Application @Inject() (
-    companiesDao: CompaniesDAO,
-    computersDao: ComputersDAO,
-    controllerComponents: ControllerComponents
-)(implicit executionContext: ExecutionContext) extends AbstractController(controllerComponents) with I18nSupport {
+  companiesDao: CompaniesDAO,
+  computersDao: ComputersDAO,
+  controllerComponents: ControllerComponents)(implicit executionContext: ExecutionContext) extends AbstractController(controllerComponents) with I18nSupport {
 
   /** This result directly redirect to the application home.*/
   val Home = Redirect(routes.Application.list(0, 2, ""))
@@ -29,9 +28,7 @@ class Application @Inject() (
       "name" -> nonEmptyText,
       "introduced" -> optional(date("yyyy-MM-dd")),
       "discontinued" -> optional(date("yyyy-MM-dd")),
-      "company" -> optional(longNumber)
-    )(Computer.apply)(Computer.unapply)
-  )
+      "company" -> optional(longNumber))(Computer.apply)(Computer.unapply))
 
   // -- Actions
 
@@ -82,8 +79,7 @@ class Application @Inject() (
         for {
           _ <- computersDao.update(id, computer)
         } yield Home.flashing("success" -> "Computer %s has been updated".format(computer.name))
-      }
-    )
+      })
   }
 
   /** Display the 'new computer form'. */
@@ -99,8 +95,7 @@ class Application @Inject() (
         for {
           _ <- computersDao.insert(computer)
         } yield Home.flashing("success" -> "Computer %s has been created".format(computer.name))
-      }
-    )
+      })
   }
 
   /** Handle computer deletion. */

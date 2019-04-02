@@ -11,7 +11,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton()
 class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext) extends CompaniesComponent
-    with HasDatabaseConfigProvider[JdbcProfile] {
+  with HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
   class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
