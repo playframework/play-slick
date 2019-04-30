@@ -2,7 +2,6 @@ language: scala
 
 scala:
 - 2.12.8
-- 2.11.12
 
 env:
   - TRAVIS_JDK=adopt@1.8.202-08
