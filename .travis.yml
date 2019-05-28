@@ -16,11 +16,9 @@ install:
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION validateCode
-  - sbt ++$TRAVIS_SCALA_VERSION coverage test docs/test samples/test coverageReport
+  - sbt ++$TRAVIS_SCALA_VERSION test docs/test samples/test
   - sbt ++$TRAVIS_SCALA_VERSION docs/validateDocs
   - sbt ++$TRAVIS_SCALA_VERSION mimaReportBinaryIssues
-
-after_success: bash <(curl -s https://codecov.io/bash)
 
 cache:
   directories:
