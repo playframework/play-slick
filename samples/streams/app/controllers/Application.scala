@@ -7,7 +7,6 @@ import akka.stream.scaladsl.Source
 import dao.RecordsDAO
 import play.api.http.ContentTypes
 import play.api.libs.Comet
-import play.api.libs.iteratee.streams.IterateeStreams
 import play.api.libs.json.Json.toJson
 import play.api.mvc.{ AbstractController, ControllerComponents }
 
@@ -27,11 +26,8 @@ class Application @Inject() (recordsDAO: RecordsDAO, components: ControllerCompo
     // Records fetched in chunks of 2, and asynchronously piped out to
     // browser in chunked http responses, to be handled by comet callback.
     //
-    // see https://www.playframework.com/documentation/2.5.x/ScalaComet#Legacy-Comet-with-Enumerator
-    val pipeline = recordsDAO.enumerateAllInChunksOfTwo
-    val publisher = IterateeStreams.enumeratorToPublisher(pipeline)
-    val source = Source.fromPublisher(publisher).map(records => toJson(records))
-
+    // see https://www.playframework.com/documentation/2.7.x/ScalaComet
+    val source = recordsDAO.streamInChunksOf(2).map(records => toJson(records))
     Ok.chunked(source via Comet.json("parent.cometMessage")).as(ContentTypes.HTML)
   }
 }

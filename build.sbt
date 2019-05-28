@@ -60,7 +60,7 @@ lazy val samples = project
   .aggregate(
     basicSample,
     computerDatabaseSample,
-    iterateeSample
+    streamsSample
   )
 
 def sampleProject(name: String) =
@@ -82,7 +82,7 @@ def sampleProject(name: String) =
 
 lazy val computerDatabaseSample = sampleProject("computer-database")
 
-lazy val iterateeSample = sampleProject("iteratee")
+lazy val streamsSample = sampleProject("streams")
 
 lazy val basicSample = sampleProject("basic")
 
