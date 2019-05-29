@@ -6,7 +6,8 @@ lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion := scala212,
-  crossScalaVersions := Seq(scala212)
+  crossScalaVersions := Seq(scala212, scala213),
+  resolvers += Resolver.bintrayRepo("akka", "snapshots")
 )
 
 lazy val `play-slick-root` = (project in file("."))
@@ -49,10 +50,10 @@ playBuildExtraTests := {
 val previousVersion: Option[String] = None
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
-  mimaPreviousArtifacts := Set(previousVersion flatMap { previousVersion =>
-    if (crossPaths.value) Some(organization.value % s"${moduleName.value}_${scalaBinaryVersion.value}" % previousVersion)
-    else Some(organization.value % moduleName.value % previousVersion)
-  }).flatten
+  mimaPreviousArtifacts := previousVersion.fold(Set.empty[ModuleID]) { pv =>
+    if (scala213.equals(scalaVersion.value)) Set.empty
+    else Set(organization.value % moduleName.value % pv)
+  }
 )
 
 lazy val samples = project
@@ -60,7 +61,7 @@ lazy val samples = project
   .aggregate(
     basicSample,
     computerDatabaseSample,
-    iterateeSample
+    streamsSample
   )
 
 def sampleProject(name: String) =
@@ -70,11 +71,7 @@ def sampleProject(name: String) =
     .dependsOn(`play-slick`)
     .dependsOn(`play-slick-evolutions`)
     .settings(
-      libraryDependencies ++= Seq(
-        Library.playSpecs2 % "test",
-        // This could be removed after releasing https://github.com/playframework/playframework/pull/7266
-        "org.fluentlenium" % "fluentlenium-core" % "3.2.0"
-      ),
+      libraryDependencies += Library.playSpecs2 % "test",
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
     ).settings(libraryDependencies += Library.h2)
     .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
@@ -82,7 +79,7 @@ def sampleProject(name: String) =
 
 lazy val computerDatabaseSample = sampleProject("computer-database")
 
-lazy val iterateeSample = sampleProject("iteratee")
+lazy val streamsSample = sampleProject("streams")
 
 lazy val basicSample = sampleProject("basic")
 

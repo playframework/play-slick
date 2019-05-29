@@ -7,13 +7,12 @@ import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfig
 import slick.jdbc.JdbcProfile
 import models.Record
-import play.api.libs.iteratee.Enumerator
-import play.api.libs.iteratee.Enumeratee
-import play.api.libs.iteratee.Iteratee
-import play.api.libs.iteratee.streams.IterateeStreams
 import slick.basic.DatabaseConfig
 
 import scala.concurrent.{ ExecutionContext, Future }
+
+import akka.NotUsed
+import akka.stream.scaladsl.Source
 
 class RecordsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
   extends HasDatabaseConfig[JdbcProfile] {
@@ -54,10 +53,8 @@ class RecordsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvid
   def insert(records: Seq[Record]): Future[Option[Int]] = db.run(this.records ++= records)
 
   /** This is the interesting bit: enumerate the query for all Records in chunks of 2 */
-  def enumerateAllInChunksOfTwo: Enumerator[List[Record]] = {
-    val input: Enumerator[Record] = IterateeStreams.publisherToEnumerator(db.stream(records.result))
-    val slider: Enumeratee[Record, List[Record]] = Enumeratee.grouped[Record](Iteratee.takeUpTo[Record](2).map(_.toList))
-    input.through(slider)
+  def streamInChunksOf(size: Int = 2): Source[Seq[Record], NotUsed] = {
+    Source.fromPublisher(db.stream(records.result)).grouped(2)
   }
 }
 
