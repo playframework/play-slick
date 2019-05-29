@@ -48,7 +48,7 @@ final class DefaultSlickApi @Inject() (
         playConfig.get[Map[String, Config]](slickDbKey)
       } else Map.empty[String, Config]
     }
-    (for ((name, config) <- configs) yield (DbName(name), new DatabaseConfigFactory(name, config, lifecycle)))(collection.breakOut)
+    (for ((name, config) <- configs) yield (DbName(name), new DatabaseConfigFactory(name, config, lifecycle))).toMap
   }
 
   // Be careful that accessing this field will trigger initialization of ALL database configs!
