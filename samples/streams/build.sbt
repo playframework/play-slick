@@ -1,4 +1,4 @@
-name := "iteratee-sample"
+name := "streams-sample"
 
 PlayKeys.playOmnidoc := false
 
