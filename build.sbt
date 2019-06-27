@@ -5,8 +5,8 @@ import interplay.ScalaVersions._
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion := scala212,
-  crossScalaVersions := Seq(scala212, scala213),
+  scalaVersion := scala213,
+  crossScalaVersions := Seq(scala213, scala212),
   resolvers += Resolver.bintrayRepo("akka", "snapshots")
 )
 
