@@ -47,12 +47,15 @@ playBuildExtraTests := {
 }
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
-  mimaPreviousArtifacts := {
-    // Binary compatibility is tested against this version
-    if(scalaVersion.value.equals(scala213))  Set.empty // TODO: update to 4.0.2 once released
-    else  Set(organization.value %% name.value % "4.0.0")
+  mimaPreviousArtifacts := { 
+    val artifact = organization.value %% name.value
+    if(scalaVersion.value.equals(scala213))  
+      Set(artifact % "4.0.2")
+    else  
+      Set(artifact % "4.0.0")
   }
 )
+
 
 lazy val samples = project
   .in(file("samples"))
