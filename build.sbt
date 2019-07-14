@@ -49,6 +49,8 @@ playBuildExtraTests := {
 // Binary compatibility is tested against this version
 val previousVersion: Option[String] = None
 
+ThisBuild / mimaFailOnNoPrevious := false
+
 def mimaSettings = mimaDefaultSettings ++ Seq(
   mimaPreviousArtifacts := previousVersion.fold(Set.empty[ModuleID]) { pv =>
     if (scala213.equals(scalaVersion.value)) Set.empty
