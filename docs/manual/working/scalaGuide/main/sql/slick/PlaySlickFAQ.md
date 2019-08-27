@@ -10,7 +10,7 @@ It's indeed the case. Changing the value of `play.db.pool` won't affect what con
 
 ## Changing the connection pool used by Slick
 
-While Slick allows using a different connection pool than [HikariCP](http://brettwooldridge.github.io/HikariCP/) (though, Slick currently only offers built-in support for HikariCP, and requires you to provide an implementation of [JdbcDataSourceFactory](http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcDataSourceFactory) if you want to use a different connection pool), Play Slick currently doesn't allow using a different connection pool than HikariCP. If you find yourself needing this feature, you can try to drop us a note on [playframework-dev](https://groups.google.com/forum/#!forum/play-framework-dev).
+While Slick allows using a different connection pool than [HikariCP](http://brettwooldridge.github.io/HikariCP/) (though, Slick currently only offers built-in support for HikariCP, and requires you to provide an implementation of [JdbcDataSourceFactory](http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcDataSourceFactory) if you want to use a different connection pool), Play Slick currently doesn't allow using a different connection pool than HikariCP. If you find yourself needing this feature, you can try to drop us a note on [our forums](https://discuss.lightbend.com/).
 
 ## A binding to `play.api.db.DBApi` was already configured
 
@@ -23,7 +23,7 @@ Binding(interface play.api.db.DBApi to ConstructionTarget(class play.api.db.slic
 Binding(interface play.api.db.DBApi to ProviderConstructionTarget(class play.api.db.DBApiProvider))
 ```
 
-It is very likely that you have [[enabled the jdbc plugin|ScalaDatabase]], and that doesn't really make sense if you are using Slick for accessing your databases. To fix the issue simply remove the Play *jdbc* component from your project's build.
+It is very likely that you have [[enabled the jdbc plugin|AccessingAnSqlDatabase]], and that doesn't really make sense if you are using Slick for accessing your databases. To fix the issue simply remove the Play *jdbc* component from your project's build.
 
 Another possibility is that there is another Play module that is binding [DBApi](api/scala/play/api/db/DBApi.html) to some other concrete implementation. This means that you are still trying to use Play Slick together with another Play module for database access, which is likely not what you want.
 
