@@ -5,11 +5,11 @@ scala:
 - 2.13.0
 
 env:
-  - TRAVIS_JDK=adopt@1.8.202-08
-  - TRAVIS_JDK=adopt@1.11.0-2
+  - TRAVIS_JDK=8
+  - TRAVIS_JDK=11
 
-before_install:
-  - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
+install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
 
 install:
   - $JABBA_HOME/bin/jabba install $TRAVIS_JDK
