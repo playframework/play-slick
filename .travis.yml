@@ -26,6 +26,7 @@ cache:
     - $HOME/.ivy2/cache
     - $HOME/.jabba/jdk
     - $HOME/.sbt
+    - $HOME/.coursier
 
 before_cache:
   # Ensure changes to the cache aren't persisted
