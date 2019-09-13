@@ -1,31 +1,29 @@
 language: scala
 
 scala:
-- 2.12.8
+- 2.12.9
 - 2.13.0
 
 env:
-  - TRAVIS_JDK=adopt@1.8.202-08
-  - TRAVIS_JDK=adopt@1.11.0-2
+  - TRAVIS_JDK=8
+  - TRAVIS_JDK=11
 
-before_install:
-  - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
+install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
 
-install:
-  - $JABBA_HOME/bin/jabba install $TRAVIS_JDK
-  - export JAVA_HOME="$JABBA_HOME/jdk/$TRAVIS_JDK" && export PATH="$JAVA_HOME/bin:$PATH" && java -Xmx32m -version
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION validateCode
   - sbt ++$TRAVIS_SCALA_VERSION test docs/test samples/test
   - sbt ++$TRAVIS_SCALA_VERSION docs/validateDocs
-  - sbt ++$TRAVIS_SCALA_VERSION mimaReportBinaryIssues
+  - sbt ++$TRAVIS_SCALA_VERSION +mimaReportBinaryIssues
 
 cache:
   directories:
     - $HOME/.ivy2/cache
     - $HOME/.jabba/jdk
     - $HOME/.sbt
+    - $HOME/.coursier
 
 before_cache:
   # Ensure changes to the cache aren't persisted
