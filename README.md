@@ -56,6 +56,6 @@ The documentation for the latest release is available [here](https://www.playfra
 
 ## Copyright
 
-Copyright (C) 2009-2017 Lightbend Inc. (https://www.lightbend.com).
+Copyright (C) 2009-2017 Lightbend Inc. <https://www.lightbend.com>.
 
-License: Apache License 2.0, http://www.apache.org/licenses/LICENSE-2.0.html
+License: Apache License 2.0, <http://www.apache.org/licenses/LICENSE-2.0.html>
