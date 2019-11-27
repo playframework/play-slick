@@ -27,7 +27,7 @@ class SlickModuleSpec extends Specification {
 
   "SlickModule" should {
     val appBuilder = GuiceApplicationBuilder(configuration = TestData.configuration)
-    val injector = appBuilder.injector()
+    val injector   = appBuilder.injector()
 
     "bind SlickApi to DefaultSlickApi" in {
       val api = injector.instanceOf[SlickApi]
@@ -52,23 +52,27 @@ class SlickModuleSpec extends Specification {
       dbConfProvider1.get mustEqual dbConfProvider2.get
     }
     "return a DatabaseConfigProvider with a DatabaseConfig instance for the database named default" in {
-      val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("default"))))
+      val binding =
+        new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("default"))))
       val dbConfProvider = injector.instanceOf(binding)
       dbConfProvider.get must not(beNull)
     }
     "return the same DatabaseConfig instance for the database named default" in {
-      val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("default"))))
+      val binding =
+        new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("default"))))
       val dbConfProvider1 = injector.instanceOf(binding)
       val dbConfProvider2 = injector.instanceOf(binding)
       dbConfProvider1.get mustEqual dbConfProvider2.get
     }
     "return a DatabaseConfigProvider with a DatabaseConfig instance for a named (not default) database" in {
-      val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("somedb"))))
+      val binding =
+        new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("somedb"))))
       val dbConfProvider = injector.instanceOf(binding)
       dbConfProvider.get must not(beNull)
     }
     "return the same DatabaseConfig instance for a named database" in {
-      val binding = new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("somedb"))))
+      val binding =
+        new BindingKey(classOf[DatabaseConfigProvider], Some(QualifierInstance(new NamedDatabaseImpl("somedb"))))
       val dbConfProvider1 = injector.instanceOf(binding)
       val dbConfProvider2 = injector.instanceOf(binding)
       dbConfProvider1.get mustEqual dbConfProvider2.get

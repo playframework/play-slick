@@ -11,8 +11,8 @@ class SlickApiSpec extends Specification {
   trait SUT {
     def config: Configuration
     val appBuilder = new GuiceApplicationBuilder(configuration = config)
-    val injector = appBuilder.injector()
-    val api = injector.instanceOf[SlickApi]
+    val injector   = appBuilder.injector()
+    val api        = injector.instanceOf[SlickApi]
   }
 
   object SUTWithGoodConfig extends SUT {

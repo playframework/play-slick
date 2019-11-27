@@ -77,7 +77,8 @@ def sampleProject(name: String) =
     .settings(
       libraryDependencies += Library.playSpecs2 % "test",
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
-    ).settings(libraryDependencies += Library.h2)
+    )
+    .settings(libraryDependencies += Library.h2)
     .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
     .settings(commonSettings)
 

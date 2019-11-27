@@ -31,7 +31,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
     }
 
     "check the assumption that the ApplicationLifecycle is a singleton" in {
-      val injector = self.injector
+      val injector   = self.injector
       val lifecycle1 = injector.instanceOf[ApplicationLifecycle]
       val lifecycle2 = injector.instanceOf[ApplicationLifecycle]
       lifecycle1 mustEqual lifecycle2
@@ -43,7 +43,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
     }
 
     "check that a stop hook is registered by SlickApi in the ApplicationLifecycle when a database is created" in {
-      val injector = self.injector
+      val injector  = self.injector
       val lifecycle = injector.instanceOf[ApplicationLifecycle].asInstanceOf[DefaultApplicationLifecycle]
 
       // collect the num of existing hooks added by Play

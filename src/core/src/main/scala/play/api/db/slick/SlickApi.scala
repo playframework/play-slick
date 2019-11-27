@@ -1,7 +1,8 @@
 package play.api.db.slick
 
 import scala.collection.immutable.Seq
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
 import scala.util.Try
@@ -18,6 +19,7 @@ import slick.basic.DatabaseConfig
 import slick.basic.BasicProfile
 
 trait SlickApi {
+
   /**
    * Returns all database configs, for all databases defined in the loaded application's configuration.
    *  @throws PlayException if a database config cannot be created.
@@ -34,14 +36,16 @@ trait SlickApi {
 }
 
 final class DefaultSlickApi @Inject() (
-  environment: Environment,
-  configuration: Configuration,
-  lifecycle: ApplicationLifecycle)(implicit executionContext: ExecutionContext) extends SlickApi {
+    environment: Environment,
+    configuration: Configuration,
+    lifecycle: ApplicationLifecycle
+)(implicit executionContext: ExecutionContext)
+    extends SlickApi {
   import DefaultSlickApi.DatabaseConfigFactory
 
   private lazy val dbconfigFactoryByName: Map[DbName, DatabaseConfigFactory] = {
     def configs: Map[String, Config] = {
-      val config = configuration.underlying
+      val config     = configuration.underlying
       val slickDbKey = config.getString(SlickModule.DbKeyConfig)
       if (config.hasPath(slickDbKey)) {
         val playConfig = Configuration(config)
@@ -59,7 +63,10 @@ final class DefaultSlickApi @Inject() (
     allDbConfigs.asInstanceOf[Seq[(DbName, DatabaseConfig[P])]]
 
   def dbConfig[P <: BasicProfile](name: DbName): DatabaseConfig[P] = {
-    val factory: DatabaseConfigFactory = dbconfigFactoryByName.getOrElse(name, throw new PlayException(s"No database configuration found for ", name.value))
+    val factory: DatabaseConfigFactory = dbconfigFactoryByName.getOrElse(
+      name,
+      throw new PlayException(s"No database configuration found for ", name.value)
+    )
     val dbConf: DatabaseConfig[BasicProfile] = factory.get
     dbConf.asInstanceOf[DatabaseConfig[P]]
   }
@@ -70,7 +77,9 @@ object DefaultSlickApi {
     private val logger = Logger(classOf[DefaultSlickApi])
   }
   // This class is useful for delaying the creation of `DatabaseConfig` instances.
-  private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle)(implicit executionContext: ExecutionContext) {
+  private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle)(
+      implicit executionContext: ExecutionContext
+  ) {
     import DatabaseConfigFactory.logger
 
     @throws(classOf[PlayException])

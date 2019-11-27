@@ -2,7 +2,8 @@ package play.api.db.slick
 
 import org.specs2.mutable.Specification
 
-import play.api.{ Application, Mode }
+import play.api.Application
+import play.api.Mode
 import play.api.inject.guice.GuiceApplicationBuilder
 import slick.basic.BasicProfile
 
@@ -22,13 +23,13 @@ class DatabaseConfigProviderSpec extends Specification {
   }
   "DatabaseConfigProvider" should {
     "return the configured slick profile for the given database" in withApp { implicit app =>
-      val config = DatabaseConfigProvider.get[BasicProfile]("somedb")
+      val config  = DatabaseConfigProvider.get[BasicProfile]("somedb")
       val profile = config.profile
       profile must equalTo(_root_.slick.jdbc.H2Profile)
     }
 
     "return the configured profile for the default database when db name is not specified" in withApp { implicit app =>
-      val config = DatabaseConfigProvider.get[BasicProfile]
+      val config  = DatabaseConfigProvider.get[BasicProfile]
       val profile = config.profile
       profile must equalTo(_root_.slick.jdbc.MySQLProfile)
     }

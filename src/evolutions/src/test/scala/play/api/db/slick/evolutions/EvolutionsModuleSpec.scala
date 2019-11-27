@@ -4,7 +4,8 @@ import org.specs2.mutable.Specification
 import play.api.Configuration
 import play.api.Environment
 import play.api.db.DBApi
-import play.api.db.slick.{ SlickComponents, TestData }
+import play.api.db.slick.SlickComponents
+import play.api.db.slick.TestData
 import play.api.db.slick.evolutions.internal.DBApiAdapter
 import play.api.inject.ApplicationLifecycle
 import play.api.inject.DefaultApplicationLifecycle
@@ -23,7 +24,7 @@ class EvolutionsModuleSpec extends Specification {
 
   "EvolutionsModule" should {
     val appBuilder = GuiceApplicationBuilder(configuration = TestData.configuration)
-    val injector = appBuilder.injector()
+    val injector   = appBuilder.injector()
 
     "bind DBApi to DBApiAdapter" in {
       val api = injector.instanceOf[DBApi]
@@ -44,7 +45,8 @@ class EvolutionsModuleSpec extends Specification {
 
       override def configuration: Configuration = TestData.configuration
 
-      override def executionContext: ExecutionContext = ExecutionContext.Implicits.global // using the global EC since this is test code
+      override def executionContext: ExecutionContext =
+        ExecutionContext.Implicits.global // using the global EC since this is test code
     }
 
     "bind DBApi to DBApiAdapter" in {

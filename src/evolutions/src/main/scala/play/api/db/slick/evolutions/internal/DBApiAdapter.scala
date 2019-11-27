@@ -5,18 +5,26 @@ import java.sql.Connection
 import javax.inject.Inject
 import javax.sql.DataSource
 import play.api.Logger
-import play.api.db.slick.{ DbName, IssueTracker, SlickApi }
-import play.api.db.{ DBApi, TransactionIsolationLevel, Database => PlayDatabase }
+import play.api.db.slick.DbName
+import play.api.db.slick.IssueTracker
+import play.api.db.slick.SlickApi
+import play.api.db.DBApi
+import play.api.db.TransactionIsolationLevel
+import play.api.db.{ Database => PlayDatabase }
 import slick.basic.DatabaseConfig
-import slick.jdbc.{ DataSourceJdbcDataSource, JdbcProfile }
+import slick.jdbc.DataSourceJdbcDataSource
+import slick.jdbc.JdbcProfile
 import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import scala.util.control.ControlThrowable
 
 private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
-  private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi.dbConfigs[JdbcProfile]().map {
-    case (name, dbConfig) => (name, new DBApiAdapter.DatabaseAdapter(name, dbConfig))
-  }.toMap
+  private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi
+    .dbConfigs[JdbcProfile]()
+    .map {
+      case (name, dbConfig) => (name, new DBApiAdapter.DatabaseAdapter(name, dbConfig))
+    }
+    .toMap
 
   override def databases: Seq[PlayDatabase] = databasesByName.values.toSeq
 
@@ -42,7 +50,7 @@ private[evolutions] object DBApiAdapter {
     def dataSource: DataSource = {
       dbConfig.db.source match {
         case ds: DataSourceJdbcDataSource => ds.ds
-        case hds: HikariCPJdbcDataSource => hds.ds
+        case hds: HikariCPJdbcDataSource  => hds.ds
         case other =>
           logger.error(s"Unexpected data source type ${other.getClass}. Please, file a ticket $IssueTracker.")
           throw new UnsupportedOperationException
