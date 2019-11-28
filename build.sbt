@@ -77,7 +77,8 @@ def sampleProject(name: String) =
     .settings(
       libraryDependencies += Library.playSpecs2 % "test",
       concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
-    ).settings(libraryDependencies += Library.h2)
+    )
+    .settings(libraryDependencies += Library.h2)
     .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
     .settings(commonSettings)
 
@@ -86,19 +87,3 @@ lazy val computerDatabaseSample = sampleProject("computer-database")
 lazy val streamsSample = sampleProject("streams")
 
 lazy val basicSample = sampleProject("basic")
-
-lazy val checkCodeFormat = taskKey[Unit]("Check that code format is following Scalariform rules")
-
-checkCodeFormat := {
-  val exitCode = "git diff --exit-code".!
-  if (exitCode != 0) {
-    sys.error(
-      """
-        |ERROR: Scalariform check failed, see differences above.
-        |To fix, format your sources using sbt scalariformFormat test:scalariformFormat before submitting a pull request.
-        |Additionally, please squash your commits (eg, use git commit --amend) if you're going to update this pull request.
-        |""".stripMargin)
-  }
-}
-
-addCommandAlias("validateCode", ";scalariformFormat;checkCodeFormat")

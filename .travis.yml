@@ -13,7 +13,8 @@ install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx
 
 
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION validateCode
+  - sbt ++$TRAVIS_SCALA_VERSION scalafmtCheckAll scalafmtSbtCheck
+  - sbt ++$TRAVIS_SCALA_VERSION docs/scalafmtCheckAll docs/scalafmtSbtCheck
   - sbt ++$TRAVIS_SCALA_VERSION test docs/test samples/test
   - sbt ++$TRAVIS_SCALA_VERSION docs/validateDocs
   - sbt ++$TRAVIS_SCALA_VERSION mimaReportBinaryIssues

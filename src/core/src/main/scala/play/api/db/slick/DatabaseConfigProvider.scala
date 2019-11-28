@@ -66,10 +66,10 @@ object DatabaseConfigProvider {
   import play.api.Application
   private object DatabaseConfigLocator {
     import play.api.Configuration
-    private val slickApiCache = Application.instanceCache[SlickApi]
+    private val slickApiCache                                 = Application.instanceCache[SlickApi]
     private def slickApi(implicit app: Application): SlickApi = slickApiCache(app)
 
-    private val configurationCache = Application.instanceCache[Configuration]
+    private val configurationCache                                      = Application.instanceCache[Configuration]
     private def configuration(implicit app: Application): Configuration = configurationCache(app)
 
     @throws(classOf[IllegalArgumentException])
@@ -92,8 +92,9 @@ object DatabaseConfigProvider {
    */
   @throws(classOf[IllegalArgumentException])
   @deprecated(
-    """Use DatabaseConfigProvider#get[P] or SlickApi#dbConfig[P]("default") on injected instances""".stripMargin,
-    "3.0.0")
+    "Use DatabaseConfigProvider#get[P] or SlickApi#dbConfig[P](\"default\") on injected instances".stripMargin,
+    "3.0.0"
+  )
   def get[P <: BasicProfile](implicit app: Application): DatabaseConfig[P] =
     DatabaseConfigLocator(app)
 
@@ -107,8 +108,9 @@ object DatabaseConfigProvider {
    */
   @throws(classOf[IllegalArgumentException])
   @deprecated(
-    """Inject DatabaseConfigProvider using @Named("dbName") and call get[P] or use SlickApi#dbConfig[P](name)""",
-    "3.0.0")
+    "Inject DatabaseConfigProvider using @Named(\"dbName\") and call get[P] or use SlickApi#dbConfig[P](name)",
+    "3.0.0"
+  )
   def get[P <: BasicProfile](dbName: String)(implicit app: Application): DatabaseConfig[P] =
     DatabaseConfigLocator(dbName)
 }
@@ -147,6 +149,7 @@ object DatabaseConfigProvider {
  * Of course, you do not need to define a DAO to use this trait (the above it is really just an example of usage).
  */
 trait HasDatabaseConfig[P <: BasicProfile] {
+
   /** The Slick database configuration. */
   protected val dbConfig: DatabaseConfig[P] // field is declared as a val because we want a stable identifier.
   /** The Slick profile extracted from `dbConfig`. */
@@ -189,7 +192,9 @@ trait HasDatabaseConfig[P <: BasicProfile] {
  * Of course, you do not need to define a DAO to use this trait (the above it is really just an example of usage).
  */
 trait HasDatabaseConfigProvider[P <: BasicProfile] extends HasDatabaseConfig[P] {
+
   /** The provider of a Slick `DatabaseConfig` instance.*/
   protected val dbConfigProvider: DatabaseConfigProvider
-  override final lazy protected val dbConfig: DatabaseConfig[P] = dbConfigProvider.get[P] // field is lazy to avoid early initializer problems.
+  protected final override lazy val dbConfig
+      : DatabaseConfig[P] = dbConfigProvider.get[P] // field is lazy to avoid early initializer problems.
 }

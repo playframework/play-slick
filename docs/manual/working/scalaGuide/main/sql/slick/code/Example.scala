@@ -6,17 +6,19 @@ package global
 
 import javax.inject.Inject
 
-import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import play.api.mvc._
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 import scalaguide.slick.UsersSchema._
 
-class Application1 @Inject() (
-  protected val dbConfigProvider: DatabaseConfigProvider,
-  cc: ControllerComponents)(implicit ec: ExecutionContext)
-  extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
+class Application1 @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(
+    implicit ec: ExecutionContext
+) extends AbstractController(cc)
+    with HasDatabaseConfigProvider[JdbcProfile] {
 
   //#driver-import
   import dbConfig.profile.api._

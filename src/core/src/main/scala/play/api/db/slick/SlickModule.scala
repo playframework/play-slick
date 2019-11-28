@@ -21,8 +21,10 @@ import slick.basic.BasicProfile
 import scala.concurrent.ExecutionContext
 
 object SlickModule {
+
   /** path in the **reference.conf** to obtain the path under which databases are configured.*/
   final val DbKeyConfig = "play.slick.db.config"
+
   /** path in the **reference.conf** to obtain the name of the default database.*/
   final val DefaultDbName = "play.slick.db.default"
 }
@@ -30,12 +32,14 @@ object SlickModule {
 @Singleton
 final class SlickModule extends Module {
   def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
-    val config = configuration.underlying
-    val dbKey = config.getString(SlickModule.DbKeyConfig)
+    val config  = configuration.underlying
+    val dbKey   = config.getString(SlickModule.DbKeyConfig)
     val default = config.getString(SlickModule.DefaultDbName)
-    val dbs = configuration.getOptional[Configuration](dbKey).getOrElse(Configuration.empty).subKeys
-    Seq(
-      bind[SlickApi].to[DefaultSlickApi].in[Singleton]) ++ namedDatabaseConfigBindings(dbs) ++ defaultDatabaseConfigBinding(default, dbs)
+    val dbs     = configuration.getOptional[Configuration](dbKey).getOrElse(Configuration.empty).subKeys
+    Seq(bind[SlickApi].to[DefaultSlickApi].in[Singleton]) ++ namedDatabaseConfigBindings(dbs) ++ defaultDatabaseConfigBinding(
+      default,
+      dbs
+    )
   }
 
   def namedDatabaseConfigBindings(dbs: Set[String]): Seq[Binding[_]] = dbs.toList.map { db =>

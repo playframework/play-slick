@@ -9,11 +9,11 @@ class DBApiAdapterSpec extends Specification {
 
   "DBApiAdapter" >> {
     val appBuilder = GuiceApplicationBuilder(configuration = TestData.configuration)
-    val injector = appBuilder.injector()
+    val injector   = appBuilder.injector()
 
-    val api = injector.instanceOf[DBApi]
+    val api    = injector.instanceOf[DBApi]
     val dbName = "somedb"
-    val db = api.database(dbName)
+    val db     = api.database(dbName)
 
     "getConnection" should {
       "respect autocommit parameter" in {
