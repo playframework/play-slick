@@ -5,20 +5,16 @@ scala:
   - 2.11.12
 
 env:
-  - TRAVIS_JDK=adopt@1.8.192-12
-  - TRAVIS_JDK=adopt@1.11.0-1
+  - TRAVIS_JDK=8
+  - TRAVIS_JDK=11
 
 matrix:
   fast_finish: true
   allow_failures:
-    - env: TRAVIS_JDK=adopt@1.11.0-1 # not fully supported but allows problem discovery
+    - env: TRAVIS_JDK=11 # not fully supported but allows problem discovery
 
-before_install:
-  - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
-
-install:
-  - $JABBA_HOME/bin/jabba install $TRAVIS_JDK
-  - export JAVA_HOME="$JABBA_HOME/jdk/$TRAVIS_JDK" && export PATH="$JAVA_HOME/bin:$PATH" && java -Xmx32m -version
+before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
+install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
 
 script:
   - sbt ++$TRAVIS_SCALA_VERSION validateCode
