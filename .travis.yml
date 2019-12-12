@@ -11,13 +11,10 @@ env:
 before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
 install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
 
-
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION scalafmtCheckAll scalafmtSbtCheck
-  - sbt ++$TRAVIS_SCALA_VERSION docs/scalafmtCheckAll docs/scalafmtSbtCheck
-  - sbt ++$TRAVIS_SCALA_VERSION test docs/test samples/test
-  - sbt ++$TRAVIS_SCALA_VERSION docs/validateDocs
-  - sbt ++$TRAVIS_SCALA_VERSION mimaReportBinaryIssues
+  - sbt ++$TRAVIS_SCALA_VERSION scalafmtCheckAll scalafmtSbtCheck mimaReportBinaryIssues
+  - sbt ++$TRAVIS_SCALA_VERSION docs/scalafmtCheckAll docs/scalafmtSbtCheck docs/test docs/validateDocs
+  - sbt ++$TRAVIS_SCALA_VERSION test samples/test
 
 cache:
   directories:
