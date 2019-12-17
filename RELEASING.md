@@ -11,7 +11,7 @@ Releasing a new version of play-slick is truly simple.
 * Log in vegemite.
 * type `sudo su - play`, and enter your account's password.
 * type `cd deploy`.
-* and finally type `./release --project play-slick --branch <branch-to-release> --tag <tag-namel>`, where <branch-to-release> is the name of the branch you want to release and <tag-namel> is the verion tag.
+* and finally type `./release --project play-slick --branch <branch-to-release> --tag <tag-name>`, where <branch-to-release> is the name of the branch you want to release and <tag-name> is the version tag.
 
 That will start the build. The output should be similar to
 
