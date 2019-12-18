@@ -79,15 +79,12 @@ playBuildExtraTests := {
 }
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = None
+val previousVersion: Option[String] = Some("5.0.0")
 
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = mimaDefaultSettings ++ Seq(
-  mimaPreviousArtifacts := previousVersion.fold(Set.empty[ModuleID]) { pv =>
-    if (scala213.equals(scalaVersion.value)) Set.empty
-    else Set(organization.value % moduleName.value % pv)
-  }
+  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
 )
 
 lazy val samples = project
