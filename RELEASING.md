@@ -11,29 +11,22 @@ Releasing a new version of play-slick is truly simple.
 * Log in vegemite.
 * type `sudo su - play`, and enter your account's password.
 * type `cd deploy`.
-* and finally type `./release --project play-slick --branch <branch-to-release>`, where <branch-to-release> is the name of the branch you want to release.
+* and finally type `./release --project play-slick --branch <branch-to-release> --tag <tag-name>`, where <branch-to-release> is the name of the branch you want to release and <tag-name> is the version tag.
 
 That will start the build. The output should be similar to
 
-```
-play ▶ [] ~/deploy$ ./release --project play-slick --branch master
+```shell
+play ▶ [] ~/deploy$ ./release --project play-slick --branch master --tag 5.0.0
 This will release play-slick from branch master using JDK8, continue? [y/n] y
 java version "1.8.0_31"
 ...
 ```
 
-The script will eventually stop and ask you the version number of the release, and the next version you want your branch to be moved to.
-
-```
-...
-Release version [1.0.1] :
-Next version [1.0.2-SNAPSHOT] : 
-```
 Type ENTER if the version between square brackets suits you. If it doesn't, provide the desired version to release.
 
 Once the binaries are successfully deployed, you will be prompted if you wish to push your changes to the remote repository:
 
-```
+```shell
 ...
 [info] Dropping staging repository [comtypesafe-1354] status:released, profile:com.typesafe(34c112e991655)
 [info] Dropped successfully: comtypesafe-1354
