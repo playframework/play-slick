@@ -4,6 +4,10 @@ scala:
 - 2.12.10
 - 2.13.1
 
+
+git:
+  depth: false # Avoid sbt-dynver not seeing the tag
+
 env:
   - TRAVIS_JDK=8
   - TRAVIS_JDK=11
