@@ -10,8 +10,18 @@ pull_request_rules:
       - label!=status:block-merge
     actions:
       merge:
-        method: squash
-        strict: smart
+        method: merge
+        
+  - name: Merge ScalaSteward's PRs that are ready
+    conditions:
+      - author=scala-steward
+      - status-success=Travis CI - Pull Request
+      - "#review-requested=0"
+      - "#changes-requested-reviews-by=0"
+      - label!=status:block-merge
+    actions:
+      merge:
+        method: merge
 
   - name: Delete the PR branch after merge
     conditions:
