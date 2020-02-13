@@ -2,7 +2,7 @@
 
 This is a guide for migrating from Play Slick v0.8 to v1.0, v1.1 or v2.0.0.
 
-It assumes you have already migrated your project to use Play 2.5 (see [Play 2.5 Migration Guide](https://www.playframework.com/documentation/2.5.x/Migration25)), that you have read the [Slick 3.1 documentation](http://slick.typesafe.com/docs/), and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
+It assumes you have already migrated your project to use Play 2.5 (see [Play 2.5 Migration Guide](https://www.playframework.com/documentation/2.5.x/Migration25)), that you have read the [Slick 3.1 documentation](https://scala-slick.org/docs/), and are ready to migrate your Play application to use the new Slick Database I/O Actions API.
 
 ## Build changes
 
@@ -80,7 +80,7 @@ db.$dbName.maxQueriesPerRequest
 slick.db.execution.context
 ```
 
-The parameter `db.$dbName.maxQueriesPerRequest` was used to limit the number of tasks queued in the thread pool. In Slick 3 you can reach similar results by tuning the configuration parameters `numThreads` and `queueSize`. Read the Slick ScalaDoc for [Database.forConfig](http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig(String,Config,Driver,ClassLoader):Database) (make sure to expand the `forConfig` row in the doc).
+The parameter `db.$dbName.maxQueriesPerRequest` was used to limit the number of tasks queued in the thread pool. In Slick 3 you can reach similar results by tuning the configuration parameters `numThreads` and `queueSize`. Read the Slick ScalaDoc for [Database.forConfig](https://scala-slick.org/doc/3.1.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig%28path:String,config:com.typesafe.config.Config,driver:java.sql.Driver,classLoader:ClassLoader%29:JdbcBackend.this.Database) (make sure to expand the `forConfig` row in the doc).
 
 While the parameter `slick.db.execution.context` was used to name the thread pools created by Play Slick. In Slick 3, each thread pool is named using the Slick database configuration path, i.e., if in your **`application.conf`** you have provided a Slick configuration for the database named `default`, then Slick will create a thread pool named `default` for executing the database action on the default database. Note that the name used for the thread pool is not configurable.
 
