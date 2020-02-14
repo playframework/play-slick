@@ -5,9 +5,11 @@ The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class ci
 - Integration of Slick into Play's application lifecycle.
 - Support for [[Play database evolutions|Evolutions]].
 
-Play Slick currently supports Slick 3.3 with Play 2.7, for Scala 2.12 and Scala 2.11.
+Play Slick currently supports Slick 3.3 with Play 2.8, for Scala 2.12 and Scala 2.13.
 
-> **Note**: This guide assumes you already know both Play 2.7 and Slick 3.3.
+Previous versions support previous versions of Play! as well as Scala 2.11.
+
+> **Note**: This guide assumes you already know both Play 2.8 and Slick 3.3.
 
 ## Getting Help
 
