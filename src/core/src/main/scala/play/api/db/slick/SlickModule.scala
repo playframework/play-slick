@@ -22,10 +22,10 @@ import scala.concurrent.ExecutionContext
 
 object SlickModule {
 
-  /** path in the **reference.conf** to obtain the path under which databases are configured.*/
+  /** path in the **reference.conf** to obtain the path under which databases are configured. */
   final val DbKeyConfig = "play.slick.db.config"
 
-  /** path in the **reference.conf** to obtain the name of the default database.*/
+  /** path in the **reference.conf** to obtain the name of the default database. */
   final val DefaultDbName = "play.slick.db.default"
 }
 
