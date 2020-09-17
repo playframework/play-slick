@@ -60,3 +60,5 @@ The documentation for the latest release is available [here](https://www.playfra
 Copyright (C) 2009-2017 Lightbend Inc. <https://www.lightbend.com>.
 
 License: Apache License 2.0, <http://www.apache.org/licenses/LICENSE-2.0.html>
+
+This library is [Community Driven](https://developer.lightbend.com/docs/introduction/getting-help/support-terminology.html)
