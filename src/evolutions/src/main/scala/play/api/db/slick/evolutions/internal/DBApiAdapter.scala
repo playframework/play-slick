@@ -21,8 +21,8 @@ import scala.util.control.ControlThrowable
 private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
   private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi
     .dbConfigs[JdbcProfile]()
-    .map {
-      case (name, dbConfig) => (name, new DBApiAdapter.DatabaseAdapter(name, dbConfig))
+    .map { case (name, dbConfig) =>
+      (name, new DBApiAdapter.DatabaseAdapter(name, dbConfig))
     }
     .toMap
 

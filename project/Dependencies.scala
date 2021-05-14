@@ -31,5 +31,5 @@ object Library {
   val playSpecs2         = "com.typesafe.play"  %% "play-specs2"          % Version.play
   val slick              = "com.typesafe.slick" %% "slick"                % Version.slick
   val slickHikariCP      = "com.typesafe.slick" %% "slick-hikaricp"       % Version.slick
-  val h2                 = "com.h2database"     % "h2"                    % Version.h2
+  val h2                 = "com.h2database"      % "h2"                   % Version.h2
 }
