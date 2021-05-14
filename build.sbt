@@ -23,7 +23,7 @@ lazy val commonSettings = Seq(
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion := scala213,
   crossScalaVersions := Seq(scala213, scala212),
-  resolvers += Resolver.bintrayRepo("akka", "snapshots")
+  resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
 )
 
 lazy val `play-slick-root` = (project in file("."))
