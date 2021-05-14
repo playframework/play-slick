@@ -193,8 +193,8 @@ trait HasDatabaseConfig[P <: BasicProfile] {
  */
 trait HasDatabaseConfigProvider[P <: BasicProfile] extends HasDatabaseConfig[P] {
 
-  /** The provider of a Slick `DatabaseConfig` instance.*/
+  /** The provider of a Slick `DatabaseConfig` instance. */
   protected val dbConfigProvider: DatabaseConfigProvider
-  protected final override lazy val dbConfig
-      : DatabaseConfig[P] = dbConfigProvider.get[P] // field is lazy to avoid early initializer problems.
+  protected final override lazy val dbConfig: DatabaseConfig[P] =
+    dbConfigProvider.get[P] // field is lazy to avoid early initializer problems.
 }

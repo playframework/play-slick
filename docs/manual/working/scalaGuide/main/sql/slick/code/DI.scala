@@ -16,8 +16,8 @@ import slick.jdbc.JdbcProfile
 import UsersSchema._
 
 //#di-database-config
-class Application @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(
-    implicit ec: ExecutionContext
+class Application @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(implicit
+    ec: ExecutionContext
 ) extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {
   //#di-database-config

@@ -77,8 +77,8 @@ object DefaultSlickApi {
     private val logger = Logger(classOf[DefaultSlickApi])
   }
   // This class is useful for delaying the creation of `DatabaseConfig` instances.
-  private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle)(
-      implicit executionContext: ExecutionContext
+  private class DatabaseConfigFactory(name: String, config: Config, lifecycle: ApplicationLifecycle)(implicit
+      executionContext: ExecutionContext
   ) {
     import DatabaseConfigFactory.logger
 
