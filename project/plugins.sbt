@@ -9,6 +9,6 @@ addSbtPlugin("com.typesafe.play" % "play-docs-sbt-plugin" % sys.props.getOrElse(
 addSbtPlugin("com.typesafe.play" % "interplay"            % sys.props.get("interplay.version").getOrElse("3.0.3"))
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.4.2")
-addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "0.9.1")
+addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "0.9.2")
 
 addSbtPlugin("com.dwijnand" % "sbt-dynver" % "4.1.1")
