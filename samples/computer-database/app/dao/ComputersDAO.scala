@@ -16,7 +16,7 @@ class ComputersDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProv
 
   class Computers(tag: Tag) extends Table[Computer](tag, "COMPUTER") {
 
-    implicit val dateColumnType = MappedColumnType.base[Date, Long](d => d.getTime, d => new Date(d))
+    implicit val dateColumnType: BaseColumnType[Date] = MappedColumnType.base[Date, Long](d => d.getTime, d => new Date(d))
 
     def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
     def name = column[String]("NAME")
