@@ -73,7 +73,7 @@ class Application @Inject() (
    * @param id Id of the computer to edit
    */
   def update(id: Long) = Action.async { implicit rs =>
-    computerForm.bindFromRequest.fold(
+    computerForm.bindFromRequest().fold(
       formWithErrors => companiesDao.options().map(options => BadRequest(html.editForm(id, formWithErrors, options))),
       computer => {
         for {
@@ -89,7 +89,7 @@ class Application @Inject() (
 
   /** Handle the 'new computer form' submission. */
   def save = Action.async { implicit rs =>
-    computerForm.bindFromRequest.fold(
+    computerForm.bindFromRequest().fold(
       formWithErrors => companiesDao.options().map(options => BadRequest(html.createForm(formWithErrors, options))),
       computer => {
         for {
