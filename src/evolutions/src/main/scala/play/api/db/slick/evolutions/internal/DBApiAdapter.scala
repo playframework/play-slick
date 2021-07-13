@@ -26,7 +26,7 @@ private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DB
     }
     .toMap
 
-  override def databases: Seq[PlayDatabase] = databasesByName.values.toSeq
+  override def databases(): Seq[PlayDatabase] = databasesByName.values.toSeq
 
   def database(name: String): PlayDatabase =
     databasesByName.getOrElse(DbName(name), throw new IllegalArgumentException(s"Could not find database for $name"))
