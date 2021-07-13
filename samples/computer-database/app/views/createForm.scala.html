@@ -12,15 +12,15 @@
         
         <fieldset>
         
-            @inputText(computerForm("name"), '_label -> "Computer name")
-            @inputText(computerForm("introduced"), '_label -> "Introduced date")
-            @inputText(computerForm("discontinued"), '_label -> "Discontinued date")
+            @inputText(computerForm("name"), Symbol("_label") -> "Computer name")
+            @inputText(computerForm("introduced"), Symbol("_label") -> "Introduced date")
+            @inputText(computerForm("discontinued"), Symbol("_label") -> "Discontinued date")
 
             @select(
                 computerForm("company"), 
                 companies, 
-                '_label -> "Company", '_default -> "-- Choose a company --",
-                '_showConstraints -> false
+                Symbol("_label") -> "Company", Symbol("_default") -> "-- Choose a company --",
+                Symbol("_showConstraints") -> false
             )
             
 
