@@ -7,7 +7,7 @@ object CommonSettings extends AutoPlugin {
   override def trigger  = allRequirements
 
   override def projectSettings = Seq(
-    parallelExecution in Test := false,
-    fork in Test := true
+    (Test / parallelExecution) := false,
+    (Test / fork) := true
   )
 }
