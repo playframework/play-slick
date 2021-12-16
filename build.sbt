@@ -2,10 +2,10 @@ import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
-resolvers in ThisBuild += Resolver.sonatypeRepo("releases")
+(ThisBuild / resolvers) += Resolver.sonatypeRepo("releases")
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
-dynverVTagPrefix in ThisBuild := false
+(ThisBuild / dynverVTagPrefix) := false
 
 // Sanity-check: assert that version comes from a tag (e.g. not a too-shallow clone)
 // https://github.com/dwijnand/sbt-dynver/#sanity-checking-the-version
@@ -73,9 +73,9 @@ lazy val docs = project
   .dependsOn(`play-slick-evolutions`)
   .settings(commonSettings)
 
-playBuildRepoName in ThisBuild := "play-slick"
+(ThisBuild / playBuildRepoName) := "play-slick"
 playBuildExtraTests := {
-  (test in (samples, Test)).value
+  (samples / Test / test).value
 }
 
 // Binary compatibility is tested against this version
@@ -103,10 +103,10 @@ def sampleProject(name: String) =
     .dependsOn(`play-slick-evolutions`)
     .settings(
       libraryDependencies += Library.playSpecs2 % "test",
-      concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
+      (Global / concurrentRestrictions) += Tags.limit(Tags.Test, 1)
     )
     .settings(libraryDependencies += Library.h2)
-    .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
+    .settings((Test / javaOptions) += "-Dslick.dbs.default.connectionTimeout=30 seconds")
     .settings(commonSettings)
 
 lazy val computerDatabaseSample = sampleProject("computer-database")
