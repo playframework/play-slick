@@ -91,10 +91,7 @@ object DatabaseConfigProvider {
    * @return a Slick `DatabaseConfig` instance for the `default` database.
    */
   @throws(classOf[IllegalArgumentException])
-  @deprecated(
-    "Use DatabaseConfigProvider#get[P] or SlickApi#dbConfig[P](\"default\") on injected instances".stripMargin,
-    "3.0.0"
-  )
+  @deprecated("Use DatabaseConfigProvider#get[P] or SlickApi#dbConfig[P](\"default\") on injected instances", "3.0.0")
   def get[P <: BasicProfile](implicit app: Application): DatabaseConfig[P] =
     DatabaseConfigLocator(app)
 
