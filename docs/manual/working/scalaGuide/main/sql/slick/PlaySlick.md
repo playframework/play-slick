@@ -46,7 +46,8 @@ Note there is no need to add the Play `evolutions` component to your dependencie
 The Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
 
 ```scala
-"com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+// play-slick 5.0.x is currently built and tested against version 1.4.200
+"com.h2database" % "h2" % "1.4.200"
 ```
 
 ## Database Configuration
