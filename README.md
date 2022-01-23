@@ -10,7 +10,7 @@ The Play Slick module makes [Slick] a first-class citizen of [Play]. It consists
 Because Slick creates and manages both a connection pool and a thread pool, integrating Slick with Play boils down to ensuring that all resources allocated by Slick are shutdown when a Play application is stopped (or reloaded).
 
 [Play]: https://www.playframework.com
-[Slick]: http://slick.typesafe.com
+[Slick]: https://scala-slick.org/
 
 The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 

@@ -8,7 +8,7 @@ Before making a contribution, it is important to make sure that the change you w
 
 ### Procedure
 
-1. Make sure you have signed the [Typesafe CLA](http://www.typesafe.com/contribute/cla); if not, sign it online.
+1. Make sure you have signed the [Lightbend CLA](https://www.lightbend.com/contribute/cla); if not, sign it online.
 2. Ensure that your contribution meets the following guidelines:
     1. Live up to the current code standard:
         - Not violate [DRY](http://programmer.97things.oreilly.com/wiki/index.php/Don%27t_Repeat_Yourself).

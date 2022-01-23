@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011-2015 Typesafe Inc. <http://www.typesafe.com>
+ * Copyright (C) Lightbend Inc. <https://www.lightbend.com>
  */
 package scalaguide.slick
 package di

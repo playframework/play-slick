@@ -1,19 +1,21 @@
 # Using Play Slick
 
-The Play Slick module makes [Slick](http://slick.typesafe.com/) a first-class citizen of Play, and consists of two primary features:
+The Play Slick module makes [Slick](https://scala-slick.org/) a first-class citizen of Play, and consists of two primary features:
 
 - Integration of Slick into Play's application lifecycle.
 - Support for [[Play database evolutions|Evolutions]].
 
-Play Slick currently supports Slick 3.3 with Play 2.7, for Scala 2.12 and Scala 2.11.
+Play Slick currently supports Slick 3.3 with Play 2.8, for Scala 2.12 and Scala 2.13.
 
-> **Note**: This guide assumes you already know both Play 2.7 and Slick 3.3.
+Previous versions support previous versions of Play! as well as Scala 2.11.
+
+> **Note**: This guide assumes you already know both Play 2.8 and Slick 3.3.
 
 ## Getting Help
 
-If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user group](https://groups.google.com/forum/#!forum/play-framework). Also, note that if you are seeking help on Slick, the [slick user group](https://groups.google.com/forum/#!forum/scalaquery) may be a better place.
+If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user community](https://discuss.playframework.com). Also, note that if you are seeking help on Slick, the [slick user community](https://scala-slick.org/community/) may be a better place.
 
-Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, you may prefer [to get in touch with Lightbend](http://www.lightbend.com/subscription), as it offers commercial support for these technologies.
+Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, you may prefer [to get in touch with Lightbend](https://www.lightbend.com/subscription), as it offers commercial support for these technologies.
 
 ## About this release
 
@@ -44,7 +46,8 @@ Note there is no need to add the Play `evolutions` component to your dependencie
 The Play Slick module does not bundle any JDBC driver. Hence, you will need to explicitly add the JDBC driver(s) you want to use in your application. For instance, if you would like to use an in-memory database such as H2, you will have to add a dependency to it:
 
 ```scala
-"com.h2database" % "h2" % "${H2_VERSION}" // replace `${H2_VERSION}` with an actual version number
+// play-slick 5.0.x is currently built and tested against version 1.4.200
+"com.h2database" % "h2" % "1.4.200"
 ```
 
 ## Database Configuration
@@ -58,11 +61,11 @@ slick.dbs.default.db.driver="org.h2.Driver"
 slick.dbs.default.db.url="jdbc:h2:mem:play"
 ```
 
-First, note that the above is a valid Slick configuration (for the complete list of configuration parameters that you can use to configure a database see the Slick ScalaDoc for [Database.forConfig](http://slick.typesafe.com/doc/3.1.0/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig%28path:String,config:com.typesafe.config.Config,driver:java.sql.Driver,classLoader:ClassLoader%29:JdbcBackend.this.Database) - make sure to expand the `forConfig` row in the doc).
+First, note that the above is a valid Slick configuration (for the complete list of configuration parameters that you can use to configure a database see the Slick ScalaDoc for [Database.forConfig](https://scala-slick.org/doc/3.3.2/api/index.html#slick.jdbc.JdbcBackend$DatabaseFactoryDef@forConfig%28path:String,config:com.typesafe.config.Config,driver:java.sql.Driver,classLoader:ClassLoader%29:JdbcBackend.this.Database) - make sure to expand the `forConfig` row in the doc).
 
 Second, the `slick.dbs` prefix before the database's name is configurable. In fact, you may change it by overriding the value of the configuration key `play.slick.db.config`.
 
-Third, in the above configuration `slick.dbs.default.profile` is used to configure the Slick profile, while `slick.dbs.default.db.driver` is the underlying JDBC driver used by Slick's backend. In the above configuration we are configuring Slick to use H2 database, but Slick supports several other databases. Check the [Slick documentation](http://slick.typesafe.com/docs) for a complete list of supported databases, and to find a matching Slick driver.
+Third, in the above configuration `slick.dbs.default.profile` is used to configure the Slick profile, while `slick.dbs.default.db.driver` is the underlying JDBC driver used by Slick's backend. In the above configuration we are configuring Slick to use H2 database, but Slick supports several other databases. Check the [Slick documentation](https://scala-slick.org/docs/) for a complete list of supported databases, and to find a matching Slick driver.
 
 Slick does not support the `DATABASE_URL` environment variable in the same way as the default Play JBDC connection pool. But starting in version 3.0.3, Slick provides a `DatabaseUrlDataSource` specifically for parsing the environment variable.
 
@@ -72,7 +75,7 @@ slick.dbs.default.db.dataSourceClass = "slick.jdbc.DatabaseUrlDataSource"
 slick.dbs.default.db.properties.driver = "org.postgresql.Driver"
 ```
 
-On some platforms, such as Heroku, you may substitute the `JDBC_DATABASE_URL`, which is in the format `jdbc:vendor://host:port/db?args`, if it is available. For example:
+On some platforms, such as Heroku, you may [substitute](https://github.com/lightbend/config/blob/master/HOCON.md#substitution-fallback-to-environment-variables) the `JDBC_DATABASE_URL` environment variable, which is in the format `jdbc:vendor://host:port/db?args`, if it is available. For example:
 
 ```conf
 slick.dbs.default.profile="slick.jdbc.PostgresProfile$"
@@ -80,7 +83,7 @@ slick.dbs.default.db.driver="org.postgresql.Driver"
 slick.dbs.default.db.url=${JDBC_DATABASE_URL}
 ```
 
-> **Note**: Failing to provide a valid value for both `slick.dbs.default.driver` and `slick.dbs.default.db.driver` will lead to an exception when trying to run your Play application.
+> **Note**: Failing to provide a valid value for both `slick.dbs.default.profile` and `slick.dbs.default.db.driver` will lead to an exception when trying to run your Play application.
 
 To configure several databases:
 
