@@ -51,14 +51,14 @@ lazy val `play-slick-root` = (project in file("."))
   )
 
 lazy val `play-slick` = (project in file("src/core"))
-  .enablePlugins(PlayLibrary, Playdoc)
+  .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.core)
   .settings(mimaSettings)
   .settings(commonSettings)
 
 lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
-  .enablePlugins(PlayLibrary, Playdoc)
+  .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.evolutions)
   .settings(mimaSettings)
@@ -83,7 +83,7 @@ val previousVersion: Option[String] = Some("5.0.0")
 
 ThisBuild / mimaFailOnNoPrevious := false
 
-def mimaSettings = mimaDefaultSettings ++ Seq(
+def mimaSettings = Seq(
   mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
 )
 
