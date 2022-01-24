@@ -4,20 +4,20 @@ import slick.basic.BasicProfile
 import slick.basic.DatabaseConfig
 
 /**
- * Generic interface for a provider of a `DatabaseConfig` instance. A `DatabaseConfig` is Slick type
- * that bundles a database and profile.
+ * Generic interface for a provider of a `DatabaseConfig` instance. A `DatabaseConfig` is Slick type that bundles a
+ * database and profile.
  *
- * Usually, you shouldn't need to create instances of `DatabaseConfigProvider` explicitly. Rather, you
- * should rely on dependency injection. If you don't want to use dependency injection, then use the
- * companion object and call `DatabaseConfigProvider.get`.
+ * Usually, you shouldn't need to create instances of `DatabaseConfigProvider` explicitly. Rather, you should rely on
+ * dependency injection. If you don't want to use dependency injection, then use the companion object and call
+ * `DatabaseConfigProvider.get`.
  *
  * ==Example==
  *
- * Here is an example of how you can use dependency injection to obtain an instance of `DatabaseConfigProvider`,
- * for the database named `default` in your **application.conf**.
+ * Here is an example of how you can use dependency injection to obtain an instance of `DatabaseConfigProvider`, for the
+ * database named `default` in your **application.conf**.
  * {{{
  * class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) {
- *  // ...
+ *   // ...
  * }
  * }}}
  *
@@ -26,7 +26,7 @@ import slick.basic.DatabaseConfig
  * {{{
  * import play.db.NamedDatabase
  * class Application @Inject()(@NamedDatabase("orders") protected val dbConfigProvider: DatabaseConfigProvider) {
- *  // ...
+ *   // ...
  * }
  * }}}
  */
@@ -35,17 +35,17 @@ trait DatabaseConfigProvider {
 }
 
 /**
- * Look up a `DatabaseConfig` (which is Slick type that bundles a database and profile) for the passed
- * database name. The `DatabaseConfig` instance is created using the database's configuration you have
- * provided in your **application.conf**, for the passed database name.
+ * Look up a `DatabaseConfig` (which is Slick type that bundles a database and profile) for the passed database name.
+ * The `DatabaseConfig` instance is created using the database's configuration you have provided in your
+ * **application.conf**, for the passed database name.
  *
- * Note that if no database name is passed, `default` is used, and hence the configuration
- * `slick.dbs.default` is used to create the `DatabaseConfig` instance.
+ * Note that if no database name is passed, `default` is used, and hence the configuration `slick.dbs.default` is used
+ * to create the `DatabaseConfig` instance.
  *
  * ==Example==
  *
- * Here is an example for obtaining a `DatabaseConfig` instance for the database named `default` in
- * your **application.conf**.
+ * Here is an example for obtaining a `DatabaseConfig` instance for the database named `default` in your
+ * **application.conf**.
  * {{{
  * import play.api.Play
  * import play.api.db.slick.DatabaseConfigProvider
@@ -53,8 +53,8 @@ trait DatabaseConfigProvider {
  * val dbConfig = DatabaseConfigProvider.get[RelationalProfile](Play.current)
  * }}}
  *
- * While here is an example for obtaining a `DatabaseConfig` instance for the database named `orders`
- * in your **application.conf**.
+ * While here is an example for obtaining a `DatabaseConfig` instance for the database named `orders` in your
+ * **application.conf**.
  * {{{
  * import play.api.Play
  * import play.api.db.slick.DatabaseConfigProvider
@@ -84,11 +84,11 @@ object DatabaseConfigProvider {
   }
 
   /**
-   * Returns a Slick database config for the `default` database declared in your **application.conf**.
-   * Throws a IllegalArgumentException if your **application.conf** does not contain a configuration for
-   * the `default` database.
+   * Returns a Slick database config for the `default` database declared in your **application.conf**. Throws a
+   * IllegalArgumentException if your **application.conf** does not contain a configuration for the `default` database.
    *
-   * @return a Slick `DatabaseConfig` instance for the `default` database.
+   * @return
+   *   a Slick `DatabaseConfig` instance for the `default` database.
    */
   @throws(classOf[IllegalArgumentException])
   @deprecated(
@@ -99,12 +99,13 @@ object DatabaseConfigProvider {
     DatabaseConfigLocator(app)
 
   /**
-   * Returns a Slick database config for the passed `dbName`.
-   * Throws a IllegalArgumentException if no database configuration exist in your **application.conf**
-   * for the passed `dbName`.
+   * Returns a Slick database config for the passed `dbName`. Throws a IllegalArgumentException if no database
+   * configuration exist in your **application.conf** for the passed `dbName`.
    *
-   * @param dbName the name of a database in your **application.conf**.
-   * @return a Slick `DatabaseConfig` instance for the requested database name.
+   * @param dbName
+   *   the name of a database in your **application.conf**.
+   * @return
+   *   a Slick `DatabaseConfig` instance for the requested database name.
    */
   @throws(classOf[IllegalArgumentException])
   @deprecated(
@@ -116,11 +117,11 @@ object DatabaseConfigProvider {
 }
 
 /**
- * Mix-in this trait if you need a Slick database and profile. This is useful if you need to define a Slick
- * table or need to execute some operation in the database.
+ * Mix-in this trait if you need a Slick database and profile. This is useful if you need to define a Slick table or
+ * need to execute some operation in the database.
  *
- * There is only one abstract field, `dbConfig`, which you can implement by calling `DatabaseConfigProvider.get`.
- * If you are injecting `DatabaseConfigProvider` instances using dependency injection, prefer using the trait
+ * There is only one abstract field, `dbConfig`, which you can implement by calling `DatabaseConfigProvider.get`. If you
+ * are injecting `DatabaseConfigProvider` instances using dependency injection, prefer using the trait
  * `HasDatabaseConfigProvider` instead of this one.
  *
  * ==Example==
@@ -161,8 +162,8 @@ trait HasDatabaseConfig[P <: BasicProfile] {
 }
 
 /**
- * Mix-in this trait if you need a Slick database and profile, and you are using dependency injection for obtaining
- * an instance of `DatabaseConfigProvider`. If you are not using dependency injection, then prefer mixing
+ * Mix-in this trait if you need a Slick database and profile, and you are using dependency injection for obtaining an
+ * instance of `DatabaseConfigProvider`. If you are not using dependency injection, then prefer mixing
  * `HasDatabaseConfig` instead.
  *
  * This trait is useful if you need to define a Slick table or need to execute some operation in the database.

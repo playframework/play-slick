@@ -12,7 +12,7 @@ object Dependencies {
 
   val evolutions = Seq(
     Library.playJdbcEvolutions,
-    Library.h2         % "test", // DBApiAdapterSpec requires a database to be available, so that a connection can be made
+    Library.h2 % "test", // DBApiAdapterSpec requires a database to be available, so that a connection can be made
     Library.playSpecs2 % "test"
   )
 }

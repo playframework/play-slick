@@ -22,14 +22,16 @@ trait SlickApi {
 
   /**
    * Returns all database configs, for all databases defined in the loaded application's configuration.
-   *  @throws PlayException if a database config cannot be created.
+   * @throws PlayException
+   *   if a database config cannot be created.
    */
   @throws(classOf[PlayException])
   def dbConfigs[P <: BasicProfile](): Seq[(DbName, DatabaseConfig[P])]
 
   /**
    * Returns a database config instance for the database named `name` in the loaded application's configuration.
-   * @throws PlayException if a database config for the passed `name` cannot be created.
+   * @throws PlayException
+   *   if a database config for the passed `name` cannot be created.
    */
   @throws(classOf[PlayException])
   def dbConfig[P <: BasicProfile](name: DbName): DatabaseConfig[P]
