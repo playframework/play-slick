@@ -20,14 +20,14 @@ class Application1 @Inject() (protected val dbConfigProvider: DatabaseConfigProv
 ) extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {
 
-  //#driver-import
+  // #driver-import
   import dbConfig.profile.api._
-  //#driver-import
+  // #driver-import
 
-  //#action-with-db
+  // #action-with-db
   def index(name: String) = Action.async { implicit request =>
     val resultingUsers: Future[Seq[User]] = db.run(Users.filter(_.name === name).result)
     resultingUsers.map(users => Ok(views.html.index(users)))
   }
-  //#action-with-db
+  // #action-with-db
 }

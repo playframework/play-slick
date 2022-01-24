@@ -20,7 +20,7 @@ class Application @Inject() (protected val dbConfigProvider: DatabaseConfigProvi
     ec: ExecutionContext
 ) extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {
-  //#di-database-config
+  // #di-database-config
 
   import profile.api._
 
@@ -38,5 +38,5 @@ class Application2 @Inject() (
 )(implicit ec: ExecutionContext)
     extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {
-  //#named-di-database-config
+  // #named-di-database-config
 }

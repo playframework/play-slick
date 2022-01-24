@@ -1,4 +1,5 @@
 import scala.sys.process._
+
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
@@ -21,7 +22,7 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion := scala213,
+  scalaVersion       := scala213,
   crossScalaVersions := Seq(scala213, scala212),
   resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
 )
