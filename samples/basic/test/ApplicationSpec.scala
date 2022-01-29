@@ -5,9 +5,8 @@ import play.api.test.PlaySpecification
 import play.api.test.WithApplication
 
 /**
- * Add your spec here.
- * You can mock out a whole application including requests, plugins etc.
- * For more information, consult the wiki.
+ * Add your spec here. You can mock out a whole application including requests, plugins etc. For more information,
+ * consult the wiki.
  */
 class ApplicationSpec extends PlaySpecification {
 

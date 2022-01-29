@@ -9,13 +9,15 @@ import slick.jdbc.JdbcProfile
 import models.Record
 import slick.basic.DatabaseConfig
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 import akka.NotUsed
 import akka.stream.scaladsl.Source
 
-class RecordsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
-  extends HasDatabaseConfig[JdbcProfile] {
+class RecordsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit
+    executionContext: ExecutionContext
+) extends HasDatabaseConfig[JdbcProfile] {
 
   import profile.api._
 
@@ -36,9 +38,8 @@ class RecordsDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvid
   /**
    * Non-executed Slick queries which may be composed by chaining.
    *
-   * Only place methods here which return a not-yet executed Query or
-   * (individually meaningful) Column. Methods placed here can be
-   * chained/combined.
+   * Only place methods here which return a not-yet executed Query or (individually meaningful) Column. Methods placed
+   * here can be chained/combined.
    */
   implicit class QueryExtensions(val q: Query[Records, Record, Seq]) {
     def names = q.map(_.name)

@@ -1,26 +1,30 @@
 package dao
 
-import javax.inject.{ Inject, Singleton }
+import javax.inject.Inject
+import javax.inject.Singleton
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 import models.Company
-import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.db.slick.HasDatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
 trait CompaniesComponent { self: HasDatabaseConfigProvider[JdbcProfile] =>
   import profile.api._
 
   class Companies(tag: Tag) extends Table[Company](tag, "COMPANY") {
-    def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
+    def id   = column[Long]("ID", O.PrimaryKey, O.AutoInc)
     def name = column[String]("NAME")
-    def * = (id.?, name) <> (Company.tupled, Company.unapply _)
+    def *    = (id.?, name) <> (Company.tupled, Company.unapply _)
   }
 }
 
 @Singleton()
-class CompaniesDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContext: ExecutionContext)
-  extends CompaniesComponent
-  with HasDatabaseConfigProvider[JdbcProfile] {
+class CompaniesDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit
+    executionContext: ExecutionContext
+) extends CompaniesComponent
+    with HasDatabaseConfigProvider[JdbcProfile] {
 
   import profile.api._
 

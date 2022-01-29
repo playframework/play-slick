@@ -3,23 +3,26 @@ package bootstrap
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 
-import dao.{ CompaniesDAO, ComputersDAO }
-import models.{ Company, Computer }
+import dao.CompaniesDAO
+import dao.ComputersDAO
+import models.Company
+import models.Computer
 
-import scala.concurrent.{ Await, ExecutionContext }
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration
 import scala.util.Try
 
 /** Initial set of data to be imported into the sample application. */
-private[bootstrap] class InitialData @Inject() (
-  companiesDao: CompaniesDAO,
-  computersDao: ComputersDAO)(implicit executionContext: ExecutionContext) {
+private[bootstrap] class InitialData @Inject() (companiesDao: CompaniesDAO, computersDao: ComputersDAO)(implicit
+    executionContext: ExecutionContext
+) {
 
   def insert(): Unit = {
     val insertInitialDataFuture = for {
       count <- computersDao.count() if count == 0
-      _ <- companiesDao.insert(InitialData.companies)
-      _ <- computersDao.insert(InitialData.computers)
+      _     <- companiesDao.insert(InitialData.companies)
+      _     <- computersDao.insert(InitialData.computers)
     } yield ()
 
     Try(Await.result(insertInitialDataFuture, Duration.Inf))
@@ -73,7 +76,8 @@ private[bootstrap] object InitialData {
     Company(Option(40L), "Texas Instruments"),
     Company(Option(41L), "HTC Corporation"),
     Company(Option(42L), "Research In Motion"),
-    Company(Option(43L), "Samsung Electronics"))
+    Company(Option(43L), "Samsung Electronics")
+  )
 
   def computers = Seq(
     Computer(Option(1L), "MacBook Pro 15.4 inch", None, None, Option(1L)),
@@ -92,18 +96,36 @@ private[bootstrap] object InitialData {
     Computer(Option(14L), "CM-2", None, None, Option(2L)),
     Computer(Option(15L), "Connection Machine", Option(sdf.parse("1987-01-01")), None, Option(2L)),
     Computer(Option(16L), "Apple II", Option(sdf.parse("1977-04-01")), Option(sdf.parse("1993-10-01")), Option(1L)),
-    Computer(Option(17L), "Apple III Plus", Option(sdf.parse("1983-12-01")), Option(sdf.parse("1984-04-01")), Option(1L)),
+    Computer(
+      Option(17L),
+      "Apple III Plus",
+      Option(sdf.parse("1983-12-01")),
+      Option(sdf.parse("1984-04-01")),
+      Option(1L)
+    ),
     Computer(Option(18L), "COSMAC ELF", None, None, Option(3L)),
     Computer(Option(19L), "COSMAC VIP", Option(sdf.parse("1977-01-01")), None, Option(3L)),
     Computer(Option(20L), "ELF II", Option(sdf.parse("1977-01-01")), None, Option(4L)),
     Computer(Option(21L), "Macintosh", Option(sdf.parse("1984-01-24")), None, Option(1L)),
     Computer(Option(22L), "Macintosh II", None, None, None),
-    Computer(Option(23L), "Macintosh Plus", Option(sdf.parse("1986-01-16")), Option(sdf.parse("1990-10-15")), Option(1L)),
+    Computer(
+      Option(23L),
+      "Macintosh Plus",
+      Option(sdf.parse("1986-01-16")),
+      Option(sdf.parse("1990-10-15")),
+      Option(1L)
+    ),
     Computer(Option(24L), "Macintosh IIfx", None, None, None),
     Computer(Option(25L), "iMac", Option(sdf.parse("1998-01-01")), None, Option(1L)),
     Computer(Option(26L), "Mac Mini", Option(sdf.parse("2005-01-22")), None, Option(1L)),
     Computer(Option(27L), "Mac Pro", Option(sdf.parse("2006-08-07")), None, Option(1L)),
-    Computer(Option(28L), "Power Macintosh", Option(sdf.parse("1994-03-01")), Option(sdf.parse("2006-08-01")), Option(1L)),
+    Computer(
+      Option(28L),
+      "Power Macintosh",
+      Option(sdf.parse("1994-03-01")),
+      Option(sdf.parse("2006-08-01")),
+      Option(1L)
+    ),
     Computer(Option(29L), "PowerBook", Option(sdf.parse("1991-01-01")), Option(sdf.parse("2006-01-01")), Option(1L)),
     Computer(Option(30L), "Xserve", None, None, None),
     Computer(Option(31L), "Powerbook 100", None, None, None),
@@ -153,9 +175,21 @@ private[bootstrap] object InitialData {
     Computer(Option(75L), "Amiga 3000", None, None, Option(6L)),
     Computer(Option(76L), "Amiga 600", Option(sdf.parse("1992-03-01")), None, Option(6L)),
     Computer(Option(77L), "Macintosh 128K", Option(sdf.parse("1984-01-01")), None, Option(1L)),
-    Computer(Option(78L), "Macintosh 512K", Option(sdf.parse("1984-09-10")), Option(sdf.parse("1986-04-14")), Option(1L)),
+    Computer(
+      Option(78L),
+      "Macintosh 512K",
+      Option(sdf.parse("1984-09-10")),
+      Option(sdf.parse("1986-04-14")),
+      Option(1L)
+    ),
     Computer(Option(79L), "Macintosh SE", Option(sdf.parse("1987-03-02")), Option(sdf.parse("1989-08-01")), Option(1L)),
-    Computer(Option(80L), "Macintosh SE/30", Option(sdf.parse("1989-01-19")), Option(sdf.parse("1991-10-21")), Option(1L)),
+    Computer(
+      Option(80L),
+      "Macintosh SE/30",
+      Option(sdf.parse("1989-01-19")),
+      Option(sdf.parse("1991-10-21")),
+      Option(1L)
+    ),
     Computer(Option(81L), "Canon Cat", Option(sdf.parse("1987-01-01")), None, Option(15L)),
     Computer(Option(82L), "Nokia 770", None, None, Option(16L)),
     Computer(Option(83L), "Nokia N800", Option(sdf.parse("2007-01-01")), None, Option(16L)),
@@ -223,13 +257,25 @@ private[bootstrap] object InitialData {
     Computer(Option(145L), "TRS-80 Color COMPUTER 2", None, None, None),
     Computer(Option(146L), "TRS-80 Color COMPUTER 3", None, None, None),
     Computer(Option(147L), "TRS-80 Model 1", Option(sdf.parse("1977-01-01")), None, Option(5L)),
-    Computer(Option(148L), "Timex Sinclair 2068", Option(sdf.parse("1983-11-01")), Option(sdf.parse("1984-04-01")), Option(23L)),
+    Computer(
+      Option(148L),
+      "Timex Sinclair 2068",
+      Option(sdf.parse("1983-11-01")),
+      Option(sdf.parse("1984-04-01")),
+      Option(23L)
+    ),
     Computer(Option(149L), "ZX Spectrum", Option(sdf.parse("1982-01-01")), None, Option(25L)),
     Computer(Option(150L), "Xerox Star", Option(sdf.parse("1981-01-01")), None, Option(26L)),
     Computer(Option(151L), "Xerox Alto", None, None, None),
     Computer(Option(152L), "Acorn Archimedes", None, None, Option(22L)),
     Computer(Option(153L), "Nintendo Entertainment System", None, None, Option(24L)),
-    Computer(Option(154L), "Super Nintendo Entertainment System", Option(sdf.parse("1991-08-01")), Option(sdf.parse("1999-01-01")), Option(24L)),
+    Computer(
+      Option(154L),
+      "Super Nintendo Entertainment System",
+      Option(sdf.parse("1991-08-01")),
+      Option(sdf.parse("1999-01-01")),
+      Option(24L)
+    ),
     Computer(Option(155L), "Super Famicom", None, None, None),
     Computer(Option(156L), "Nintendo GameCube", None, None, Option(24L)),
     Computer(Option(157L), "Game Boy line", None, None, None),
@@ -244,7 +290,13 @@ private[bootstrap] object InitialData {
     Computer(Option(166L), "IBM AP-101S", None, None, Option(13L)),
     Computer(Option(167L), "ProLiant", None, None, Option(27L)),
     Computer(Option(168L), "Http://nepomuk.semanticdesktop.org/xwiki/", None, None, None),
-    Computer(Option(169L), "Sinclair QL", Option(sdf.parse("1984-01-01")), Option(sdf.parse("1986-01-01")), Option(25L)),
+    Computer(
+      Option(169L),
+      "Sinclair QL",
+      Option(sdf.parse("1984-01-01")),
+      Option(sdf.parse("1986-01-01")),
+      Option(25L)
+    ),
     Computer(Option(170L), "Sinclair ZX81", Option(sdf.parse("1981-01-01")), None, Option(25L)),
     Computer(Option(171L), "Sinclair ZX80", None, None, Option(25L)),
     Computer(Option(172L), "Atari 65XE", None, None, Option(20L)),
@@ -373,7 +425,13 @@ private[bootstrap] object InitialData {
     Computer(Option(295L), "BBN TC2000", Option(sdf.parse("1989-08-01")), None, Option(35L)),
     Computer(Option(296L), "WRT54G", None, None, None),
     Computer(Option(297L), "ThinkPad", Option(sdf.parse("1992-01-01")), None, Option(36L)),
-    Computer(Option(298L), "Apple Newton", Option(sdf.parse("1993-01-01")), Option(sdf.parse("1998-01-01")), Option(1L)),
+    Computer(
+      Option(298L),
+      "Apple Newton",
+      Option(sdf.parse("1993-01-01")),
+      Option(sdf.parse("1998-01-01")),
+      Option(1L)
+    ),
     Computer(Option(299L), "Atanasoff-Berry COMPUTER", Option(sdf.parse("1937-01-01")), None, None),
     Computer(Option(300L), "Atlas COMPUTER", Option(sdf.parse("1962-01-01")), Option(sdf.parse("1974-01-01")), None),
     Computer(Option(301L), "ASUS Eee PC 901", None, None, Option(37L)),
@@ -571,7 +629,13 @@ private[bootstrap] object InitialData {
     Computer(Option(493L), "lenovo thinkpad t400s", None, None, None),
     Computer(Option(494L), "Nokia N900", Option(sdf.parse("2009-10-01")), None, Option(16L)),
     Computer(Option(495L), "Internet Tablet", None, None, None),
-    Computer(Option(496L), "Meiko Computing Surface", Option(sdf.parse("1986-01-01")), Option(sdf.parse("1993-01-01")), None),
+    Computer(
+      Option(496L),
+      "Meiko Computing Surface",
+      Option(sdf.parse("1986-01-01")),
+      Option(sdf.parse("1993-01-01")),
+      None
+    ),
     Computer(Option(497L), "CS-2", None, None, None),
     Computer(Option(498L), "IBM 701", Option(sdf.parse("1952-01-01")), None, Option(13L)),
     Computer(Option(499L), "IBM 5100", Option(sdf.parse("1975-01-01")), None, Option(13L)),
@@ -649,5 +713,6 @@ private[bootstrap] object InitialData {
     Computer(Option(571L), "Lenovo Thinkpad Edge 11", None, None, Option(36L)),
     Computer(Option(572L), "Dell Vostro", None, None, None),
     Computer(Option(573L), "Gateway LT3103U", Option(sdf.parse("2008-01-01")), None, None),
-    Computer(Option(574L), "iPhone 4S", Option(sdf.parse("2011-10-14")), None, Option(1L)))
+    Computer(Option(574L), "iPhone 4S", Option(sdf.parse("2011-10-14")), None, Option(1L))
+  )
 }

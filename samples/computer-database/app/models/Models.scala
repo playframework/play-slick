@@ -9,4 +9,10 @@ case class Page[A](items: Seq[A], page: Int, offset: Long, total: Long) {
 
 case class Company(id: Option[Long], name: String)
 
-case class Computer(id: Option[Long] = None, name: String, introduced: Option[Date] = None, discontinued: Option[Date] = None, companyId: Option[Long] = None)
+case class Computer(
+    id: Option[Long] = None,
+    name: String,
+    introduced: Option[Date] = None,
+    discontinued: Option[Date] = None,
+    companyId: Option[Long] = None
+)

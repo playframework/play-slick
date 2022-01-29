@@ -42,11 +42,15 @@ class ModelSpec extends Specification {
     "be listed along its companies" in new WithApplication {
       val computers = Await.result(computersDao.list(), Duration.Inf)
       computers.total must equalTo(574)
-      computers.items must have length (10)
+      (computers.items must have).length(10)
     }
 
     "be updated if needed" in new WithApplication {
-      Await.result(computersDao.update(21, Computer(name = "The Macintosh", introduced = None, discontinued = None, companyId = Some(1))), Duration.Inf)
+      Await.result(
+        computersDao
+          .update(21, Computer(name = "The Macintosh", introduced = None, discontinued = None, companyId = Some(1))),
+        Duration.Inf
+      )
 
       val macintosh = Await.result(computersDao.findById(21), Duration.Inf).get
       macintosh.name must equalTo("The Macintosh")

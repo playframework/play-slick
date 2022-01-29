@@ -14,7 +14,6 @@ class IntegrationSpec extends Specification {
     "return all records, which were enumerated in chunks" in {
       val port = 3334
       running(TestServer(port), HTMLUNIT) { browser =>
-
         // verify that comet handler received records in chunks
         browser.goTo("http://localhost:" + port)
         browser.await().atMost(2, TimeUnit.SECONDS).until(browser.el("#items-list ul li")).present()

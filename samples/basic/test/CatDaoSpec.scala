@@ -17,13 +17,10 @@ class CatDAOSpec extends Specification {
 
   "CatDAO" should {
     "work as expected" in new WithApplicationLoader {
-      val app2dao = Application.instanceCache[CatDAO]
+      val app2dao     = Application.instanceCache[CatDAO]
       val dao: CatDAO = app2dao(app)
 
-      val testKitties = Set(
-        Cat("kit", "black"),
-        Cat("garfield", "orange"),
-        Cat("creme puff", "grey"))
+      val testKitties = Set(Cat("kit", "black"), Cat("garfield", "orange"), Cat("creme puff", "grey"))
 
       Await.result(Future.sequence(testKitties.map(dao.insert)), 1 seconds)
       val storedCats = Await.result(dao.all(), 1 seconds)

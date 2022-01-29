@@ -8,11 +8,15 @@ import dao.RecordsDAO
 import play.api.http.ContentTypes
 import play.api.libs.Comet
 import play.api.libs.json.Json.toJson
-import play.api.mvc.{ AbstractController, ControllerComponents }
+import play.api.mvc.AbstractController
+import play.api.mvc.ControllerComponents
 
 import scala.concurrent.ExecutionContext
 
-class Application @Inject() (recordsDAO: RecordsDAO, components: ControllerComponents)(implicit materializer: Materializer, executionContext: ExecutionContext) extends AbstractController(components) {
+class Application @Inject() (recordsDAO: RecordsDAO, components: ControllerComponents)(implicit
+    materializer: Materializer,
+    executionContext: ExecutionContext
+) extends AbstractController(components) {
 
   def index = Action {
     Ok(views.html.index())
@@ -28,6 +32,6 @@ class Application @Inject() (recordsDAO: RecordsDAO, components: ControllerCompo
     //
     // see https://www.playframework.com/documentation/2.7.x/ScalaComet
     val source = recordsDAO.streamInChunksOf(2).map(records => toJson(records))
-    Ok.chunked(source via Comet.json("parent.cometMessage")).as(ContentTypes.HTML)
+    Ok.chunked(source.via(Comet.json("parent.cometMessage"))).as(ContentTypes.HTML)
   }
 }
