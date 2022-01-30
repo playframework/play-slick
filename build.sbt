@@ -74,10 +74,14 @@ lazy val docs = project
   .dependsOn(`play-slick-evolutions`)
   .settings(commonSettings)
 
+<<<<<<< HEAD
 ThisBuild / playBuildRepoName := "play-slick"
 playBuildExtraTests := {
   (samples / Test / test).value
 }
+=======
+playBuildRepoName in ThisBuild := "play-slick"
+>>>>>>> 982aa5d (Remove slick samples, migrated to play-samples repo)
 
 // Binary compatibility is tested against this version
 val previousVersion: Option[String] = Some("5.0.0")
@@ -87,6 +91,7 @@ ThisBuild / mimaFailOnNoPrevious := false
 def mimaSettings = Seq(
   mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
 )
+<<<<<<< HEAD
 
 lazy val samples = project
   .in(file("samples"))
@@ -115,3 +120,5 @@ lazy val computerDatabaseSample = sampleProject("computer-database")
 lazy val streamsSample = sampleProject("streams")
 
 lazy val basicSample = sampleProject("basic")
+=======
+>>>>>>> 982aa5d (Remove slick samples, migrated to play-samples repo)
