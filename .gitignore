@@ -22,3 +22,5 @@ bin
 
 # IntelliJ IDEA specific
 .idea
+
+.bsp/
