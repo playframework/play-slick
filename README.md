@@ -14,6 +14,8 @@ Because Slick creates and manages both a connection pool and a thread pool, inte
 
 The plugin has its own release cycle and therefore is not integrated into either core Play or Slick.
 
+Examples of `play-slick`s usage can be found [here](https://github.com/playframework/play-samples).
+
 ## Current Version
 
 To use play-slick, you need to add the following dependencies:
