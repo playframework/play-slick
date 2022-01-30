@@ -74,9 +74,6 @@ lazy val docs = project
   .settings(commonSettings)
 
 playBuildRepoName in ThisBuild := "play-slick"
-playBuildExtraTests := {
-  (test in (samples, Test)).value
-}
 
 // Binary compatibility is tested against this version
 val previousVersion: Option[String] = Some("5.0.0")
@@ -86,31 +83,3 @@ ThisBuild / mimaFailOnNoPrevious := false
 def mimaSettings = mimaDefaultSettings ++ Seq(
   mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
 )
-
-lazy val samples = project
-  .in(file("samples"))
-  .aggregate(
-    basicSample,
-    computerDatabaseSample,
-    streamsSample
-  )
-
-def sampleProject(name: String) =
-  Project(s"$name-sample", file("samples") / name)
-    .enablePlugins(PlayScala)
-    .disablePlugins(PlayFilters)
-    .dependsOn(`play-slick`)
-    .dependsOn(`play-slick-evolutions`)
-    .settings(
-      libraryDependencies += Library.playSpecs2 % "test",
-      concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
-    )
-    .settings(libraryDependencies += Library.h2)
-    .settings(javaOptions in Test += "-Dslick.dbs.default.connectionTimeout=30 seconds")
-    .settings(commonSettings)
-
-lazy val computerDatabaseSample = sampleProject("computer-database")
-
-lazy val streamsSample = sampleProject("streams")
-
-lazy val basicSample = sampleProject("basic")

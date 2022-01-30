@@ -129,7 +129,7 @@ Of course, you should replace the string `"<db-name>"` with the name of the data
 
 > Note: To access the database object, you need only call the function `db` on the `HasDatabaseConfig` trait. You do not need to reference the dbConfigProvider constructor parameter.
 
-For a full example, have a look at [this sample project](https://github.com/playframework/play-slick/tree/master/samples/basic).
+For a full example, have a look at [this sample project](https://github.com/playframework/play-samples/tree/HEAD/play-scala-slick-example/samples/basic).
 
 ### Compile-time dependency injection
 
