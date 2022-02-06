@@ -7,7 +7,7 @@ repository:
   # We don't need wiki since the documentation lives in playframework.com
   has_wiki: false
   has_downloads: true
-  default_branch: master
+  default_branch: main
   allow_squash_merge: true
   allow_merge_commit: false
   allow_rebase_merge: false

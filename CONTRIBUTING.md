@@ -28,13 +28,13 @@ Before making a contribution, it is important to make sure that the change you w
         * Java APIs should go to `framework/play/src/main/java`, package structure is `play.myapipackage.xxxx`
         * Scala APIs should go to `framework/play/src/main/scala`, where the package structure is `play.api.myapipackage`
         * Features are forever, always think about whether a new feature really belongs to the core framework or if it should be implemented as a module
-        * Code must conform to standard style guidelines and pass all tests (see [validatePullRequest](https://github.com/playframework/playframework/blob/master/framework/validatePullRequest))
+        * Code must conform to standard style guidelines and pass all tests (see [validatePullRequest](https://github.com/playframework/playframework/blob/main/framework/validatePullRequest))
     6. New files must:
         * Have a Typesafe copyright header in the style of ``Copyright (C) 2009-2015 Typesafe Inc. <http://www.typesafe.com>``.
         * Not use ``@author`` tags since it does not encourage [Collective Code Ownership](http://www.extremeprogramming.org/rules/collective.html).
 3. Ensure that your commits are squashed.  See [working with git](https://playframework.com/documentation/latest/WorkingWithGit) for more information.
 4. Submit a pull request.
 
-If the pull request does not meet the above requirements then the code should **not** be merged into master, or even reviewed - regardless of how good or important it is. No exceptions.
+If the pull request does not meet the above requirements then the code should **not** be merged into main, or even reviewed - regardless of how good or important it is. No exceptions.
 
 The pull request will be reviewed according to the [implementation decision process](https://playframework.com/community-process#Implementation-decisions).
