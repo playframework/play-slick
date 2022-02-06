@@ -74,7 +74,7 @@ slick.dbs.default.db.dataSourceClass = "slick.jdbc.DatabaseUrlDataSource"
 slick.dbs.default.db.properties.driver = "org.postgresql.Driver"
 ```
 
-On some platforms, such as Heroku, you may [substitute](https://github.com/lightbend/config/blob/master/HOCON.md#substitution-fallback-to-environment-variables) the `JDBC_DATABASE_URL` environment variable, which is in the format `jdbc:vendor://host:port/db?args`, if it is available. For example:
+On some platforms, such as Heroku, you may [substitute](https://github.com/lightbend/config/blob/main/HOCON.md#substitution-fallback-to-environment-variables) the `JDBC_DATABASE_URL` environment variable, which is in the format `jdbc:vendor://host:port/db?args`, if it is available. For example:
 
 ```conf
 slick.dbs.default.profile="slick.jdbc.PostgresProfile$"

@@ -16,8 +16,8 @@ Releasing a new version of play-slick is truly simple.
 That will start the build. The output should be similar to
 
 ```shell
-play ▶ [] ~/deploy$ ./release --project play-slick --branch master --tag 5.0.0
-This will release play-slick from branch master using JDK8, continue? [y/n] y
+play ▶ [] ~/deploy$ ./release --project play-slick --branch main --tag 5.0.0
+This will release play-slick from branch main using JDK8, continue? [y/n] y
 java version "1.8.0_31"
 ...
 ```
@@ -33,7 +33,7 @@ Once the binaries are successfully deployed, you will be prompted if you wish to
 [info] Setting version to '1.0.2-SNAPSHOT'.
 [info] Reapplying settings...
 [info] Set current project to play-slick-root (in build file:/home/play/deploy/play-slick/)
-[info] [master fa73a4f] Setting version to 1.0.2-SNAPSHOT
+[info] [main fa73a4f] Setting version to 1.0.2-SNAPSHOT
 [info]  1 file changed, 1 insertion(+), 1 deletion(-)
 Push changes to the remote repository (y/n)? [y]
 ```
