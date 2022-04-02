@@ -4,7 +4,7 @@ The canonical version of this document can be found on the [Play contributor gui
 
 ### Prerequisites
 
-Before making a contribution, it is important to make sure that the change you wish to make and the approach you wish to take will likely be accepted, otherwise you may end up doing a lot of work for nothing.  If the change is only small, for example, if it's a documentation change or a simple bugfix, then it's likely to be accepted with no prior discussion.  However, new features, or bigger refactorings should first be discussed on the [developer mailing list](https://groups.google.com/forum/#!forum/play-framework-dev).  Additionally, any issues with the [community label](https://github.com/playframework/play-slick/issues?q=is%3Aopen+is%3Aissue+label%3Acommunity) have been agreed to be a change that will likely be accepted.
+Before making a contribution, it is important to make sure that the change you wish to make and the approach you wish to take will likely be accepted, otherwise you may end up doing a lot of work for nothing.  If the change is only small, for example, if it's a documentation change or a simple bugfix, then it's likely to be accepted with no prior discussion.  However, new features, or bigger refactorings should first be discussed in the [Play Framework Forum](https://github.com/playframework/playframework/discussions).  Additionally, any issues with the [community label](https://github.com/playframework/play-slick/issues?q=is%3Aopen+is%3Aissue+label%3Acommunity) have been agreed to be a change that will likely be accepted.
 
 ### Procedure
 
