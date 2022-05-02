@@ -1,0 +1,48 @@
+name: Check
+
+on:
+  pull_request:
+
+concurrency:
+  # Only run once for latest commit per ref and cancel other (previous) runs.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-code-style:
+    name: Code Style
+    uses: playframework/.github/.github/workflows/sbt.yml@v1
+    with:
+      cmd: sbt scalafmtCheckAll scalafmtSbtCheck
+
+  check-binary-compatibility:
+    name: Binary Compatibility
+    uses: playframework/.github/.github/workflows/binary-check.yml@v1
+    with:
+      cmd: sbt mimaReportBinaryIssues
+
+  check-docs:
+    name: Docs
+    uses: playframework/.github/.github/workflows/sbt.yml@v1
+    with:
+      cmd: sbt docs/scalafmtCheckAll docs/scalafmtSbtCheck docs/test docs/validateDocs
+
+  tests:
+    name: Tests
+    needs: # Waiting more lightweight checks
+      - "check-code-style"
+      - "check-binary-compatibility"
+      - "check-docs"
+    uses: playframework/.github/.github/workflows/sbt-matrix.yml@v1
+    with:
+      java: >-
+        [ "11", "8" ]
+      scala: >-
+        [ "2.12.15", "2.13.8" ]
+      cmd: sbt ++$SCALA_VERSION test
+
+  finish:
+    name: Finish
+    needs: # Should be last
+      - "tests"
+    uses: playframework/.github/.github/workflows/rtm.yml@v1
