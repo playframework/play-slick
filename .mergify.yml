@@ -2,8 +2,8 @@
 pull_request_rules:
   - name: Merge PRs that are ready
     conditions:
-      - status-success=Travis CI - Pull Request
-      - status-success=typesafe-cla-validator
+      - check-success~=/ Ready To Merge$
+      - check-success=typesafe-cla-validator
       - "#approved-reviews-by>=1"
       - "#review-requested=0"
       - "#changes-requested-reviews-by=0"
