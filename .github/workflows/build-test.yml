@@ -18,8 +18,6 @@ jobs:
   check-binary-compatibility:
     name: Binary Compatibility
     uses: playframework/.github/.github/workflows/binary-check.yml@v1
-    with:
-      cmd: sbt mimaReportBinaryIssues
 
   check-docs:
     name: Docs
