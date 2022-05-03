@@ -2,6 +2,8 @@ name: Publish
 
 on:
   push:
+    branches: # Snapshots
+      - main
     tags: ["*"] # Releases
 
 jobs:

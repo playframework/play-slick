@@ -1,3 +1,8 @@
+queue_rules:
+  - name: default
+    conditions:
+      # Conditions to get out of the queue (= merged)
+      - check-success~=/ Ready To Merge$
 
 pull_request_rules:
   - name: Merge PRs that are ready
@@ -10,11 +15,14 @@ pull_request_rules:
       - label!=status:block-merge
       - label=status:merge-when-green
     actions:
-      merge:
+      queue:
         method: merge
-        
+        name: default
+
   - name: Delete the PR branch after merge
     conditions:
       - merged
     actions:
       delete_head_branch: {}
+      label:
+        remove: [ "status:merge-when-green" ]
