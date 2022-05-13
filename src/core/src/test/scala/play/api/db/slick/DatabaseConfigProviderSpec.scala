@@ -10,7 +10,7 @@ import slick.basic.BasicProfile
 class DatabaseConfigProviderSpec extends Specification {
 
   def withApp[T](block: Application => T): T = {
-    val app = new GuiceApplicationBuilder()
+    val app = new GuiceApplicationBuilder
       .configure(TestData.configuration)
       .in(Mode.Test)
       .build()

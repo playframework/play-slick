@@ -16,7 +16,7 @@ import slick.jdbc.JdbcProfile
 import UsersSchema._
 
 //#di-database-config
-class Application @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(implicit
+class Application @Inject(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(implicit
     ec: ExecutionContext
 ) extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {
@@ -32,7 +32,7 @@ class Application @Inject() (protected val dbConfigProvider: DatabaseConfigProvi
 
 import play.db.NamedDatabase
 //#named-di-database-config
-class Application2 @Inject() (
+class Application2 @Inject(
     @NamedDatabase("<db-name>") protected val dbConfigProvider: DatabaseConfigProvider,
     cc: ControllerComponents
 )(implicit ec: ExecutionContext)

@@ -15,7 +15,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scalaguide.slick.UsersSchema._
 
-class Application1 @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(implicit
+class Application1 @Inject(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(implicit
     ec: ExecutionContext
 ) extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {

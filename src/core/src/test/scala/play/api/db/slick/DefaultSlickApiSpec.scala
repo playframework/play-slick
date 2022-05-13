@@ -53,7 +53,7 @@ class DefaultSlickApiSpec extends Specification with Mockito { self =>
       api.dbConfig[BasicProfile](DbName("default"))
 
       // confirm that SlickApi is adding its own hook
-      hooks(lifecycle) must have size (originalNumOfHooks + 1)
+      hooks(lifecycle) must have size originalNumOfHooks + 1
     }
   }
 }

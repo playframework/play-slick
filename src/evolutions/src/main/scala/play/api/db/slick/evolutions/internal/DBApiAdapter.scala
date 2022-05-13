@@ -18,7 +18,7 @@ import slick.jdbc.hikaricp.HikariCPJdbcDataSource
 
 import scala.util.control.ControlThrowable
 
-private[evolutions] class DBApiAdapter @Inject() (slickApi: SlickApi) extends DBApi {
+private[evolutions] class DBApiAdapter @Inject(slickApi: SlickApi) extends DBApi {
   private lazy val databasesByName: Map[DbName, PlayDatabase] = slickApi
     .dbConfigs[JdbcProfile]()
     .map { case (name, dbConfig) =>

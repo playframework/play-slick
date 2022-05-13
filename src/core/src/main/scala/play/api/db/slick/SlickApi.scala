@@ -37,7 +37,7 @@ trait SlickApi {
   def dbConfig[P <: BasicProfile](name: DbName): DatabaseConfig[P]
 }
 
-final class DefaultSlickApi @Inject() (
+final class DefaultSlickApi @Inject(
     environment: Environment,
     configuration: Configuration,
     lifecycle: ApplicationLifecycle
