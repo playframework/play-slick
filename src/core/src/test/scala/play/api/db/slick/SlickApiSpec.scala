@@ -48,15 +48,15 @@ class SlickApiSpec extends Specification {
   "SlickApi.dbConfigs" should {
     "return all DatabaseConfig instances for a valid configuration" in {
       import SUTWithGoodConfig._
-      api.dbConfigs[BasicProfile] must have size (4)
+      api.dbConfigs[BasicProfile]() must have size 4
     }
     "throw if a database name doesn't exist in the config" in {
       import SUTWithBadConfig._
-      api.dbConfigs[BasicProfile] must throwA[PlayException]
+      api.dbConfigs[BasicProfile]() must throwA[PlayException]
     }
     "throw if a database config doesn't define a Slick profile" in {
       import SUTWithBadConfig._
-      api.dbConfigs[BasicProfile] must throwA[PlayException]
+      api.dbConfigs[BasicProfile]() must throwA[PlayException]
     }
   }
 }

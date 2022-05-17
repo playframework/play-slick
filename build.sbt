@@ -10,11 +10,7 @@ dynverVTagPrefix in ThisBuild := false
 // Sanity-check: assert that version comes from a tag (e.g. not a too-shallow clone)
 // https://github.com/dwijnand/sbt-dynver/#sanity-checking-the-version
 Global / onLoad := (Global / onLoad).value.andThen { s =>
-  val v = version.value
-  if (dynverGitDescribeOutput.value.hasNoTags)
-    throw new MessageOnlyException(
-      s"Failed to derive version from git tags. Maybe run `git fetch --unshallow`? Version: $v"
-    )
+  dynverAssertTagVersion.value
   s
 }
 
@@ -23,7 +19,7 @@ lazy val commonSettings = Seq(
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion := scala213,
   crossScalaVersions := Seq(scala213, scala212),
-  resolvers += Resolver.bintrayRepo("akka", "snapshots")
+  resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
 )
 
 lazy val `play-slick-root` = (project in file("."))
@@ -33,22 +29,6 @@ lazy val `play-slick-root` = (project in file("."))
     `play-slick-evolutions`
   )
   .settings(commonSettings)
-  .settings(
-    Seq(
-      // this overrides releaseProcess to make it work with sbt-dynver
-      releaseProcess := {
-        import ReleaseTransformations._
-        Seq[ReleaseStep](
-          checkSnapshotDependencies,
-          runClean,
-          releaseStepCommandAndRemaining("+test"),
-          releaseStepCommandAndRemaining("+publishSigned"),
-          releaseStepCommand("sonatypeBundleRelease"),
-          pushChanges // <- this needs to be removed when releasing from tag
-        )
-      }
-    )
-  )
 
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc)
