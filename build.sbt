@@ -30,22 +30,6 @@ lazy val `play-slick-root` = (project in file("."))
     `play-slick-evolutions`
   )
   .settings(commonSettings)
-  .settings(
-    Seq(
-      // this overrides releaseProcess to make it work with sbt-dynver
-      releaseProcess := {
-        import ReleaseTransformations._
-        Seq[ReleaseStep](
-          checkSnapshotDependencies,
-          runClean,
-          releaseStepCommandAndRemaining("+test"),
-          releaseStepCommandAndRemaining("+publishSigned"),
-          releaseStepCommand("sonatypeBundleRelease"),
-          pushChanges // <- this needs to be removed when releasing from tag
-        )
-      }
-    )
-  )
 
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
