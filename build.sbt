@@ -19,6 +19,7 @@ lazy val commonSettings = Seq(
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion := scala213,
   crossScalaVersions := Seq(scala213, scala212),
+  sonatypeProfileName := "com.typesafe.play",
   resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
 )
 
