@@ -3,6 +3,10 @@ name: Check
 on:
   pull_request:
 
+  push:
+    branches:
+      - 5.0.x # Check 5.0.x branch after merge
+
 concurrency:
   # Only run once for latest commit per ref and cancel other (previous) runs.
   group: ci-${{ github.ref }}
