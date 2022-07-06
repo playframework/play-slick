@@ -21,7 +21,7 @@ object Version {
   val play = _root_.play.core.PlayVersion.current
 
   val slick = "3.3.3"
-  val h2    = "2.1.212"
+  val h2    = "2.1.214"
 }
 
 object Library {
