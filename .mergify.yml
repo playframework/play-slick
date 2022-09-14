@@ -1,3 +1,8 @@
+defaults:
+  actions:
+    backport:
+      title: "[{{ destination_branch }}] {{ title }} (backport #{{ number }}) by @{{ author }}"
+
 queue_rules:
   - name: default
     conditions:
@@ -8,7 +13,6 @@ pull_request_rules:
   - name: Merge PRs that are ready
     conditions:
       - check-success~=/ Ready To Merge$
-      - check-success=typesafe-cla-validator
       - "#approved-reviews-by>=1"
       - "#review-requested=0"
       - "#changes-requested-reviews-by=0"
@@ -19,10 +23,17 @@ pull_request_rules:
         method: merge
         name: default
 
-  - name: Delete the PR branch after merge
+  - name: Delete the PR branch and remove label after merge
     conditions:
       - merged
     actions:
       delete_head_branch: {}
       label:
         remove: [ "status:merge-when-green" ]
+
+  - name: Labeling for Scala Steward PR's
+    conditions:
+      - author=scala-steward
+    actions:
+      label:
+        add: [ "type:updates" ]
