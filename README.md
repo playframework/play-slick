@@ -34,8 +34,8 @@ To use play-slick, you need to add the following dependencies:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "5.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "5.0.0"
+  "com.typesafe.play" %% "play-slick" % "5.1.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "5.1.0"
 )
 ```
 
@@ -47,6 +47,7 @@ The Play Slick plugin supports several different versions of Play and Slick.
 
 | Plugin version | Play version | Slick version | Scala version        |
 |----------------|--------------|---------------|----------------------|
+| 5.1.x          | 2.8.16       | 3.4.1+        | 2.12.x/2.13.x        |
 | 5.0.x          | 2.8.x        | 3.3.2+        | 2.12.x/2.13.x        |
 | 4.0.2+         | 2.7.x        | 3.3.2+        | 2.11.x/2.12.x/2.13.x |
 | 4.0.x          | 2.7.x        | 3.3.x         | 2.11.x/2.12.x        |

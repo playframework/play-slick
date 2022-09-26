@@ -3,7 +3,7 @@ import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
-ThisBuild / resolvers += Resolver.sonatypeRepo("releases")
+ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
 ThisBuild / dynverVTagPrefix := false
@@ -18,8 +18,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion       := scala213,
-  crossScalaVersions := Seq(scala213, scala212),
+  scalaVersion       := "2.13.8",                // scala213,
+  crossScalaVersions := Seq("2.13.8", scala212), // scala213,
   resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
 )
 
@@ -57,7 +57,7 @@ lazy val docs = project
 ThisBuild / playBuildRepoName := "play-slick"
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = Some("5.0.0")
+val previousVersion: Option[String] = Some("5.0.2")
 
 ThisBuild / mimaFailOnNoPrevious := false
 
