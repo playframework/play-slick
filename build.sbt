@@ -20,7 +20,13 @@ lazy val commonSettings = Seq(
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion       := "2.13.8",                // scala213,
   crossScalaVersions := Seq("2.13.8", scala212), // scala213,
-  resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
+  pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
+  developers += Developer(
+    "playframework",
+    "The Play Framework Team",
+    "contact@playframework.com",
+    url("https://github.com/playframework")
+  ),
 )
 
 lazy val `play-slick-root` = (project in file("."))
