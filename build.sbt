@@ -18,8 +18,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion       := scala213,
-  crossScalaVersions := Seq(scala213, scala212),
+  scalaVersion       := "2.13.8",                // scala213,
+  crossScalaVersions := Seq("2.13.8", scala212), // scala213,
   resolvers += "akka-snapshot-repository".at("https://repo.akka.io/snapshots")
 )
 
