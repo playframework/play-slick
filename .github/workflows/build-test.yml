@@ -15,17 +15,17 @@ concurrency:
 jobs:
   check-code-style:
     name: Code Style
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
+    uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
       cmd: sbt scalafmtCheckAll scalafmtSbtCheck
 
   check-binary-compatibility:
     name: Binary Compatibility
-    uses: playframework/.github/.github/workflows/binary-check.yml@v2
+    uses: playframework/.github/.github/workflows/binary-check.yml@v3
 
   check-docs:
     name: Docs
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
+    uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
       cmd: sbt docs/scalafmtCheckAll docs/scalafmtSbtCheck docs/test docs/validateDocs
 
@@ -35,10 +35,10 @@ jobs:
       - "check-code-style"
       - "check-binary-compatibility"
       - "check-docs"
-    uses: playframework/.github/.github/workflows/cmd.yml@v2
+    uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
-      java: 11, 8
-      scala: 2.12.17, 2.13.8
+      java: 17, 11
+      scala: 2.13.8
       cmd: sbt ++$MATRIX_SCALA test
 
   finish:
@@ -46,4 +46,4 @@ jobs:
     if: github.event_name == 'pull_request'
     needs: # Should be last
       - "tests"
-    uses: playframework/.github/.github/workflows/rtm.yml@v2
+    uses: playframework/.github/.github/workflows/rtm.yml@v3
