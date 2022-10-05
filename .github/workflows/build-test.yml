@@ -38,7 +38,7 @@ jobs:
     uses: playframework/.github/.github/workflows/cmd.yml@v3
     with:
       java: 17, 11
-      scala: 2.13.8
+      scala: 2.13.x
       cmd: sbt ++$MATRIX_SCALA test
 
   finish:
