@@ -70,6 +70,10 @@ Note that the `+` next to a version means that the specified version and later t
 
 The documentation for the latest release is available [here](https://www.playframework.com/documentation/latest/PlaySlick).
 
+## Releasing a new version
+
+See https://github.com/playframework/.github/blob/main/RELEASING.md
+
 ## Copyright
 
 Copyright (C) 2009-2017 Lightbend Inc. <https://www.lightbend.com>.
