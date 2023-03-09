@@ -23,7 +23,7 @@ lazy val commonSettings = Seq(
   pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
-    "The Play Framework Team",
+    "The Play Framework Contributors",
     "contact@playframework.com",
     url("https://github.com/playframework")
   ),
