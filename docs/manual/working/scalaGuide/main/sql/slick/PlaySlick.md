@@ -13,9 +13,7 @@ Previous versions support previous versions of Play! as well as Scala 2.11 and S
 
 ## Getting Help
 
-If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [play-framework user community](https://discuss.playframework.com). Also, note that if you are seeking help on Slick, the [slick user community](https://scala-slick.org/community/) may be a better place.
-
-Finally, if you prefer to get an answer for your Play and Slick questions in a timely manner, and with a well-defined SLA, you may prefer [to get in touch with Lightbend](https://www.lightbend.com/subscription), as it offers commercial support for these technologies.
+If you are having trouble using Play Slick, check if the [[FAQ|PlaySlickFAQ]] contains the answer. Otherwise, feel free to reach out to [Play Discussion Forum](https://github.com/playframework/playframework/discussions). Also, note that if you are seeking help on Slick, the [slick user community](https://scala-slick.org/community/) may be a better place.
 
 ## About this release
 

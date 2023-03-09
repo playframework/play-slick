@@ -10,7 +10,7 @@ It's indeed the case. Changing the value of `play.db.pool` won't affect what con
 
 ## Changing the connection pool used by Slick
 
-While Slick allows using a different connection pool than [HikariCP](https://github.com/brettwooldridge/HikariCP) (though, Slick currently only offers built-in support for HikariCP, and requires you to provide an implementation of [JdbcDataSourceFactory](https://scala-slick.org/doc/3.3.2/api/index.html#slick.jdbc.JdbcDataSourceFactory) if you want to use a different connection pool), Play Slick currently doesn't allow using a different connection pool than HikariCP. If you find yourself needing this feature, you can try to drop us a note on [our forums](https://discuss.lightbend.com/).
+While Slick allows using a different connection pool than [HikariCP](https://github.com/brettwooldridge/HikariCP) (though, Slick currently only offers built-in support for HikariCP, and requires you to provide an implementation of [JdbcDataSourceFactory](https://scala-slick.org/doc/3.3.2/api/index.html#slick.jdbc.JdbcDataSourceFactory) if you want to use a different connection pool), Play Slick currently doesn't allow using a different connection pool than HikariCP. If you find yourself needing this feature, you can try to drop us a note in the [Play Discussion Forum](https://github.com/playframework/playframework/discussions).
 
 ## A binding to `play.api.db.DBApi` was already configured
 
