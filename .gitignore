@@ -24,3 +24,16 @@ bin
 .idea
 
 .bsp/
+
+# vscode
+.vscode/
+
+# metals
+.metals/
+project/metals.sbt
+project/project
+
+# bloop
+.bloop/
+project/.bloop/
+
