@@ -158,7 +158,7 @@ trait HasDatabaseConfig[P <: BasicProfile] {
   @deprecated("Use `profile` instead of `driver`", "2.1")
   protected final lazy val driver: P = dbConfig.profile // field is lazy to avoid early initializer problems.
   /** The Slick database extracted from `dbConfig`. */
-  protected final def db: P#Backend#Database = dbConfig.db
+  protected final def db = dbConfig.db
 }
 
 /**
@@ -196,6 +196,6 @@ trait HasDatabaseConfigProvider[P <: BasicProfile] extends HasDatabaseConfig[P] 
 
   /** The provider of a Slick `DatabaseConfig` instance. */
   protected val dbConfigProvider: DatabaseConfigProvider
-  protected final override lazy val dbConfig: DatabaseConfig[P] =
+  protected final override val dbConfig: DatabaseConfig[P] =
     dbConfigProvider.get[P] // field is lazy to avoid early initializer problems.
 }

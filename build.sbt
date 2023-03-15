@@ -3,6 +3,9 @@ import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
+lazy val scala213 = "2.13.10"
+lazy val scala3   = "3.3.0-RC3"
+
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
@@ -18,8 +21,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion       := "2.13.10",               // scala213,
-  crossScalaVersions := Seq("2.13.10"),          // scala213,
+  scalaVersion       := scala213,
+  crossScalaVersions := Seq(scala213, scala3),
   pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
@@ -40,7 +43,23 @@ lazy val `play-slick-root` = (project in file("."))
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
-  .settings(libraryDependencies ++= Dependencies.core)
+  .settings(
+    libraryDependencies ++= {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((3, _)) => Dependencies.core ++ Dependencies.scala3Deps
+        case _            => Dependencies.core ++ Dependencies.scala2Deps
+      }
+    },
+    scalacOptions ++= {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, _)) =>
+          Seq(
+            "-Xsource:3",
+          )
+        case _ => Nil
+      }
+    },
+  )
   .settings(mimaSettings)
   .settings(commonSettings)
 
