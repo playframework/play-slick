@@ -2,10 +2,10 @@ import sbt._
 
 object Dependencies {
   val core = Seq(
-    Library.playCore,
-    Library.playJdbcApi,
     Library.slick,
     Library.slickHikariCP,
+    Library.playCore,
+    Library.playJdbcApi,
     Library.playLogback % "test",
     Library.playSpecs2  % "test",
     Library.h2          % "test",
