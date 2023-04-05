@@ -44,12 +44,7 @@ lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(
-    libraryDependencies ++= {
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((3, _)) => Dependencies.core ++ Dependencies.scala3Deps
-        case _            => Dependencies.core ++ Dependencies.scala2Deps
-      }
-    },
+    libraryDependencies := Dependencies.core,
     scalacOptions ++= {
       CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, _)) =>
