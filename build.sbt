@@ -1,6 +1,5 @@
-import scala.sys.process._
-
-import com.typesafe.tools.mima.plugin.MimaPlugin._
+import com.typesafe.tools.mima.core._
+import com.typesafe.tools.mima.core.ProblemFilters
 import interplay.ScalaVersions._
 
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
@@ -42,6 +41,11 @@ lazy val `play-slick` = (project in file("src/core"))
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.core)
   .settings(mimaSettings)
+  .settings(
+    mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[DirectMissingMethodProblem]("play.api.db.slick.HasDatabaseConfig.db")
+    )
+  )
   .settings(commonSettings)
 
 lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
@@ -68,5 +72,9 @@ val previousVersion: Option[String] = Some("5.0.2")
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
-  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
+  mimaPreviousArtifacts := {
+    if (scalaBinaryVersion.value == "3") Set.empty[ModuleID]
+    else
+      previousVersion.map(organization.value %% moduleName.value % _).toSet
+  }
 )
