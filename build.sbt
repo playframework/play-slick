@@ -3,9 +3,6 @@ import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import interplay.ScalaVersions._
 
-lazy val scala213 = "2.13.10"
-lazy val scala3   = "3.3.0-RC3"
-
 ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
@@ -43,18 +40,7 @@ lazy val `play-slick-root` = (project in file("."))
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
-  .settings(
-    libraryDependencies ++= Dependencies.core,
-    scalacOptions ++= {
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some((2, _)) =>
-          Seq(
-            "-Xsource:3",
-          )
-        case _ => Nil
-      }
-    },
-  )
+  .settings(libraryDependencies ++= Dependencies.core)
   .settings(mimaSettings)
   .settings(commonSettings)
 

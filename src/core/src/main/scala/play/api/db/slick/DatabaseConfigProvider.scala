@@ -152,7 +152,8 @@ object DatabaseConfigProvider {
 trait HasDatabaseConfig[P <: BasicProfile] {
 
   /** The Slick database configuration. */
-  protected val dbConfig: DatabaseConfig[P] // field is declared as a val because we want a stable identifier.
+  protected lazy val dbConfig: DatabaseConfig[P] =
+    ??? // field is declared as a val because we want a stable identifier. TODO: Remove ??? when dropping Scala 2
   /** The Slick profile extracted from `dbConfig`. */
   protected final lazy val profile: P = dbConfig.profile // field is lazy to avoid early initializer problems.
   @deprecated("Use `profile` instead of `driver`", "2.1")
@@ -196,6 +197,6 @@ trait HasDatabaseConfigProvider[P <: BasicProfile] extends HasDatabaseConfig[P] 
 
   /** The provider of a Slick `DatabaseConfig` instance. */
   protected val dbConfigProvider: DatabaseConfigProvider
-  protected final override val dbConfig: DatabaseConfig[P] =
+  protected final override lazy val dbConfig: DatabaseConfig[P] =
     dbConfigProvider.get[P] // field is lazy to avoid early initializer problems.
 }
