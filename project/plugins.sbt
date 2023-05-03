@@ -11,4 +11,4 @@ addSbtPlugin("com.typesafe.play" % "interplay"            % sys.props.get("inter
 addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.5.0")
 addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "1.1.2")
 
-addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.11")
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.12")
