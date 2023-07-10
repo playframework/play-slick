@@ -19,8 +19,15 @@ lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion       := "2.13.11",               // scala213,
-  crossScalaVersions := Seq("2.13.11"),          // scala213,
-  pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
+  crossScalaVersions := Seq("2.13.11", "3.3.0"), // scala213,
+  scalacOptions ++= {
+    if (scalaBinaryVersion.value == "3") {
+      Seq("-source:3.0-migration")
+    } else {
+      Nil
+    }
+  },
+  pomExtra := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
     "The Play Framework Contributors",
@@ -40,7 +47,7 @@ lazy val `play-slick-root` = (project in file("."))
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
-  .settings(libraryDependencies ++= Dependencies.core)
+  .settings(libraryDependencies ++= Dependencies.core.value)
   .settings(mimaSettings)
   .settings(commonSettings)
 
@@ -68,5 +75,11 @@ val previousVersion: Option[String] = Some("5.0.2")
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
-  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
+  mimaPreviousArtifacts := {
+    if (scalaBinaryVersion.value == "3") {
+      Set.empty // TODO
+    } else {
+      previousVersion.map(organization.value %% moduleName.value % _).toSet
+    }
+  }
 )
