@@ -27,7 +27,7 @@ class SlickApiSpec extends Specification {
     "return a DatabaseConfig instance for a correctly configured database" in {
       import SUTWithGoodConfig._
       val default = api.dbConfig[BasicProfile](DbName("default"))
-      default must not beNull
+      default must not(beNull)
     }
     "always return the same DatabaseConfig instance for a given database name" in {
       import SUTWithGoodConfig._

@@ -2,7 +2,6 @@ package play.api.db.slick
 
 import java.util.concurrent.ConcurrentLinkedDeque
 
-import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import play.api.inject.Injector
 import play.api.inject.ApplicationLifecycle
@@ -10,7 +9,7 @@ import play.api.inject.DefaultApplicationLifecycle
 import play.api.inject.guice.GuiceApplicationBuilder
 import slick.basic.BasicProfile
 
-class DefaultSlickApiSpec extends Specification with Mockito { self =>
+class DefaultSlickApiSpec extends Specification { self =>
 
   sequential
 
