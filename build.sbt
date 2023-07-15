@@ -47,7 +47,7 @@ lazy val `play-slick-root` = (project in file("."))
 lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
   .configs(Docs)
-  .settings(libraryDependencies ++= Dependencies.core.value)
+  .settings(libraryDependencies ++= Dependencies.core)
   .settings(mimaSettings)
   .settings(commonSettings)
 
