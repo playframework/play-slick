@@ -21,14 +21,7 @@ lazy val commonSettings = Seq(
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion       := "2.13.11",               // scala213,
   crossScalaVersions := Seq("2.13.11", "3.3.0"), // scala213,
-  scalacOptions ++= {
-    if (scalaBinaryVersion.value == "3") {
-      Seq("-source:3.0-migration")
-    } else {
-      Nil
-    }
-  },
-  pomExtra := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
+  pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
     "The Play Framework Contributors",
