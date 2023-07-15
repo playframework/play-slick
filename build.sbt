@@ -70,7 +70,7 @@ lazy val docs = project
 ThisBuild / playBuildRepoName := "play-slick"
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = Some("5.0.2")
+val previousVersion: Option[String] = Some("5.1.0")
 
 ThisBuild / mimaFailOnNoPrevious := false
 
