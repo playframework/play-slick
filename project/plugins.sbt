@@ -6,7 +6,7 @@ resolvers ++= Seq(
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin"           % sys.props.getOrElse("play.version", "2.9.0-M7"))
 addSbtPlugin("com.typesafe.play" % "play-docs-sbt-plugin" % sys.props.getOrElse("play.version", "2.9.0-M7"))
-addSbtPlugin("com.typesafe.play" % "interplay"            % sys.props.get("interplay.version").getOrElse("3.1.6"))
+addSbtPlugin("com.typesafe.play" % "interplay"            % sys.props.get("interplay.version").getOrElse("3.1.7"))
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.5.2")
 addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "1.1.3")
