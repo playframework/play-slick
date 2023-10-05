@@ -70,8 +70,6 @@ ThisBuild / playBuildRepoName := "play-slick"
 // Binary compatibility is tested against this version
 val previousVersion: Option[String] = Some("5.2.0-RC1")
 
-ThisBuild / mimaFailOnNoPrevious := false
-
 def mimaSettings = Seq(
   mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
 )
