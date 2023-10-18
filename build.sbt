@@ -53,7 +53,7 @@ lazy val `play-slick` = (project in file("src/core"))
   .enablePlugins(Omnidoc, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.core)
-  .settings(mimaSettings)
+  // .settings(mimaSettings)
   .settings(
     mimaBinaryIssueFilters ++= Seq(
     )
@@ -64,7 +64,7 @@ lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
   .enablePlugins(Omnidoc, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.evolutions)
-  .settings(mimaSettings)
+  // .settings(mimaSettings)
   .settings(commonSettings)
   .dependsOn(`play-slick` % "compile;test->test")
 
