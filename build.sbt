@@ -15,7 +15,7 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 }
 
 lazy val commonSettings = Seq(
-  organization         := "com.typesafe.play",
+  organization         := "org.playframework",
   organizationName     := "The Play Framework Project",
   organizationHomepage := Some(url("https://playframework.com/")),
   homepage             := Some(url(s"https://github.com/playframework/${Common.repoName}")),

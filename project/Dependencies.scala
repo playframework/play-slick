@@ -26,11 +26,11 @@ object Version {
 }
 
 object Library {
-  val playLogback        = "com.typesafe.play"  %% "play-logback"         % Version.play
-  val playCore           = "com.typesafe.play"  %% "play"                 % Version.play
-  val playJdbcApi        = "com.typesafe.play"  %% "play-jdbc-api"        % Version.play
-  val playJdbcEvolutions = "com.typesafe.play"  %% "play-jdbc-evolutions" % Version.play
-  val playSpecs2         = "com.typesafe.play"  %% "play-specs2"          % Version.play
+  val playLogback        = "org.playframework"  %% "play-logback"         % Version.play
+  val playCore           = "org.playframework"  %% "play"                 % Version.play
+  val playJdbcApi        = "org.playframework"  %% "play-jdbc-api"        % Version.play
+  val playJdbcEvolutions = "org.playframework"  %% "play-jdbc-evolutions" % Version.play
+  val playSpecs2         = "org.playframework"  %% "play-specs2"          % Version.play
   val slick              = "com.typesafe.slick" %% "slick"                % Version.slick
   val slickHikariCP      = "com.typesafe.slick" %% "slick-hikaricp"       % Version.slick
   val h2                 = "com.h2database"      % "h2"                   % Version.h2
