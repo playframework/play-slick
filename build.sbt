@@ -77,7 +77,7 @@ lazy val docs = project
   .settings(commonSettings)
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = Some("5.2.0-RC1")
+val previousVersion: Option[String] = Some("6.0.0-M1")
 
 ThisBuild / mimaFailOnNoPrevious := false
 
