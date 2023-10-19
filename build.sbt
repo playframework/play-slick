@@ -21,7 +21,15 @@ lazy val commonSettings = Seq(
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion       := "2.13.12",               // scala213,
   crossScalaVersions := Seq("2.13.12", "3.3.1"), // scala213,
+<<<<<<< HEAD
   pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
+=======
+  scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
+    (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 13)) => Seq("-Xsource:3")
+      case _             => Seq.empty
+    }),
+>>>>>>> 9ec2465 (remove `-Xmigration`)
   developers += Developer(
     "playframework",
     "The Play Framework Contributors",
