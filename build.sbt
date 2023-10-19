@@ -27,7 +27,7 @@ lazy val commonSettings = Seq(
   crossScalaVersions := Seq("2.13.12", "3.3.1"), // scala213,
   scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
     (CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, 13)) => Seq("-Xsource:3", "-Xmigration")
+      case Some((2, 13)) => Seq("-Xsource:3")
       case _             => Seq.empty
     }),
   developers += Developer(
