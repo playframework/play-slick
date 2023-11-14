@@ -73,5 +73,8 @@ val previousVersion: Option[String] = Some("5.2.0-RC1")
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
-  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet
+  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
+  mimaBinaryIssueFilters := Seq(
+    ProblemFilters.exclude[DirectMissingMethodProblem]("play.api.db.slick.HasDatabaseConfig.db")
+  )
 )
