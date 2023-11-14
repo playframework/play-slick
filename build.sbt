@@ -77,13 +77,12 @@ lazy val docs = project
   .settings(commonSettings)
 
 // Binary compatibility is tested against this version
-val previousVersion: Option[String] = Some("6.0.0-M1")
+val previousVersion: Option[String] = Some("6.0.0")
 
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
   mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
   mimaBinaryIssueFilters := Seq(
-    ProblemFilters.exclude[DirectMissingMethodProblem]("play.api.db.slick.HasDatabaseConfig.db")
   )
 )
