@@ -34,8 +34,8 @@ To use play-slick, you need to add the following dependencies:
 
 ```scala
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "5.2.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "5.2.0"
+  "com.typesafe.play" %% "play-slick" % "5.3.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "5.3.0"
 )
 ```
 
