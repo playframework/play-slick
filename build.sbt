@@ -20,7 +20,7 @@ lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion       := "2.13.12",
-  crossScalaVersions := Seq("2.13.12"),
+  crossScalaVersions := Seq("2.13.12", "3.3.1"),
   pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
@@ -45,6 +45,7 @@ lazy val `play-slick` = (project in file("src/core"))
   .settings(mimaSettings)
   .settings(
     mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[DirectMissingMethodProblem]("play.api.db.slick.HasDatabaseConfig.db"),
     )
   )
   .settings(commonSettings)
@@ -73,7 +74,11 @@ val previousVersion: Option[String] = Some("5.2.0")
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
-  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
+  mimaPreviousArtifacts := (if (CrossVersion.binaryScalaVersion(scalaVersion.value) == "3") {
+                              Set.empty
+                            } else {
+                              previousVersion.map(organization.value %% moduleName.value % _).toSet
+                            }),
   mimaBinaryIssueFilters := Seq(
   )
 )
