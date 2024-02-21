@@ -24,7 +24,7 @@ lazy val commonSettings = Seq(
   compile / javacOptions ++= Seq("--release", "11"),
   doc / javacOptions := Seq("-source", "11"),
   scalaVersion       := "2.13.12",
-  crossScalaVersions := Seq("2.13.12"),
+  crossScalaVersions := Seq("2.13.12", "3.3.1"),
   scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
     (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, 13)) => Seq("-Xsource:3")
@@ -56,6 +56,7 @@ lazy val `play-slick` = (project in file("src/core"))
   .settings(mimaSettings)
   .settings(
     mimaBinaryIssueFilters ++= Seq(
+      ProblemFilters.exclude[DirectMissingMethodProblem]("play.api.db.slick.HasDatabaseConfig.db"),
     )
   )
   .settings(commonSettings)
@@ -82,7 +83,11 @@ val previousVersion: Option[String] = Some("6.0.0")
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
-  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
+  mimaPreviousArtifacts := (if (CrossVersion.binaryScalaVersion(scalaVersion.value) == "3") {
+                              Set.empty
+                            } else {
+                              previousVersion.map(organization.value %% moduleName.value % _).toSet
+                            }),
   mimaBinaryIssueFilters := Seq(
   )
 )
