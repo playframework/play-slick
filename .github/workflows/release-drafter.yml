@@ -9,7 +9,7 @@ jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v6
         with:
           name: "Play Slick $RESOLVED_VERSION"
           config-name: release-drafts/increasing-major-version.yml # located in .github/ in the default branch within this or the .github repo
