@@ -23,7 +23,7 @@ Binding(interface play.api.db.DBApi to ConstructionTarget(class play.api.db.slic
 Binding(interface play.api.db.DBApi to ProviderConstructionTarget(class play.api.db.DBApiProvider))
 ```
 
-It is very likely that you have [[enabled the jdbc plugin|AccessingAnSqlDatabase]], and that doesn't really make sense if you are using Slick for accessing your databases. To fix the issue simply remove the Play *jdbc* component from your project's build.
+It is very likely that you have [[enabled the jdbc plugin|AccessingAnSQLDatabase]], and that doesn't really make sense if you are using Slick for accessing your databases. To fix the issue simply remove the Play *jdbc* component from your project's build.
 
 Another possibility is that there is another Play module that is binding [DBApi](api/scala/play/api/db/DBApi.html) to some other concrete implementation. This means that you are still trying to use Play Slick together with another Play module for database access, which is likely not what you want.
 
