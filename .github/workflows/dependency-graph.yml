@@ -21,4 +21,4 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ inputs.ref }}
-      - uses: scalacenter/sbt-dependency-submission@v2
+      - uses: scalacenter/sbt-dependency-submission@v3
