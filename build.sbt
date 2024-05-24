@@ -19,8 +19,8 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
-  scalaVersion       := "2.13.13",
-  crossScalaVersions := Seq("2.13.13"),
+  scalaVersion       := "2.13.14",
+  crossScalaVersions := Seq("2.13.14"),
   pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
