@@ -8,8 +8,10 @@ import scala.util.Success
 import scala.util.Try
 import scala.util.control.NonFatal
 import com.typesafe.config.Config
-import javax.inject.Inject
+import com.typesafe.config.ConfigValue
+import com.typesafe.config.ConfigValueFactory
 
+import javax.inject.Inject
 import play.api.Configuration
 import play.api.Environment
 import play.api.Logger
@@ -94,11 +96,15 @@ object DefaultSlickApi {
 
     @throws(classOf[PlayException])
     private def create(): DatabaseConfig[BasicProfile] = {
-      try DatabaseConfig.forConfig[BasicProfile](path = "", config = config)
+      val config2 =
+        if (config.hasPath("db.poolName")) config
+        else
+          config.withValue("db.poolName", ConfigValueFactory.fromAnyRef(s"$name.db"))
+      try DatabaseConfig.forConfig[BasicProfile](path = "", config = config2)
       catch {
         case NonFatal(t) =>
           logger.error(s"Failed to create Slick database config for key $name.", t)
-          throw Configuration(config).reportError(name, s"Cannot connect to database [$name]", Some(t))
+          throw Configuration(config2).reportError(name, s"Cannot connect to database [$name]", Some(t))
       }
     }
 
