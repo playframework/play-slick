@@ -21,7 +21,6 @@ class Application @Inject() (protected val dbConfigProvider: DatabaseConfigProvi
 ) extends AbstractController(cc)
     with HasDatabaseConfigProvider[JdbcProfile] {
   // #di-database-config
-
   import profile.api._
 
   def index(name: String) = Action.async { implicit request =>
