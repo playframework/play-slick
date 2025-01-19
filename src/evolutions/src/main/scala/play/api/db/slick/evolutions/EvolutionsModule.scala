@@ -11,7 +11,7 @@ import play.api.inject.Module
 
 @Singleton
 class EvolutionsModule extends Module {
-  def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
+  def bindings(environment: Environment, configuration: Configuration): Seq[Binding[?]] = {
     Seq(bind[DBApi].to[DBApiAdapter].in[Singleton])
   }
 }
