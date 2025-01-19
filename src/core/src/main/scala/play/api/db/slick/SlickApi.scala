@@ -108,7 +108,7 @@ object DefaultSlickApi {
       }
     }
 
-    private def registerDatabaseShutdownHook(dbConf: DatabaseConfig[_]): Unit = {
+    private def registerDatabaseShutdownHook(dbConf: DatabaseConfig[?]): Unit = {
       // clean-up when the application is stopped.
       lifecycle.addStopHook { () =>
         Future {
