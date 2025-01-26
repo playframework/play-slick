@@ -4,7 +4,7 @@
 package scalaguide.slick
 package global
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider

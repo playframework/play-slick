@@ -1,6 +1,6 @@
 package play.api.db.slick.evolutions
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 import play.api.Configuration
 import play.api.Environment
 import play.api.db.DBApi
