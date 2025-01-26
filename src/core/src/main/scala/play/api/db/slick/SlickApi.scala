@@ -11,7 +11,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueFactory
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 import play.api.Configuration
 import play.api.Environment
 import play.api.Logger

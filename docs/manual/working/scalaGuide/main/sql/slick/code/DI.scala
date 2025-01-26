@@ -4,7 +4,7 @@
 package scalaguide.slick
 package di
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future

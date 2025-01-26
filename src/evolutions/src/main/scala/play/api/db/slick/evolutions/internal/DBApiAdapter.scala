@@ -2,7 +2,7 @@ package play.api.db.slick.evolutions.internal
 
 import java.sql.Connection
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 import javax.sql.DataSource
 import play.api.Logger
 import play.api.db.slick.DbName
