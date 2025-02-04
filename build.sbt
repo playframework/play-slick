@@ -20,7 +20,7 @@ lazy val commonSettings = Seq(
   // Work around https://issues.scala-lang.org/browse/SI-9311
   scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
   scalaVersion       := "2.13.16",
-  crossScalaVersions := Seq("2.13.16", "3.3.4"),
+  crossScalaVersions := Seq("2.13.16", "3.3.5"),
   pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
   developers += Developer(
     "playframework",
