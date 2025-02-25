@@ -3,7 +3,7 @@ name: Release Drafter
 on:
   push:
     branches:
-      - main
+      - 6.1.x
 
 jobs:
   update_release_draft:
@@ -12,7 +12,7 @@ jobs:
       - uses: release-drafter/release-drafter@v6
         with:
           name: "Play Slick $RESOLVED_VERSION"
-          config-name: release-drafts/increasing-major-version.yml # located in .github/ in the default branch within this or the .github repo
+          config-name: release-drafts/increasing-patch-version.yml # located in .github/ in the default branch within this or the .github repo
           commitish: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
