@@ -8,27 +8,13 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "6.1.x"
+    target-branch: "6.2.x"
     commit-message:
-      prefix: "[6.1.x] "
+      prefix: "[6.2.x] "
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    target-branch: "6.0.x"
+    target-branch: "5.4.x"
     commit-message:
-      prefix: "[6.0.x] "
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: "5.3.x"
-    commit-message:
-      prefix: "[5.3.x] "
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    target-branch: "5.2.x"
-    commit-message:
-      prefix: "[5.2.x] "
+      prefix: "[5.4.x] "
