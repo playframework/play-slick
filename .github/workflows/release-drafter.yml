@@ -3,7 +3,7 @@ name: Release Drafter
 on:
   push:
     branches:
-      - 6.1.x
+      - 6.2.x
 
 jobs:
   update_release_draft:
