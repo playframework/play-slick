@@ -51,7 +51,7 @@ private[evolutions] object DBApiAdapter {
       dbConfig.db.source match {
         case ds: DataSourceJdbcDataSource => ds.ds
         case hds: HikariCPJdbcDataSource  => hds.ds
-        case other =>
+        case other                        =>
           logger.error(s"Unexpected data source type ${other.getClass}. Please, file a ticket $IssueTracker.")
           throw new UnsupportedOperationException
       }
