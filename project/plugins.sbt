@@ -6,7 +6,7 @@ resolvers ++= Resolver.sonatypeOssRepos(
 addSbtPlugin("org.playframework" % "sbt-plugin"           % sys.props.getOrElse("play.version", "3.0.8"))
 addSbtPlugin("org.playframework" % "play-docs-sbt-plugin" % sys.props.getOrElse("play.version", "3.0.8"))
 
-addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.5.4")
+addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.5.5")
 addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "1.1.4")
 
 addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.9.3")
