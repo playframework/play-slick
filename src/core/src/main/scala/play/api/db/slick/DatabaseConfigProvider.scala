@@ -96,7 +96,7 @@ object DatabaseConfigProvider {
     "3.0.0"
   )
   def get[P <: BasicProfile](implicit app: Application): DatabaseConfig[P] =
-    DatabaseConfigLocator(app)
+    DatabaseConfigLocator(using app)
 
   /**
    * Returns a Slick database config for the passed `dbName`. Throws a IllegalArgumentException if no database

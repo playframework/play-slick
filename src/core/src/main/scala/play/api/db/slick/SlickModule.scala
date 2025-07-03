@@ -70,5 +70,7 @@ trait SlickComponents {
   def applicationLifecycle: ApplicationLifecycle
   def executionContext: ExecutionContext
 
-  lazy val slickApi: SlickApi = new DefaultSlickApi(environment, configuration, applicationLifecycle)(executionContext)
+  lazy val slickApi: SlickApi = new DefaultSlickApi(environment, configuration, applicationLifecycle)(
+    using executionContext
+  )
 }
