@@ -81,7 +81,7 @@ val previousVersion: Option[String] = Some("6.1.0")
 ThisBuild / mimaFailOnNoPrevious := false
 
 def mimaSettings = Seq(
-  mimaPreviousArtifacts := previousVersion.map(organization.value %% moduleName.value % _).toSet,
+  mimaPreviousArtifacts  := previousVersion.map(organization.value %% moduleName.value % _).toSet,
   mimaBinaryIssueFilters := Seq(
   )
 )
