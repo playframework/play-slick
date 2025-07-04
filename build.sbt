@@ -2,8 +2,6 @@ import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import com.typesafe.tools.mima.core._
 
-ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
-
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
 ThisBuild / dynverVTagPrefix := false
 
