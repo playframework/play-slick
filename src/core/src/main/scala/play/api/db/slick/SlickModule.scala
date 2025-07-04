@@ -31,7 +31,7 @@ object SlickModule {
 
 @Singleton
 final class SlickModule extends Module {
-  def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = {
+  def bindings(environment: Environment, configuration: Configuration): Seq[Binding[?]] = {
     val config  = configuration.underlying
     val dbKey   = config.getString(SlickModule.DbKeyConfig)
     val default = config.getString(SlickModule.DefaultDbName)
@@ -44,11 +44,11 @@ final class SlickModule extends Module {
     )
   }
 
-  def namedDatabaseConfigBindings(dbs: Set[String]): Seq[Binding[_]] = dbs.toList.map { db =>
+  def namedDatabaseConfigBindings(dbs: Set[String]): Seq[Binding[?]] = dbs.toList.map { db =>
     bindNamed(db).to(new NamedDatabaseConfigProvider(db))
   }
 
-  def defaultDatabaseConfigBinding(default: String, dbs: Set[String]): Seq[Binding[_]] =
+  def defaultDatabaseConfigBinding(default: String, dbs: Set[String]): Seq[Binding[?]] =
     if (dbs.contains(default)) Seq(bind[DatabaseConfigProvider].to(bindNamed(default))) else Nil
 
   def bindNamed(name: String): BindingKey[DatabaseConfigProvider] =

@@ -16,10 +16,10 @@ class DefaultSlickApiSpec extends Specification { self =>
   // A new injector should be created to ensure each test is independent of each other
   def injector: Injector = GuiceApplicationBuilder(configuration = TestData.configuration).injector()
 
-  def hooks(lifecycle: DefaultApplicationLifecycle): Seq[_] = {
+  def hooks(lifecycle: DefaultApplicationLifecycle): Seq[?] = {
     val hooksField = lifecycle.getClass.getDeclaredField("hooks")
     hooksField.setAccessible(true)
-    hooksField.get(lifecycle).asInstanceOf[ConcurrentLinkedDeque[_]].toArray().toSeq
+    hooksField.get(lifecycle).asInstanceOf[ConcurrentLinkedDeque[?]].toArray().toSeq
   }
 
   "DefaultSlickApi" should {

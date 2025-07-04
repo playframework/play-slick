@@ -1,10 +1,6 @@
 import scala.sys.process._
-
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import com.typesafe.tools.mima.core._
-import interplay.ScalaVersions._
-
-ThisBuild / resolvers ++= Resolver.sonatypeOssRepos("releases")
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
 ThisBuild / dynverVTagPrefix := false
@@ -17,29 +13,42 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 }
 
 lazy val commonSettings = Seq(
-  // Work around https://issues.scala-lang.org/browse/SI-9311
-  scalacOptions ~= (_.filterNot(_ == "-Xfatal-warnings")),
+  organization         := "com.typesafe.play",
+  organizationName     := "The Play Framework Project",
+  organizationHomepage := Some(url("https://playframework.com/")),
+  homepage             := Some(url(s"https://github.com/playframework/${Common.repoName}")),
+  licenses             := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
+  javacOptions ++= Seq("-encoding", "UTF-8", "-Xlint:-options"),
+  compile / javacOptions ++= Seq("--release", "11"),
+  doc / javacOptions := Seq("-source", "11"),
   scalaVersion       := "2.13.16",
   crossScalaVersions := Seq("2.13.16", "3.3.6"),
-  pomExtra           := scala.xml.NodeSeq.Empty, // Can be removed when dropping interplay
+  scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
+    (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 13)) => Seq("-Xsource:3")
+      case _             => Seq.empty
+    }),
   developers += Developer(
     "playframework",
     "The Play Framework Contributors",
     "contact@playframework.com",
     url("https://github.com/playframework")
   ),
+  pomIncludeRepository := { _ => false }
 )
 
 lazy val `play-slick-root` = (project in file("."))
-  .enablePlugins(PlayRootProject)
   .aggregate(
     `play-slick`,
     `play-slick-evolutions`
   )
   .settings(commonSettings)
+  .settings(
+    publish / skip := true
+  )
 
 lazy val `play-slick` = (project in file("src/core"))
-  .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
+  .enablePlugins(Omnidoc, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.core)
   .settings(mimaSettings)
@@ -51,7 +60,7 @@ lazy val `play-slick` = (project in file("src/core"))
   .settings(commonSettings)
 
 lazy val `play-slick-evolutions` = (project in file("src/evolutions"))
-  .enablePlugins(PlayLibrary, Playdoc, MimaPlugin)
+  .enablePlugins(Omnidoc, Playdoc, MimaPlugin)
   .configs(Docs)
   .settings(libraryDependencies ++= Dependencies.evolutions)
   .settings(mimaSettings)
@@ -65,8 +74,6 @@ lazy val docs = project
   .dependsOn(`play-slick`)
   .dependsOn(`play-slick-evolutions`)
   .settings(commonSettings)
-
-ThisBuild / playBuildRepoName := "play-slick"
 
 // Binary compatibility is tested against this version
 val previousVersion: Option[String] = Some("5.2.0")
