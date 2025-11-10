@@ -21,7 +21,7 @@ jobs:
 
   check-binary-compatibility:
     name: Binary Compatibility
-    uses: playframework/.github/.github/workflows/binary-check.yml@v3
+    uses: playframework/.github/.github/workflows/binary-check.yml@v4
 
   check-docs:
     name: Docs
