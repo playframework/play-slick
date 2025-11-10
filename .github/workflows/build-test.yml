@@ -15,7 +15,7 @@ concurrency:
 jobs:
   check-code-style:
     name: Code Style
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
+    uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
       cmd: sbt scalafmtCheckAll scalafmtSbtCheck
 
@@ -25,7 +25,7 @@ jobs:
 
   check-docs:
     name: Docs
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
+    uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
       cmd: sbt docs/scalafmtCheckAll docs/scalafmtSbtCheck docs/test docs/validateDocs
 
@@ -35,7 +35,7 @@ jobs:
       - "check-code-style"
       - "check-binary-compatibility"
       - "check-docs"
-    uses: playframework/.github/.github/workflows/cmd.yml@v3
+    uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
       java: 17, 11
       scala: 2.13.x, 3.x
