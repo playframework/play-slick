@@ -21,8 +21,8 @@ lazy val commonSettings = Seq(
   javacOptions ++= Seq("-encoding", "UTF-8", "-Xlint:-options"),
   compile / javacOptions ++= Seq("--release", "17"),
   doc / javacOptions := Seq("-source", "17"),
-  scalaVersion       := "2.13.17",
-  crossScalaVersions := Seq("2.13.17", "3.3.7"),
+  scalaVersion       := "2.13.18",
+  crossScalaVersions := Seq("2.13.18", "3.3.7"),
   scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
     (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, 13)) => Seq("-Xsource:3")
