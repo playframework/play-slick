@@ -15,4 +15,4 @@ jobs:
           config-name: release-drafts/increasing-patch-version.yml # located in .github/ in the default branch within this or the .github repo
           commitish: ${{ github.ref_name }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
