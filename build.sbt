@@ -15,9 +15,9 @@ Global / onLoad := (Global / onLoad).value.andThen { s =>
 lazy val commonSettings = Seq(
   organization         := "org.playframework",
   organizationName     := "The Play Framework Project",
-  organizationHomepage := Some(url("https://playframework.com/")),
-  homepage             := Some(url(s"https://github.com/playframework/${Common.repoName}")),
-  licenses             := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.html")),
+  organizationHomepage := Some(uri("https://playframework.com/")),
+  homepage             := Some(uri(s"https://github.com/playframework/${Common.repoName}")),
+  licenses             := Seq("Apache-2.0" -> uri("https://www.apache.org/licenses/LICENSE-2.0.html")),
   javacOptions ++= Seq("-encoding", "UTF-8", "-Xlint:-options"),
   compile / javacOptions ++= Seq("--release", "17"),
   doc / javacOptions := Seq("-source", "17"),
@@ -32,7 +32,7 @@ lazy val commonSettings = Seq(
     "playframework",
     "The Play Framework Contributors",
     "contact@playframework.com",
-    url("https://github.com/playframework")
+    uri("https://github.com/playframework")
   ),
   pomIncludeRepository := { _ => false }
 )
