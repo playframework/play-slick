@@ -7,6 +7,6 @@ addSbtPlugin("org.playframework" % "sbt-plugin"           % sys.props.getOrElse(
 addSbtPlugin("org.playframework" % "play-docs-sbt-plugin" % sys.props.getOrElse("play.version", "3.0.11"))
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.6.2")
-addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "1.1.6")
+addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "1.2.0")
 
 addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.12.1")
