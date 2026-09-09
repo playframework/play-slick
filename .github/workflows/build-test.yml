@@ -17,7 +17,7 @@ jobs:
     name: Code Style
     uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
-      cmd: sbt scalafmtCheckAll scalafmtSbtCheck
+      cmd: sbt "scalafmtCheckAll ; scalafmtSbtCheck"
 
   check-binary-compatibility:
     name: Binary Compatibility
@@ -27,7 +27,7 @@ jobs:
     name: Docs
     uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
-      cmd: sbt docs/scalafmtCheckAll docs/scalafmtSbtCheck docs/test docs/validateDocs
+      cmd: sbt "docs/scalafmtCheckAll ; docs/scalafmtSbtCheck ; docs/test ; docs/validateDocs"
 
   tests:
     name: Tests
@@ -39,7 +39,7 @@ jobs:
     with:
       java: 21, 17
       scala: 2.13.x, 3.x
-      cmd: sbt ++$MATRIX_SCALA test
+      cmd: sbt "++$MATRIX_SCALA ; test"
 
   finish:
     name: Finish
