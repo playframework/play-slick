@@ -1,4 +1,3 @@
-resolvers ++= DefaultOptions.resolvers(snapshot = true)
 resolvers ++= Seq(
   Resolver.sonatypeCentralSnapshots, // used by deploy nightlies, which publish here & use -Dplay.version
 )
