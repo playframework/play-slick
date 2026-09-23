@@ -38,8 +38,9 @@ jobs:
     uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
       java: 21, 17
-      scala: 2.13.x, 3.x
-      cmd: sbt "++$MATRIX_SCALA ; test"
+      # Symbolic lanes resolve to exact versions in project/Dependencies.scala.
+      scala: 2.13.x, 3.3.x, 3.9.x, 3.next
+      cmd: sbt -Dscala.version=$MATRIX_SCALA testFull
 
   finish:
     name: Finish

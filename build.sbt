@@ -1,9 +1,13 @@
 import scala.sys.process._
 import com.typesafe.tools.mima.plugin.MimaPlugin._
 import com.typesafe.tools.mima.core._
+import Dependencies.publishedScalaVersions
+import Dependencies.resolveScalaVersion
+import Dependencies.scala213Version
 
 // Customise sbt-dynver's behaviour to make it work with tags which aren't v-prefixed
 ThisBuild / dynverVTagPrefix := false
+ThisBuild / resolvers += Resolver.sonatypeCentralSnapshots
 
 // Sanity-check: assert that version comes from a tag (e.g. not a too-shallow clone)
 // https://github.com/dwijnand/sbt-dynver/#sanity-checking-the-version
@@ -21,13 +25,13 @@ lazy val commonSettings = Seq(
   javacOptions ++= Seq("-encoding", "UTF-8", "-Xlint:-options"),
   compile / javacOptions ++= Seq("--release", "17"),
   doc / javacOptions := Seq("-source", "17"),
-  scalaVersion       := "2.13.18",
-  crossScalaVersions := Seq("2.13.18", "3.9.0"),
-  scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
+  scalaVersion       := resolveScalaVersion(sys.props.getOrElse("scala.version", scala213Version)),
+  crossScalaVersions := publishedScalaVersions,
+  scalacOptions ++= Seq("-release", "17", "-deprecation", "-feature", "-unchecked", "-encoding", "utf8") ++
     (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, 13)) => Seq("-Xsource:3")
       case _             => Seq.empty
-    }),
+    }) ++ (if (scalaVersion.value.startsWith("3.3.")) Seq("-Yfuture-lazy-vals") else Seq.empty),
   developers += Developer(
     "playframework",
     "The Play Framework Contributors",
