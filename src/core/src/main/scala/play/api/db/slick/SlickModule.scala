@@ -57,7 +57,7 @@ final class SlickModule extends Module {
 
 /** Inject provider for named databases. */
 final class NamedDatabaseConfigProvider(name: String) extends Provider[DatabaseConfigProvider] {
-  @Inject private var slickApi: SlickApi = _
+  @Inject private var slickApi: SlickApi = null
 
   lazy val get: DatabaseConfigProvider = new DatabaseConfigProvider {
     def get[P <: BasicProfile]: DatabaseConfig[P] = slickApi.dbConfig[P](DbName(name))
