@@ -3,8 +3,8 @@ resolvers ++= Seq(
   Resolver.sonatypeCentralSnapshots, // used by deploy nightlies, which publish here & use -Dplay.version
 )
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin"           % sys.props.getOrElse("play.version", "2.9.11"))
-addSbtPlugin("com.typesafe.play" % "play-docs-sbt-plugin" % sys.props.getOrElse("play.version", "2.9.11"))
+addSbtPlugin("com.typesafe.play" % "sbt-plugin"           % sys.props.getOrElse("play.version", "2.9.12"))
+addSbtPlugin("com.typesafe.play" % "play-docs-sbt-plugin" % sys.props.getOrElse("play.version", "2.9.12"))
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt"    % "2.6.2")
 addSbtPlugin("com.typesafe"  % "sbt-mima-plugin" % "1.2.1")
