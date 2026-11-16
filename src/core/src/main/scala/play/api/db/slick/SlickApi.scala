@@ -86,7 +86,6 @@ object DefaultSlickApi {
   ) {
     import DatabaseConfigFactory.logger
 
-    @throws(classOf[PlayException])
     lazy val get: DatabaseConfig[BasicProfile] = {
       val dbConf = create()
       logger.debug(s"Created Slick database config for key $name.")
