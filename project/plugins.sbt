@@ -3,12 +3,12 @@ resolvers ++= Seq(
 )
 
 addSbtPlugin(
-  "org.playframework" % "sbt-plugin" % sys.props.getOrElse("play.version", "3.1.0-M10-e1f3c2a9-SNAPSHOT")
+  "org.playframework" % "sbt-plugin" % sys.props.getOrElse("play.version", "3.1.0-M10-de32fcb4-SNAPSHOT")
 )
 addSbtPlugin(
   "org.playframework" % "play-docs-sbt-plugin" % sys.props.getOrElse(
     "play.version",
-    "3.1.0-M10-e1f3c2a9-SNAPSHOT"
+    "3.1.0-M10-de32fcb4-SNAPSHOT"
   )
 )
 
