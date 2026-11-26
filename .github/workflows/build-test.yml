@@ -27,7 +27,7 @@ jobs:
     name: Docs
     uses: playframework/.github/.github/workflows/cmd.yml@v4
     with:
-      cmd: sbt "docs/scalafmtCheckAll ; docs/scalafmtSbtCheck ; docs/test ; docs/validateDocs"
+      cmd: sbt "docs/scalafmtCheckAll ; docs/scalafmtSbtCheck ; docs/testFull ; docs/validateDocs"
 
   tests:
     name: Tests
